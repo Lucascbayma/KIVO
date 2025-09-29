@@ -40,13 +40,19 @@ O problema central que o JCPE trouxe para o grupo é o desafio de **aumentar a f
 
 O SJCC busca uma solução para **ofertar algo relevante ao usuário nas páginas de matéria**, que são a principal fonte de aquisição, a fim de que ele continue navegando pelo portal.
 
-## 🎯 Entregas do Projeto
+## ✅ Entregas do Projeto
 
 <details><summary><h3><b>Entregas</b></h3></summary>
 <ul>
 <li><a href="https://docs.google.com/document/d/1_h1DfoUAnWOVUtFnLUvA6CEPXdBHQKBiGUAQMd4ugGs/edit?tab=t.0">DOCS das histórias</a></li>
+</details>
+  
+---
 
-## Contatos da Equipe 💻
+## 👥 Equipe de Desenvolvimento
+<details><summary><h3><b>Equipe</b></h3></summary>
+
+## Participantes 💻
 
 ### Ciência da Computação:
 
