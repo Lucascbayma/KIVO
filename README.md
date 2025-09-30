@@ -43,9 +43,44 @@ O SJCC busca uma solução para **ofertar algo relevante ao usuário nas página
 ## ✅ Entregas do Projeto
 
 <details><summary><h3><b>Entregas</b></h3></summary>
-<ul>
-<li><a href="https://docs.google.com/document/d/1_h1DfoUAnWOVUtFnLUvA6CEPXdBHQKBiGUAQMd4ugGs/edit?tab=t.0">DOCS das histórias</a></li>
+
+<details><summary><h3><b>SR1</b></h3></summary> 
+
+<details><summary><h3><b>Semana 1</b></h3></summary>
+  
+<li> Definição da Equipe
+<li> Definição dos Papeis e Responsabilidades
+<li> Apresentação do Desafio
+
 </details>
+
+<details><summary><h3><b>Semana 2</b></h3></summary>
+
+<ul>
+<li><a href="https://miro.com/app/board/uXjVJTn7SVg=/">Matriz CSD versão 1</a></li>
+
+</details>
+
+<details><summary><h3><b>Semana 3</b></h3></summary>
+
+<ul>
+<li><a href="https://docs.google.com/document/d/1YBpG0vV2w6FRj7FwFMJdh5BSe1u9sqiLsl9bBcPVP5s/edit?tab=t.0#heading=h.3o56kgn7ugd8">Entendimento do Usuário (Design)</a></li>
+<li> Estudo análise de similares Familiarização com o framework Django (CC)
+
+</details>
+
+<details><summary><h3><b>Semana 4</b></h3></summary>
+
+<ul>
+<li><a href="https://miro.com/app/board/uXjVJTn7SVg=/">Matriz CSD versão 2</a></li>
+<li><a href="https://docs.google.com/document/d/1D7cjOjBZRZzut3NSfMhbL50Nen5v55s5e2tkFVktK68/edit?tab=t.0#heading=h.cz7p3bwz17vj">Relatório de Similares e estudo com framework Django (CC)</a></li>
+<li><a href="https://docs.google.com/document/d/1-iRzX2nXl_yRx0gXV1UGsT3CTBXN9aPhVFApQ3WD4TI/edit?tab=t.0">Personas (Design)</a></li>
+<li><a href="https://docs.google.com/document/d/1-_LyDI9rfNorRbqoQSNki6Zh3Z0N82jEdXOnaxM1SkY/edit?tab=t.0">Mapa de Empatia (Design)</a></li>
+
+
+</details>
+
+
   
 ---
 
