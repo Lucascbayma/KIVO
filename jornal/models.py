@@ -1,40 +1,57 @@
 from django.db import models
+from django.utils import timezone
 from django.contrib.auth.models import User
+from django.db.models import Count
 
 class Categoria(models.Model):
-    nome = models.CharField(max_length=100, unique=True)
-    descricao = models.TextField(blank=True, null=True)
+    nome = models.CharField(max_length=100, unique=True, verbose_name="Nome da Categoria")
+    descricao = models.TextField(blank=True, null=True, verbose_name="Descrição")
 
     def __str__(self):
         return self.nome
-
 
 class Tag(models.Model):
-    nome = models.CharField(max_length=50, unique=True)
+    nome = models.CharField(max_length=50, unique=True, verbose_name="Nome da Tag")
 
     def __str__(self):
         return self.nome
 
-
 class Artigo(models.Model):
-    titulo = models.CharField(max_length=255)
-    conteudo = models.TextField()
+    titulo = models.CharField(max_length=255, verbose_name="Título")
+    conteudo = models.TextField(verbose_name="Conteúdo")
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, related_name="artigos")
     tags = models.ManyToManyField(Tag, related_name="artigos", blank=True)
-    publicado_em = models.DateTimeField(auto_now_add=True)
-    atualizado_em = models.DateTimeField(auto_now=True)
-    destaque = models.BooleanField(default=False)
+    publicado_em = models.DateTimeField(default=timezone.now, verbose_name="Publicado em")
+    atualizado_em = models.DateTimeField(auto_now=True, verbose_name="Atualizado em")
+    destaque = models.BooleanField(default=False, verbose_name="Destaque na Home")
+    autor = models.ForeignKey(User, on_delete=models.CASCADE, related_name="artigos")
 
     def __str__(self):
-        return self.titulo
+        return self.titulo[:30]
+
+    @classmethod
+    def artigos_populares(cls, limite=5):
+        """
+        Retorna os artigos mais populares baseados em quantidade de recomendações.
+        """
+        return cls.objects.annotate(total=models.Count("recomendacoes")) \
+            .order_by("-total")[:limite]
 
 class Recomendacao(models.Model):
-    artigo_origem = models.ForeignKey(Artigo, on_delete=models.CASCADE, related_name="recomendacoes_origem")
-    artigo_recomendado = models.ForeignKey(Artigo, on_delete=models.CASCADE, related_name="recomendacoes")
-    relevancia = models.FloatField(default=0.0)  # pode ser calculado via tags/categorias
+    artigo_origem = models.ForeignKey(
+        Artigo,
+        on_delete=models.CASCADE,
+        related_name="recomendacoes_origem"
+    )
+    artigo_recomendado = models.ForeignKey(
+        Artigo,
+        on_delete=models.CASCADE,
+        related_name="recomendacoes"
+    )
+    relevancia = models.FloatField(default=0.0, verbose_name="Relevância")
 
     def __str__(self):
-        return f"Recomendação para {self.artigo_origem} → {self.artigo_recomendado}"
+        return f"{self.artigo_origem.titulo[:20]} → {self.artigo_recomendado.titulo[:20]}"
 
 class ConteudoMultimidia(models.Model):
     TIPO_CHOICES = (
@@ -42,7 +59,13 @@ class ConteudoMultimidia(models.Model):
         ("audio", "Áudio"),
         ("radio", "Rádio Ao Vivo"),
     )
-    artigo = models.ForeignKey(Artigo, on_delete=models.CASCADE, related_name="multimidias", null=True, blank=True)
+    artigo = models.ForeignKey(
+        Artigo,
+        on_delete=models.CASCADE,
+        related_name="multimidias",
+        null=True,
+        blank=True
+    )
     tipo = models.CharField(max_length=20, choices=TIPO_CHOICES)
     url = models.URLField()
     titulo = models.CharField(max_length=255, blank=True, null=True)
@@ -60,7 +83,7 @@ class Anuncio(models.Model):
     ativo = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.titulo
+        return f"Anúncio: {self.titulo}"
 
 class AssinanteNewsletter(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name="assinaturas", null=True, blank=True)
@@ -72,10 +95,17 @@ class AssinanteNewsletter(models.Model):
         choices=(("diaria", "Diária"), ("semanal", "Semanal")),
         default="diaria"
     )
-    criado_em = models.DateTimeField(auto_now_add=True)
+    criado_em = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return f"Assinante: {self.nome} ({self.email})"
+        return f"{self.nome} ({self.email})"
+
+    @classmethod
+    def assinantes_por_categoria(cls, categoria_id):
+        """
+        Retorna todos os assinantes de uma categoria específica.
+        """
+        return cls.objects.filter(categorias__id=categoria_id)
 
 class MenuLateral(models.Model):
     nome = models.CharField(max_length=100)
