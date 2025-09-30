@@ -42,66 +42,78 @@ O SJCC busca uma solução para **ofertar algo relevante ao usuário nas página
 
 ## ✅ Entregas do Projeto
 
-<details><summary><h3><b>Entregas</b></h3></summary>
+<details><summary><b>Entregas</b></summary>
 
-<details><summary><h3><b>SR1</b></h3></summary> 
+<details><summary><b>SR1</b></summary> 
 
-<details><summary><h3><b>Semana 1</b></h3></summary>
-  
-<li> Definição da Equipe
-<li> Definição dos Papeis e Responsabilidades
-<li> Apresentação do Desafio
-
+<details><summary><b>Semana 1</b></summary>
+<ul>
+<li>Definição da Equipe</li>
+<li>Definição dos Papéis e Responsabilidades</li>
+<li>Apresentação do Desafio</li>
+</ul>
 </details>
 
-<details><summary><h3><b>Semana 2</b></h3></summary>
-
+<details><summary><b>Semana 2</b></summary>
 <ul>
 <li><a href="https://miro.com/app/board/uXjVJTn7SVg=/">Matriz CSD versão 1</a></li>
-
+</ul>
 </details>
 
-<details><summary><h3><b>Semana 3</b></h3></summary>
-
+<details><summary><b>Semana 3</b></summary>
 <ul>
 <li><a href="https://docs.google.com/document/d/1YBpG0vV2w6FRj7FwFMJdh5BSe1u9sqiLsl9bBcPVP5s/edit?tab=t.0#heading=h.3o56kgn7ugd8">Entendimento do Usuário (Design)</a></li>
-<li> Estudo análise de similares Familiarização com o framework Django (CC)
-
+<li>Estudo análise de similares e familiarização com o framework Django (CC)</li>
+</ul>
 </details>
 
-<details><summary><h3><b>Semana 4</b></h3></summary>
-
+<details><summary><b>Semana 4</b></summary>
 <ul>
 <li><a href="https://miro.com/app/board/uXjVJTn7SVg=/">Matriz CSD versão 2</a></li>
 <li><a href="https://docs.google.com/document/d/1D7cjOjBZRZzut3NSfMhbL50Nen5v55s5e2tkFVktK68/edit?tab=t.0#heading=h.cz7p3bwz17vj">Relatório de Similares e estudo com framework Django (CC)</a></li>
 <li><a href="https://docs.google.com/document/d/1-iRzX2nXl_yRx0gXV1UGsT3CTBXN9aPhVFApQ3WD4TI/edit?tab=t.0">Personas (Design)</a></li>
 <li><a href="https://docs.google.com/document/d/1-_LyDI9rfNorRbqoQSNki6Zh3Z0N82jEdXOnaxM1SkY/edit?tab=t.0">Mapa de Empatia (Design)</a></li>
-
-
+</ul>
 </details>
 
+</details> 
 
-  
+<details><summary><b>SR2</b></summary> 
+
+<details><summary><b>Semana 8</b></summary>
+<ul>
+<li><a href="https://docs.google.com/document/d/1K_D0Xot_UuwQKFFgFIFXchAwP-p_DsSm1Ld_FzU94ec/edit?tab=t.0">Funcionalidades da solução</a></li>
+<li><a href="https://docs.google.com/document/d/10u5Awd7I6rwJCiAqs-sPPbbPxf6pm_k1-Ew2OD0Xo5o/edit?tab=t.0#heading=h.jx0nhk2jwmvk">Arquitetura da Informação da solução (Design)</a></li>
+<li>Criação repositório no GitHub com arquivo README descrevendo o projeto (CC)</li>
+<li><a href="https://docs.google.com/document/d/1_h1DfoUAnWOVUtFnLUvA6CEPXdBHQKBiGUAQMd4ugGs/edit?tab=t.0">Docs das histórias (CC)</a></li>
+<li>Versão inicial do modelo de dados (classes Model no Django) (CC)</li>
+</ul>
+</details>
+
+</details> 
+
 ---
 
 ## 👥 Equipe de Desenvolvimento
-<details><summary><h3><b>Equipe</b></h3></summary>
 
-## Participantes 💻
+<details><summary><b>Equipe</b></summary>
 
-### Ciência da Computação:
+### Participantes 💻
 
-* **Eros Amâncio Nascimento** - [@erosamancio](https://github.com/erosamancio)
-* **Lucas Coutinho de Almeida Bayma** - [@lucascbayma](https://github.com/lucascbayma)
-* **Arthur Sindeaux** - [@arthursindeaux](https://github.com/arthursindeaux)
-* **Mateus Lins Farias** - [@mateuslinsf](https://github.com/mateuslinsf)
-* **Pedro David Oliveira Baia** - [@Pedrodavidob](https://github.com/Pedrodavidob)
-* **Pedro Moreira** - [@PedroMoreira18](https://github.com/PedroMoreira18)
-* **Luiz Mariz** - [@LuizEduardoMariz](https://github.com/LuizEduardoMariz)
-  
-### Designers:
+#### Ciência da Computação
+* **Eros Amâncio Nascimento** - [@erosamancio](https://github.com/erosamancio)  
+* **Lucas Coutinho de Almeida Bayma** - [@lucascbayma](https://github.com/lucascbayma)  
+* **Arthur Sindeaux** - [@arthursindeaux](https://github.com/arthursindeaux)  
+* **Mateus Lins Farias** - [@mateuslinsf](https://github.com/mateuslinsf)  
+* **Pedro David Oliveira Baia** - [@Pedrodavidob](https://github.com/Pedrodavidob)  
+* **Pedro Moreira** - [@PedroMoreira18](https://github.com/PedroMoreira18)  
+* **Luiz Mariz** - [@LuizEduardoMariz](https://github.com/LuizEduardoMariz)  
 
-* **Humberto Lima** - [hml@cesar.school](mailto:hml@cesar.school)
-* **Maria Luiza Melli** - [mlmab@cesar.school](mailto:mlmab@cesar.school)
-* **Marina de Queiróz** - [mqn@cesar.school](mailto:mqn@cesar.school)
-* **Noely Seabra** - [nmvs@cesar.school](mailto:nmvs@cesar.school)
+#### Design
+* **Humberto Lima** - [hml@cesar.school](mailto:hml@cesar.school)  
+* **Maria Luiza Melli** - [mlmab@cesar.school](mailto:mlmab@cesar.school)  
+* **Marina de Queiróz** - [mqn@cesar.school](mailto:mqn@cesar.school)  
+* **Noely Seabra** - [nmvs@cesar.school](mailto:nmvs@cesar.school)  
+
+</details>
+
