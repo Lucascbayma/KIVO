@@ -37,6 +37,35 @@ class Artigo(models.Model):
         return cls.objects.annotate(total=models.Count("recomendacoes")) \
             .order_by("-total")[:limite]
 
+    def artigos_relacionados(self, limite=3):
+        tags_ids = self.tags.values_list('id', flat=True)
+        
+        recomendacoes_por_tag = Artigo.objects.filter(
+            tags__in=tags_ids
+        ).exclude(
+            id=self.id 
+        ).distinct().annotate(
+            num_tags=Count('tags')
+        ).order_by('-num_tags', '-publicado_em')[:limite]
+
+        if len(recomendacoes_por_tag) >= limite:
+            return recomendacoes_por_tag
+
+        ids_ja_recomendados = list(recomendacoes_por_tag.values_list('id', flat=True))
+        
+        recomendacoes_por_categoria = Artigo.objects.filter(
+            categoria=self.categoria
+        ).exclude(
+            id__in=ids_ja_recomendados
+        ).exclude(
+            id=self.id
+        ).order_by('-publicado_em')[:limite - len(recomendacoes_por_tag)]
+
+        recomendacoes_finais = list(recomendacoes_por_tag) + list(recomendacoes_por_categoria)
+        
+        return recomendacoes_finais[:limite]
+
+
 class Recomendacao(models.Model):
     artigo_origem = models.ForeignKey(
         Artigo,
