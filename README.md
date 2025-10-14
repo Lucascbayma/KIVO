@@ -102,6 +102,17 @@ O SJCC busca uma solução para **ofertar algo relevante ao usuário nas página
 
 </details> 
 
+<details><summary><b>Semana 10</b></summary>
+<ul>
+<li><a href="https://docs.google.com/document/d/1KES9NhhKTqYHQhdV0uDGp2zr69zHqqCKCRW1ydFtwFI/edit?tab=t.0#heading=h.pu3juudujvlh">Construção do wiraframe(Design)</a></li>
+<li><a > Implementação de 1 história de usuário.</a></li>
+<li><a > Atualização GitHub / bug tracker refletindo o status atual do projeto.</a></li>
+
+  
+</ul>
+
+</details> 
+
 ---
 
 ## 👥 Equipe de Desenvolvimento
