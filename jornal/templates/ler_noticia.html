@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CNH sem autoescolas: Governo federal detalha as novas regras</title>
+    
+    <link rel="stylesheet" href="{% static 'jornal/css/ler_noticia.css' %}"> 
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+    <main class="container-noticia">
+        
+        <header class="header-noticia">
+            <h1 class="titulo-noticia">CNH sem autoescolas: Governo federal detalha as novas regras para tirar a habilitação no Brasil. Proposta está sob consulta</h1>
+            
+            <p class="lead-noticia">Promessa é de que o fim da exclusividade das autoescolas e a flexibilização das aulas práticas e teóricas irão reduzir o custo total da CNH em até 80%</p>
+        </header>
+
+        <div class="metadados-e-compartilhamento">
+            <div class="compartilhamento-lateral">
+                <a href="#" class="social-icon whatsapp"><i class="fab fa-whatsapp"></i></a>
+                <a href="#" class="social-icon facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="social-icon compartilhar"><i class="fas fa-share-alt"></i></a>
+            </div>
+            
+            <div class="info-data-autor">
+                <p class="autor">Por <strong>Roberta Soares</strong></p>
+                <p class="datas">Publicado em 13/10/2025 às 11:58 | Atualizado em 13/10/2025 às 11:59</p>
+            </div>
+        </div>
+
+        <figure class="imagem-principal">
+            <img src="{% static 'jornal/imagens/cnh.jpg' %}" alt="Mão segurando documento de CNH.">
+        </figure>
+
+        <section class="conteudo-noticia">
+            <p>O Ministério dos Transportes divulgou o <span class="destaque">passo a passo da nova proposta que desobriga as aulas em autoescolas</span> e promete modernizar, facilitar e baratear a formação de condutores no Brasil com o objetivo de combater o cenário de insegurança e exclusão existente no trânsito brasileiro. O governo federal, autor da proposta, afirma que 20 milhões de brasileiros dirigem sem habilitação no País e que, somente em 2024, mais de 900 mil infrações por dirigir sem CNH foram registradas. Até setembro deste ano, o número era de 800 mil.</p>
+
+            <p><span class="destaque-link">A proposta ainda está em consulta pública pela plataforma Participa + Brasil</span>, mas é praticamente certo que será colocada em prática em breve, com as alterações determinadas apenas pelo Conselho Nacional de Trânsito (Contran). Isso tudo apesar das críticas do setor de formação de condutores, que teme a chamada 'uberização' do processo de retirada das CNHs no País.</p>
+
+            <p>Na visão do governo federal, a <span class="destaque">proposta busca derrubar os altos custos – que atualmente podem chegar a R$ 4.200 em algumas capitais brasileiras</span> e exigir quase um ano de preparação – ao flexibilizar drasticamente a obrigatoriedade dos cursos. A grande novidade é a retirada da exclusividade das autoescolas no processo de formação, tanto teórica quanto prática.</p>
+
+            <p>Com a maior liberdade de escolha nas etapas teórica e prática, a expectativa do Ministério dos Transportes é que o custo total para tirar a carteira caia em até 80%.</p>
+        </section>
+
+        <section class="noticias-relacionadas">
+            <h2 class="titulo-relacionadas">LEIA TAMBÉM</h2>
+            
+            <article class="relacionada-item">
+                <a href="#" class="link-relacionada">
+                    <div class="thumb-relacionada">
+                        <img src="{% static 'jornal/imagens/img/thumb_1.jpg' %}" alt="Notícia Relacionada 1">
+                    </div>
+                    <p class="titulo-item-relacionado">CNH sem autoescolas: Entidades voltam a alertar para explosão de sinistros de trânsito, ameaça a 300 mil empregos e custo de R$ 449 milhões ao SUS</p>
+                </a>
+            </article>
+
+            <article class="relacionada-item">
+                <a href="#" class="link-relacionada">
+                    <div class="thumb-relacionada">
+                        <img src="{% static 'jornal/imagens/img/thumb_2.jpg' %}" alt="Notícia Relacionada 2">
+                    </div>
+                    <p class="titulo-item-relacionado">CNH sem autoescolas: Governo federal admite rever proposta e discutir imposição de horas mínimas de aulas práticas para tirar a CNH</p>
+                </a>
+            </article>
+
+            <article class="relacionada-item">
+                <a href="#" class="link-relacionada">
+                    <div class="thumb-relacionada">
+                        <img src="{% static 'jornal/imagens/img/thumb_3.jpg' %}" alt="Notícia Relacionada 3">
+                    </div>
+                    <p class="titulo-item-relacionado">Nova lei de trânsito: Veja o que muda com as regras de pontuação e validade da CNH para motoristas de Pernambuco</p>
+                </a>
+            </article>
+
+        </section>
+
+    </main>
+
+</body>
+</html>
