@@ -28,3 +28,5 @@ def detalhe_noticia_estatica(request):
     """Renderiza o template 'ler_noticia.html' com dados estáticos."""
 
     return render(request, 'ler_noticia.html', {})
+def home(request):
+    return render(request, 'home.html')
