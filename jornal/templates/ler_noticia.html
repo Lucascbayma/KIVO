@@ -1,45 +1,80 @@
 {% load static %}
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>{{ noticia.title|default:"Detalhe da Notícia" }}</title>
-  <link rel="stylesheet" href="{% static 'jornal/css/style.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ noticia.title|default:"Detalhe da Notícia" }}</title>
+    
+    <link rel="stylesheet" href="{% static 'jornal/css/ler_noticia.css' %}"> 
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    
-  <main style="padding: 20px;">
 
-    {% if noticia %}
-        <h1>{{ noticia.title }}</h1>
+    <main class="container-noticia">
         
-        <p style="color: #666; font-size: 0.9em;">
-            Fonte: **{{ noticia.source_id|default:"Desconhecida" }}** | Publicado em: {{ noticia.pubDate|date:"d/m/Y H:i" }}
-        </p>
+        {% if noticia %}
 
-        {% if noticia.image_url %}
-            <img src="{{ noticia.image_url }}" 
-                 alt="{{ noticia.title }}" 
-                 style="max-width: 100%; height: auto; margin: 20px 0; border-radius: 8px;">
+            <header class="header-noticia">
+                <h1 class="titulo-noticia">{{ noticia.title }}</h1>
+                
+                <p class="lead-noticia">{{ noticia.description }}</p>
+            </header>
+
+            <div class="metadados-e-compartilhamento">
+                <div class="compartilhamento-lateral">
+                    <a href="#" class="social-icon whatsapp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#" class="social-icon facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon compartilhar"><i class="fas fa-share-alt"></i></a>
+                </div>
+                
+                <div class="info-data-autor">
+                    <p class="autor">Fonte: <strong>{{ noticia.source_id|default:"Desconhecida" }}</strong></p>
+                    
+                    <p class="datas">Publicado em {{ noticia.pubDate|date:"d/m/Y" }} às {{ noticia.pubDate|date:"H:i" }}</p>
+                </div>
+            </div>
+
+            <figure class="imagem-principal">
+                {% if noticia.image_url %}
+                    <img src="{{ noticia.image_url }}" alt="{{ noticia.title }}" onerror="this.onerror=null; this.style.display='none';">
+                {% else %}
+                    <p style="text-align: center; color: #999;">(Imagem não disponível na API)</p>
+                {% endif %}
+            </figure>
+
+            <section class="conteudo-noticia">
+                <p><strong>A notícia completa só pode ser acessada na fonte original, pois esta API não fornece o corpo do texto.</strong></p>
+                <p>Para continuar lendo e obter todos os detalhes da matéria, clique no link abaixo:</p>
+                
+                <a href="{{ noticia.link }}" target="_blank" class="destaque-link" style="display: block; margin-top: 15px; font-size: 1.15rem;">
+                    [LEIA MAIS] - Clique aqui para ir ao site da fonte: {{ noticia.source_id|default:"Fonte Externa" }}
+                </a>
+                
+            </section>
+            
+            <section class="noticias-relacionadas">
+                <h2 class="titulo-relacionadas">LEIA TAMBÉM</h2>
+                <article class="relacionada-item">
+                    <a href="#" class="link-relacionada">
+                        <div class="thumb-relacionada">
+                            <img src="{% static 'jornal/imagens/img/thumb_1.jpg' %}" alt="Notícia Relacionada 1">
+                        </div>
+                        <p class="titulo-item-relacionado">CNH sem autoescolas: Entidades voltam a alertar para explosão de sinistros de trânsito...</p>
+                    </a>
+                </article>
+                </section>
+
+
+        {% else %}
+            <header class="header-noticia">
+                <h1 class="titulo-noticia">Erro ao Carregar Notícia</h1>
+                <p class="lead-noticia">Não foi possível encontrar a notícia solicitada na sessão. Por favor, volte para a <a href="{% url 'home' %}">Página Inicial</a> e clique novamente.</p>
+            </header>
         {% endif %}
 
-        <p style="line-height: 1.6;">{{ noticia.description }}</p>
-
-        <div style="margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px;">
-            <p>Para ler o artigo completo e ver todo o conteúdo, acesse a fonte original:</p>
-            <a href="{{ noticia.link }}" target="_blank" 
-               style="display: inline-block; padding: 10px 15px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;">
-                Continuar Lendo no Site da Fonte &rarr;
-            </a>
-        </div>
-        
-    {% else %}
-        <h1>Notícia Não Encontrada</h1>
-        <p>Não foi possível encontrar os detalhes desta notícia na sua sessão. Por favor, volte para a <a href="{% url 'home' %}">página inicial</a>.</p>
-    {% endif %}
-
-  </main>
+    </main>
 
 </body>
 </html>

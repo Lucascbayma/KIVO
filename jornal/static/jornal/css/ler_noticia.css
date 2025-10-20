@@ -1,3 +1,4 @@
+/* Seu_App/static/jornal/css/ler_noticia.css */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap');
 
 :root {
@@ -100,7 +101,6 @@ body {
 .compartilhar { background-color: #666; } 
 
 
-
 .imagem-principal {
     margin: 20px 0;
 }
@@ -116,7 +116,6 @@ body {
     color: var(--cor-secundaria-texto);
     margin-top: 5px;
 }
-
 
 
 .conteudo-noticia p {
