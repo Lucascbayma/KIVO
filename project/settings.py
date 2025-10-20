@@ -30,7 +30,7 @@ NEWSDATA_API_KEY = os.environ.get("NEWSDATA_API_KEY")
 SECRET_KEY = 'django-insecure-m59)f8t9ie9bsyd%=(@!+x%&$f42%@^mrui77k3^#w*%9)ddv!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     'kivo.pythonanywhere.com',
