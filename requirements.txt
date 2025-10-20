@@ -3,3 +3,4 @@ selenium
 dotenv
 django_bootstrap_icons
 whitenoise
+pillow
