@@ -14,6 +14,12 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+NEWSDATA_API_KEY = os.environ.get("NEWSDATA_API_KEY")
 
 
 # Quick-start development settings - unsuitable for production
