@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import ArtigoDetailView, detalhe_noticia_estatica # Importe a view estática
+from .views import ArtigoDetailView, detalhe_noticia_estatica 
 from . import views
 
 urlpatterns = [
