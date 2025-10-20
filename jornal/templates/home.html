@@ -38,50 +38,33 @@
       </div>
 
       <div class="carousel">
+        
+        {% for noticia in noticias_api %}
         <article class="card">
           <div class="media">
-            <a href="{% url 'detalhe_noticia_estatica' %}">
-                <img src="{% static 'jornal/imagens/cnh.jpg' %}" alt="Imagem notícia 1">
+            <a href="{% url 'detalhe_noticia_estatica' %}?id={{ forloop.counter0 }}" > 
+                <img src="{{ noticia.image_url }}" 
+                     alt="{{ noticia.title }}" 
+                     onerror="this.onerror=null; this.src='{% static 'jornal/imagens/fallback.jpg' %}'">
             </a>
           </div>
           <div class="meta">
             <div class="title">
-                <a href="{% url 'detalhe_noticia_estatica' %}">CNH sem autoescolas: Governo federal detalha as novas regras para tirar a habilitação no Brasil. Proposta está sob consulta</a>
+                <a href="{% url 'detalhe_noticia_estatica' %}?id={{ forloop.counter0 }}">
+                    {{ noticia.title }}
+                </a>
             </div>
-            <div class="time">Há X horas</div>
+            <div class="time">
+                {{ noticia.pubDate|date:"d/m/Y H:i" }} | {{ noticia.source_id|default:"Fonte desconhecida" }}
+            </div>
           </div>
         </article>
-
+        {% empty %}
         <article class="card">
-          <div class="media">
-            <img src="" alt="Imagem notícia 2">
-          </div>
-          <div class="meta">
-            <div class="title">Texto</div>
-            <div class="time">Há X horas</div>
-          </div>
+            <p style="padding: 15px;">Não foi possível carregar as notícias em alta no momento.</p>
         </article>
-
-        <article class="card">
-          <div class="media">
-            <img src="" alt="Imagem notícia 3">
-          </div>
-          <div class="meta">
-            <div class="title">Texto</div>
-            <div class="time">Há X horas</div>
-          </div>
-        </article>
-
-        <article class="card">
-          <div class="media">
-            <img src="" alt="Imagem notícia 4">
-          </div>
-          <div class="meta">
-            <div class="title">Texto</div>
-            <div class="time">Há X horas</div>
-          </div>
-        </article>
-      </div>
+        {% endfor %}
+        </div>
     </section>
   </main>
 
