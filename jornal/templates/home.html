@@ -27,42 +27,122 @@
         <!-- Removed search-icon -->
     </div>
 </header>
-<main class="main-content">
+  <!-- 🌍 Conteúdo principal -->
+  <main class="main-content">
+
+    <!-- 🌎 Últimas Notícias -->
     <section class="em-alta">
-        <div class="section-head"><h2>Últimas Notícias</h2><a href="#" class="see-more">Ver Mais</a></div>
-        <div class="carousel">
-            <div class="card">Lorem ipsum dolor sit amet, consectetur adipiscing...</div>
-            <div class="card">Lorem ipsum dolor sit amet, consectetur adipiscing...</div>
-            <div class="card">Lorem ipsum dolor sit amet, consectetur adipiscing...</div>
-        </div>
+      <div class="section-head">
+        <h2>Últimas Notícias</h2>
+        <a href="#" class="see-more">Ver Mais</a>
+      </div>
+      <div class="carousel">
+        {% for n in ultimas %}
+          <div class="card">
+            <div class="media">
+              <a href="{{ n.link }}" target="_blank">
+                {% if n.image_url %}
+                  <img src="{{ n.image_url }}" alt="{{ n.title }}" style="width:100%; height:200px; object-fit:cover; border-radius:8px;">
+                {% else %}
+                  <img src="{% static 'jornal/imagens/sem-imagem.png' %}" alt="Sem imagem" style="width:100%; height:200px; object-fit:cover; border-radius:8px;">
+                {% endif %}
+              </a>
+            </div>
+            <div class="meta">
+              <p class="title">{{ n.title|truncatechars:80 }}</p>
+              <p class="time">{{ n.source_name }} — {{ n.pubDate|slice:":10" }}</p>
+            </div>
+          </div>
+        {% empty %}
+          <p>Nenhuma notícia disponível.</p>
+        {% endfor %}
+      </div>
     </section>
+
+    <!-- 🏈 Esportes -->
     <section class="em-alta">
-        <div class="section-head"><h2>Esportes</h2><a href="#" class="see-more">Ver Mais</a></div>
-        <div class="carousel">
-            <div class="card">Lorem ipsum dolor sit amet, consectetur adipiscing...</div>
-            <div class="card">Lorem ipsum dolor sit amet, consectetur adipiscing...</div>
-            <div class="card">Lorem ipsum dolor sit amet, consectetur adipiscing...</div>
-        </div>
+      <div class="section-head"><h2>Esportes</h2><a href="#" class="see-more">Ver Mais</a></div>
+      <div class="carousel">
+        {% for n in esportes %}
+          <div class="card">
+            <div class="media">
+              <a href="{% url 'detalhe_noticia_estatica' %}?sec=esportes&id={{ forloop.counter0 }}" target="_blank">
+                {% if n.image_url %}
+                  <img src="{{ n.image_url }}" alt="{{ n.title }}" style="width:100%; height:200px; object-fit:cover; border-radius:8px;">
+                {% else %}
+                  <img src="{% static 'jornal/imagens/sem-imagem.png' %}" alt="Sem imagem" style="width:100%; height:200px; object-fit:cover; border-radius:8px;">
+                {% endif %}
+              </a>
+            </div>
+            <div class="meta">
+              <p class="title">{{ n.title|truncatechars:80 }}</p>
+              <p class="time">{{ n.source_name }} — {{ n.pubDate|slice:":10" }}</p>
+            </div>
+          </div>
+        {% empty %}
+          <p>Nenhuma notícia de esportes.</p>
+        {% endfor %}
+      </div>
     </section>
+
+    <!-- 🏛️ Política -->
     <section class="em-alta">
-        <div class="section-head"><h2>Política</h2><a href="#" class="see-more">Ver Mais</a></div>
-        <div class="carousel">
-            <div class="card">Lorem ipsum dolor sit amet, consectetur adipiscing...</div>
-            <div class="card">Lorem ipsum dolor sit amet, consectetur adipiscing...</div>
-            <div class="card">Lorem ipsum dolor sit amet, consectetur adipiscing...</div>
-        </div>
+      <div class="section-head"><h2>Política</h2><a href="#" class="see-more">Ver Mais</a></div>
+      <div class="carousel">
+        {% for n in politica %}
+          <div class="card">
+            <div class="media">
+              <a href="{% url 'detalhe_noticia_estatica' %}?sec=politica&id={{ forloop.counter0 }}" target="_blank">
+                {% if n.image_url %}
+                  <img src="{{ n.image_url }}" alt="{{ n.title }}" style="width:100%; height:200px; object-fit:cover; border-radius:8px;">
+                {% else %}
+                  <img src="{% static 'jornal/imagens/sem-imagem.png' %}" alt="Sem imagem" style="width:100%; height:200px; object-fit:cover; border-radius:8px;">
+                {% endif %}
+              </a>
+            </div>
+            <div class="meta">
+              <p class="title">{{ n.title|truncatechars:80 }}</p>
+              <p class="time">{{ n.source_name }} — {{ n.pubDate|slice:":10" }}</p>
+            </div>
+          </div>
+        {% empty %}
+          <p>Nenhuma notícia de política.</p>
+        {% endfor %}
+      </div>
     </section>
+
+    <!-- ☁️ Clima -->
     <section class="em-alta">
-        <div class="section-head"><h2>Clima</h2><a href="#" class="see-more">Ver Mais</a></div>
-        <div class="carousel">
-            <div class="card">Lorem ipsum dolor sit amet, consectetur adipiscing...</div>
-            <div class="card">Lorem ipsum dolor sit amet, consectetur adipiscing...</div>
-            <div class="card">Lorem ipsum dolor sit amet, consectetur adipiscing...</div>
-        </div>
+      <div class="section-head"><h2>Clima</h2><a href="#" class="see-more">Ver Mais</a></div>
+      <div class="carousel">
+        {% for n in clima %}
+          <div class="card">
+            <div class="media">
+              <a href="{% url 'detalhe_noticia_estatica' %}?sec=tec&id={{ forloop.counter0 }}" target="_blank">
+                {% if n.image_url %}
+                  <img src="{{ n.image_url }}" alt="{{ n.title }}" style="width:100%; height:200px; object-fit:cover; border-radius:8px;">
+                {% else %}
+                  <img src="{% static 'jornal/imagens/sem-imagem.png' %}" alt="Sem imagem" style="width:100%; height:200px; object-fit:cover; border-radius:8px;">
+                {% endif %}
+              </a>
+            </div>
+            <div class="meta">
+              <p class="title">{{ n.title|truncatechars:80 }}</p>
+              <p class="time">{{ n.source_name }} — {{ n.pubDate|slice:":10" }}</p>
+            </div>
+          </div>
+        {% empty %}
+          <p>Nenhuma notícia de clima.</p>
+        {% endfor %}
+      </div>
     </section>
-</main>
-<footer>
+
+  </main>
+
+  <!-- ⚫ Rodapé -->
+  <footer>
     <div class="card">Nome do Programa Atual</div>
-</footer>
+  </footer>
+
 </body>
 </html>
