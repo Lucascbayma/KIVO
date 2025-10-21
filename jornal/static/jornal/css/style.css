@@ -293,3 +293,80 @@ footer .card .media::after {
         margin-bottom: var(--gap);
     }
 }
+/* --- ESTILOS PARA O FORMULÁRIO DE ADIÇÃO DE NOTÍCIA --- */
+
+.noticia-form {
+    background: var(--card-bg);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.form-field {
+    margin-bottom: 25px;
+}
+
+.form-field label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--dark);
+    font-size: 16px;
+}
+
+.form-field input[type="text"],
+.form-field textarea,
+.form-field select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    color: var(--dark);
+    background: #fdfdfd;
+    box-sizing: border-box; 
+    transition: border-color 0.3s;
+}
+
+.form-field input[type="text"]:focus,
+.form-field textarea:focus,
+.form-field select:focus {
+    border-color: #007bff; 
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1); 
+    outline: none; 
+}
+
+.form-field textarea {
+    resize: vertical;
+    min-height: 250px; 
+}
+
+.form-field input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+.form-field select[multiple] {
+    height: 120px;
+}
+.form-field select option:checked {
+    background-color: #f0f0f0; 
+    color: var(--dark);
+}
+
+.submit-button {
+    background: var(--header-bg); 
+    color: var(--header-text); 
+    border: none;
+    padding: 12px 30px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 700;
+    width: 100%;
+    margin-top: 10px;
+    transition: background 0.3s ease;
+}
+
+.submit-button:hover {
+    background: #a90000;
+}
