@@ -98,13 +98,11 @@ def home(request):
 
             if noticias:
                 print("🔹 Primeira notícia exemplo:")
-                print(noticias[0])  # Mostra os campos disponíveis
+                print(noticias[0])  
 
-            # ✅ Classificação segura (corrigida)
             for n in noticias:
                 categoria_raw = n.get('category')
 
-                # Pode ser lista, string ou None
                 if isinstance(categoria_raw, list):
                     categoria = ",".join(categoria_raw).lower()
                 elif isinstance(categoria_raw, str):
@@ -128,13 +126,11 @@ def home(request):
                      "educação" in descricao:
                     clima.append(n)
 
-            # Guarda na sessão para view detalhe
             request.session['ultimas_noticias'] = noticias
             request.session['esportes_noticias'] = esportes
             request.session['politica_noticias'] = politica
             request.session['tec_noticias'] = clima
 
-            # Apenas debug pra ver contagem
             print(f"🏈 Esportes: {len(esportes)} | 🏛️ Política: {len(politica)} | ☁️ Clima: {len(clima)}")
 
         else:
