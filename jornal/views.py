@@ -35,7 +35,6 @@ class ArtigoDetailView(DetailView):
 # --- VIEW PARA ADICIONAR NOTÍCIA (Baseada em Artigo Model) ---
 # -----------------------------------------------------------------
 
-@login_required
 def adicionar_artigo(request):
     if request.method == 'POST':
         form = ArtigoForm(request.POST, request.FILES) 
