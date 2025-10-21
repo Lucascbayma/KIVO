@@ -208,8 +208,6 @@ footer {
 }
 footer .card {
   background: var(--card-bg);
-  border: 2px dashed #000;
-  border-radius: 8px;
   flex: 0 0 60%;
   max-width: 60%;
   display: flex;
