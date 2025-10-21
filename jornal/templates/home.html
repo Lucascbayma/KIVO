@@ -9,29 +9,26 @@
 </head>
 <body>
 <header class="header">
-    <div class="col">
+    <div class="col left">
         <div class="logo-container">
             <img src="{% static 'jornal/imagens/JC.png' %}" alt="JC" class="logo-img">
         </div>
     </div>
     <div class="col center">
         <nav class="menu">
-            <a href="#">Início</a>
-            <a href="#">Pernambuco</a>
+            <a href="#">Editoria</a>
             <a href="#">Esportes</a>
-            <a href="#">Tecnologia</a>
+            <a href="#">Pernambuco</a>
             <a href="#">Mais</a>
         </nav>
     </div>
-    <div class="col">
-        <!-- Removed search-icon -->
-    </div>
+    <div class="col right">
+        </div>
 </header>
-  <!-- 🌍 Conteúdo principal -->
+  
   <main class="main-content">
 
-    <!-- 🌎 Últimas Notícias -->
-    <section class="em-alta">
+    <section class="em-alta ultimas-noticias">
       <div class="section-head">
         <h2>Últimas Notícias</h2>
         <a href="#" class="see-more">Ver Mais</a>
@@ -40,11 +37,11 @@
         {% for n in ultimas %}
           <div class="card">
             <div class="media">
-              <a href="{{ n.link }}" target="_blank">
+              <a href="{% url 'detalhe_noticia_estatica' %}?sec=ultimas&id={{ forloop.counter0 }}">
                 {% if n.image_url %}
-                  <img src="{{ n.image_url }}" alt="{{ n.title }}" style="width:100%; height:200px; object-fit:cover; border-radius:8px;">
+                  <img src="{{ n.image_url }}" alt="{{ n.title }}" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
                 {% else %}
-                  <img src="{% static 'jornal/imagens/sem-imagem.png' %}" alt="Sem imagem" style="width:100%; height:200px; object-fit:cover; border-radius:8px;">
+                  <img src="{% static 'jornal/imagens/sem-imagem.png' %}" alt="Sem imagem" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
                 {% endif %}
               </a>
             </div>
@@ -59,18 +56,17 @@
       </div>
     </section>
 
-    <!-- 🏈 Esportes -->
-    <section class="em-alta">
+    <section class="em-alta esportes">
       <div class="section-head"><h2>Esportes</h2><a href="#" class="see-more">Ver Mais</a></div>
       <div class="carousel">
         {% for n in esportes %}
           <div class="card">
             <div class="media">
-              <a href="{% url 'detalhe_noticia_estatica' %}?sec=esportes&id={{ forloop.counter0 }}" target="_blank">
+              <a href="{% url 'detalhe_noticia_estatica' %}?sec=esportes&id={{ forloop.counter0 }}">
                 {% if n.image_url %}
-                  <img src="{{ n.image_url }}" alt="{{ n.title }}" style="width:100%; height:200px; object-fit:cover; border-radius:8px;">
+                  <img src="{{ n.image_url }}" alt="{{ n.title }}" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
                 {% else %}
-                  <img src="{% static 'jornal/imagens/sem-imagem.png' %}" alt="Sem imagem" style="width:100%; height:200px; object-fit:cover; border-radius:8px;">
+                  <img src="{% static 'jornal/imagens/sem-imagem.png' %}" alt="Sem imagem" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
                 {% endif %}
               </a>
             </div>
@@ -85,18 +81,17 @@
       </div>
     </section>
 
-    <!-- 🏛️ Política -->
-    <section class="em-alta">
+    <section class="em-alta politica">
       <div class="section-head"><h2>Política</h2><a href="#" class="see-more">Ver Mais</a></div>
       <div class="carousel">
         {% for n in politica %}
           <div class="card">
             <div class="media">
-              <a href="{% url 'detalhe_noticia_estatica' %}?sec=politica&id={{ forloop.counter0 }}" target="_blank">
+              <a href="{% url 'detalhe_noticia_estatica' %}?sec=politica&id={{ forloop.counter0 }}">
                 {% if n.image_url %}
-                  <img src="{{ n.image_url }}" alt="{{ n.title }}" style="width:100%; height:200px; object-fit:cover; border-radius:8px;">
+                  <img src="{{ n.image_url }}" alt="{{ n.title }}" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
                 {% else %}
-                  <img src="{% static 'jornal/imagens/sem-imagem.png' %}" alt="Sem imagem" style="width:100%; height:200px; object-fit:cover; border-radius:8px;">
+                  <img src="{% static 'jornal/imagens/sem-imagem.png' %}" alt="Sem imagem" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
                 {% endif %}
               </a>
             </div>
@@ -111,18 +106,17 @@
       </div>
     </section>
 
-    <!-- ☁️ Clima -->
-    <section class="em-alta">
+    <section class="em-alta clima">
       <div class="section-head"><h2>Clima</h2><a href="#" class="see-more">Ver Mais</a></div>
       <div class="carousel">
         {% for n in clima %}
           <div class="card">
             <div class="media">
-              <a href="{% url 'detalhe_noticia_estatica' %}?sec=tec&id={{ forloop.counter0 }}" target="_blank">
+              <a href="{% url 'detalhe_noticia_estatica' %}?sec=clima&id={{ forloop.counter0 }}">
                 {% if n.image_url %}
-                  <img src="{{ n.image_url }}" alt="{{ n.title }}" style="width:100%; height:200px; object-fit:cover; border-radius:8px;">
+                  <img src="{{ n.image_url }}" alt="{{ n.title }}" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
                 {% else %}
-                  <img src="{% static 'jornal/imagens/sem-imagem.png' %}" alt="Sem imagem" style="width:100%; height:200px; object-fit:cover; border-radius:8px;">
+                  <img src="{% static 'jornal/imagens/sem-imagem.png' %}" alt="Sem imagem" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
                 {% endif %}
               </a>
             </div>
@@ -139,7 +133,6 @@
 
   </main>
 
-  <!-- ⚫ Rodapé -->
   <footer>
     <div class="card">Nome do Programa Atual</div>
   </footer>
