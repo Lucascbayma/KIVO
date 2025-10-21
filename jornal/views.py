@@ -6,7 +6,7 @@ from django.http import Http404
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from .models import Artigo, Categoria
-from .forms import ArtigoForm 
+from .forms import ArtigoForm
 
 NEWSDATA_API_KEY = settings.NEWSDATA_API_KEY 
 NEWSDATA_API_URL = 'https://newsdata.io/api/1/latest'

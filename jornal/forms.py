@@ -1,12 +1,13 @@
-from django import forms
-from .models import NoticiaPersonalizada
 
-class NoticiaPersonalizadaForm(forms.ModelForm):
+from django import forms
+from .models import Artigo
+from django.contrib.auth.models import User 
+
+class ArtigoForm(forms.ModelForm):
     class Meta:
-        model = NoticiaPersonalizada
-        fields = ['autor', 'titulo', 'subtitulo', 'conteudo', 'categoria', 'imagem']
+        model = Artigo
+        fields = ['titulo', 'subtitulo', 'conteudo', 'categoria', 'tags', 'destaque']
         widgets = {
-            'titulo': forms.TextInput(attrs={'placeholder': 'Título principal da notícia'}),
-            'subtitulo': forms.TextInput(attrs={'placeholder': 'Um breve resumo'}),
-            'conteudo': forms.Textarea(attrs={'rows': 10}),
+            'conteudo': forms.Textarea(attrs={'rows': 15, 'placeholder': 'Conteúdo completo da notícia...'}),
+            'subtitulo': forms.TextInput(attrs={'placeholder': 'Um breve resumo/subtítulo'}),
         }
