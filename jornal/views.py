@@ -50,7 +50,7 @@ def adicionar_artigo(request):
     context = {
         'form': form,
     }
-    return render(request, 'jornal/adicionar_noticia.html', context)
+    return render(request, 'adicionar_noticia.html', context)
 
 # -----------------------------------------------------------------
 # --- VIEW PARA EXIBIÇÃO INTERNA DA NOTÍCIA (API) ---

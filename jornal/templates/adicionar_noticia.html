@@ -1,0 +1,96 @@
+{% load static %}
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Notícia - Portal JC</title>
+    <link rel="stylesheet" href="{% static 'jornal/css/style.css' %}">
+</head>
+<body>
+<header class="header">
+    <div class="col left">
+        <div class="logo-container">
+            <img src="{% static 'jornal/imagens/JC.png' %}" alt="JC" class="logo-img">
+        </div>
+    </div>
+    <div class="col center">
+        <nav class="menu">
+            <a href="#">Editoria</a>
+            <a href="#">Esportes</a>
+            <a href="#">Pernambuco</a>
+            <a href="#">Mais</a>
+        </nav>
+    </div>
+    <div class="col right">
+        <a href="{% url 'adicionar_artigo' %}" class="btn-adicionar-noticia" style="color: white; text-decoration: none; font-weight: 600; padding: 5px 10px; border: 1px solid white; border-radius: 4px;">+ Adicionar Notícia</a>
+    </div>
+</header>
+  
+<main class="main-content" style="max-width: 800px; margin: 0 auto;">
+
+    <section class="em-alta">
+        <div class="section-head">
+            <h2>Publicar Novo Artigo</h2>
+        </div>
+        
+        <form method="post" enctype="multipart/form-data" class="noticia-form">
+            {% csrf_token %}
+            
+            {% if form.errors %}
+                <div class="alert" style="color: #c90000; margin-bottom: 20px; border: 1px solid #ffcccc; padding: 15px; background: #fffafa; border-radius: 4px;">
+                    <p style="font-weight: 600;">Por favor, corrija os seguintes erros:</p>
+                    <ul style="margin-top: 5px; padding-left: 20px;">
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <li>{{ field.label }}: {{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            <div class="form-field">
+                <label for="{{ form.titulo.id_for_label }}">Título Principal</label>
+                {{ form.titulo }}
+            </div>
+            
+            <div class="form-field">
+                <label for="{{ form.subtitulo.id_for_label }}">Subtítulo / Resumo</label>
+                {{ form.subtitulo }}
+            </div>
+            
+            <div class="form-field">
+                <label for="{{ form.categoria.id_for_label }}">Categoria</label>
+                {{ form.categoria }}
+            </div>
+            
+            <div class="form-field">
+                <label for="{{ form.conteudo.id_for_label }}">Conteúdo Completo</label>
+                {{ form.conteudo }}
+            </div>
+
+            <div class="form-field">
+                <label for="{{ form.tags.id_for_label }}">Tags (Selecione)</label>
+                {{ form.tags }}
+            </div>
+
+            <div class="form-field">
+                <label for="{{ form.destaque.id_for_label }}">Destaque na Home</label>
+                {{ form.destaque }}
+            </div>
+
+            <button type="submit" class="submit-button">Publicar Notícia</button>
+        </form>
+    </section>
+</main>
+
+<footer>
+    <div class="card">Nome do Programa Atual</div>
+</footer>
+
+</body>
+</html>
