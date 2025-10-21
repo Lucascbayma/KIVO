@@ -7,17 +7,32 @@ class Categoria(models.Model):
     nome = models.CharField(max_length=100, unique=True, verbose_name="Nome da Categoria")
     descricao = models.TextField(blank=True, null=True, verbose_name="Descrição")
 
+    class Meta:
+        verbose_name = "Categoria"
+        verbose_name_plural = "Categorias"
+
     def __str__(self):
         return self.nome
 
 class Tag(models.Model):
     nome = models.CharField(max_length=50, unique=True, verbose_name="Nome da Tag")
 
+    class Meta:
+        verbose_name = "Tag"
+        verbose_name_plural = "Tags"
+
     def __str__(self):
         return self.nome
 
 class Artigo(models.Model):
     titulo = models.CharField(max_length=255, verbose_name="Título")
+    subtitulo = models.CharField(
+        max_length=300, 
+        blank=True, 
+        null=True, 
+        verbose_name="Subtítulo/Resumo"
+    )
+    
     conteudo = models.TextField(verbose_name="Conteúdo")
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, related_name="artigos")
     tags = models.ManyToManyField(Tag, related_name="artigos", blank=True)
@@ -25,6 +40,11 @@ class Artigo(models.Model):
     atualizado_em = models.DateTimeField(auto_now=True, verbose_name="Atualizado em")
     destaque = models.BooleanField(default=False, verbose_name="Destaque na Home")
     autor = models.ForeignKey(User, on_delete=models.CASCADE, related_name="artigos")
+
+    class Meta:
+        verbose_name = "Artigo"
+        verbose_name_plural = "Artigos"
+        ordering = ['-publicado_em']
 
     def __str__(self):
         return self.titulo[:30]
@@ -34,7 +54,7 @@ class Artigo(models.Model):
         """
         Retorna os artigos mais populares baseados em quantidade de recomendações.
         """
-        return cls.objects.annotate(total=models.Count("recomendacoes")) \
+        return cls.objects.annotate(total=models.Count("recomendacoes_origem")) \
             .order_by("-total")[:limite]
 
     def artigos_relacionados(self, limite=3):
@@ -65,7 +85,6 @@ class Artigo(models.Model):
         
         return recomendacoes_finais[:limite]
 
-
 class Recomendacao(models.Model):
     artigo_origem = models.ForeignKey(
         Artigo,
@@ -78,6 +97,10 @@ class Recomendacao(models.Model):
         related_name="recomendacoes"
     )
     relevancia = models.FloatField(default=0.0, verbose_name="Relevância")
+
+    class Meta:
+        verbose_name = "Recomendação"
+        verbose_name_plural = "Recomendações"
 
     def __str__(self):
         return f"{self.artigo_origem.titulo[:20]} → {self.artigo_recomendado.titulo[:20]}"
@@ -100,6 +123,10 @@ class ConteudoMultimidia(models.Model):
     titulo = models.CharField(max_length=255, blank=True, null=True)
     duracao_segundos = models.PositiveIntegerField(blank=True, null=True)
 
+    class Meta:
+        verbose_name = "Conteúdo Multimídia"
+        verbose_name_plural = "Conteúdos Multimídia"
+
     def __str__(self):
         return f"{self.tipo} - {self.titulo or self.url}"
 
@@ -110,6 +137,10 @@ class Anuncio(models.Model):
     posicao = models.CharField(max_length=50, help_text="Ex.: entre artigos, sidebar, header")
     responsivo = models.BooleanField(default=True)
     ativo = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name = "Anúncio"
+        verbose_name_plural = "Anúncios"
 
     def __str__(self):
         return f"Anúncio: {self.titulo}"
@@ -126,14 +157,15 @@ class AssinanteNewsletter(models.Model):
     )
     criado_em = models.DateTimeField(default=timezone.now)
 
+    class Meta:
+        verbose_name = "Assinante de Newsletter"
+        verbose_name_plural = "Assinantes de Newsletter"
+
     def __str__(self):
         return f"{self.nome} ({self.email})"
 
     @classmethod
     def assinantes_por_categoria(cls, categoria_id):
-        """
-        Retorna todos os assinantes de uma categoria específica.
-        """
         return cls.objects.filter(categorias__id=categoria_id)
 
 class MenuLateral(models.Model):
@@ -141,6 +173,11 @@ class MenuLateral(models.Model):
     ordem = models.PositiveIntegerField(default=0)
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, null=True, blank=True)
     url_customizada = models.URLField(blank=True, null=True)
+
+    class Meta:
+        verbose_name = "Item de Menu Lateral"
+        verbose_name_plural = "Itens de Menu Lateral"
+        ordering = ['ordem']
 
     def __str__(self):
         return self.nome

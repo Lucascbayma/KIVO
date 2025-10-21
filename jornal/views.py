@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import DetailView
+from django.db.models import Q
 import requests 
 from django.http import Http404
 from django.conf import settings
-
-from .models import Artigo 
+from django.contrib.auth.decorators import login_required
+from .models import Artigo, Categoria
+from .forms import ArtigoForm 
 
 NEWSDATA_API_KEY = settings.NEWSDATA_API_KEY 
 NEWSDATA_API_URL = 'https://newsdata.io/api/1/latest'
@@ -30,25 +32,42 @@ class ArtigoDetailView(DetailView):
         return context
 
 # -----------------------------------------------------------------
+# --- VIEW PARA ADICIONAR NOTÍCIA (Baseada em Artigo Model) ---
+# -----------------------------------------------------------------
+
+@login_required
+def adicionar_artigo(request):
+    if request.method == 'POST':
+        form = ArtigoForm(request.POST, request.FILES) 
+        if form.is_valid():
+            artigo = form.save(commit=False)
+            artigo.autor = request.user 
+            artigo.save()
+            form.save_m2m()
+            return redirect('home') 
+    else:
+        form = ArtigoForm(initial={'autor': request.user})
+        
+    context = {
+        'form': form,
+    }
+    return render(request, 'jornal/adicionar_noticia.html', context)
+
+# -----------------------------------------------------------------
 # --- VIEW PARA EXIBIÇÃO INTERNA DA NOTÍCIA (API) ---
 # -----------------------------------------------------------------
 
 def detalhe_noticia_estatica(request):
-    # 1. Recupera o ID (índice) da notícia da URL (?id=X)
     noticia_id = request.GET.get('id')
-    
-    # 2. Recupera a lista de notícias que foi salva na sessão pela view 'home'
-    lista_noticias = request.session.get('ultimas_noticias')
+    lista_noticias = request.session.get('ultimas_noticias') 
 
     noticia_detalhe = None
     
-    # Validação e Extração
     try:
         if lista_noticias and noticia_id is not None:
             noticia_id = int(noticia_id)
             
             if 0 <= noticia_id < len(lista_noticias):
-                # 3. Extrai a notícia específica da lista
                 noticia_detalhe = lista_noticias[noticia_id]
             else:
                 raise Http404("ID da notícia fora do alcance da lista.")
@@ -56,10 +75,8 @@ def detalhe_noticia_estatica(request):
             raise Http404("Notícia não encontrada ou lista da API não está na sessão.")
             
     except (TypeError, ValueError):
-        # Captura se 'id' não for um número
         raise Http404("Parâmetro de ID inválido.")
     except Http404:
-        # Em caso de falha, redireciona para a home para recarregar a lista.
         return redirect('home')
         
     context = {
@@ -69,7 +86,7 @@ def detalhe_noticia_estatica(request):
     return render(request, 'ler_noticia.html', context)
 
 # -----------------------------------------------------------------
-# --- VIEW DA HOME (Faz a Requisição da API) ---
+# --- VIEW DA HOME (Faz a Requisição da API e Integra o BD) ---
 # -----------------------------------------------------------------
 
 def home(request):
@@ -78,31 +95,18 @@ def home(request):
         'country': 'br',
         'size': 10,
     }
-
-    noticias = []
-    esportes, politica, clima = [], [], []
-
+    noticias_api = []
+    esportes_api, politica_api, clima_api = [], [], []
     try:
         response = requests.get(NEWSDATA_API_URL, params=params)
         response.raise_for_status()
         data = response.json()
 
-        print("\n=======================")
-        print("🔍 Retorno completo da API:")
-        print(data)
-        print("=======================\n")
-
         if data.get('status') == 'success':
-            noticias = data.get('results', [])
-            print(f"✅ Total de artigos recebidos: {len(noticias)}")
+            noticias_api = data.get('results', [])
 
-            if noticias:
-                print("🔹 Primeira notícia exemplo:")
-                print(noticias[0])  
-
-            for n in noticias:
+            for n in noticias_api:
                 categoria_raw = n.get('category')
-
                 if isinstance(categoria_raw, list):
                     categoria = ",".join(categoria_raw).lower()
                 elif isinstance(categoria_raw, str):
@@ -115,36 +119,63 @@ def home(request):
 
                 if any(word in categoria for word in ["sport", "esporte"]) or \
                    any(word in titulo for word in ["futebol", "ginástica", "boxe", "corrida"]):
-                    esportes.append(n)
+                    esportes_api.append(n)
 
                 elif any(word in categoria for word in ["politic", "government", "world"]) or \
                      any(word in titulo for word in ["lula", "boulos", "presidente", "governo", "eleição"]):
-                    politica.append(n)
+                    politica_api.append(n)
 
                 elif any(word in categoria for word in ["science", "environment"]) or \
                      any(word in titulo for word in ["clima", "chuva", "tempo", "calor", "sensor"]) or \
                      "educação" in descricao:
-                    clima.append(n)
+                    clima_api.append(n)
 
-            request.session['ultimas_noticias'] = noticias
-            request.session['esportes_noticias'] = esportes
-            request.session['politica_noticias'] = politica
-            request.session['tec_noticias'] = clima
-
-            print(f"🏈 Esportes: {len(esportes)} | 🏛️ Política: {len(politica)} | ☁️ Clima: {len(clima)}")
+            request.session['ultimas_noticias'] = noticias_api
+            request.session['esportes_noticias'] = esportes_api
+            request.session['politica_noticias'] = politica_api
+            request.session['tec_noticias'] = clima_api
 
         else:
-            print("❌ Erro: status da API não é success.")
-            print("Mensagem:", data.get('message'))
+            print("Erro: status da API não é success.")
 
     except requests.exceptions.RequestException as e:
-        print(f"⚠️ Erro de conexão com a API: {e}")
+        print(f"Erro de conexão com a API: {e}")
+
+    categorias = {c.nome.lower(): c.id for c in Categoria.objects.all()}
+    
+    artigos_bd_ultimas = Artigo.objects.filter(
+        categoria_id=categorias.get('últimas notícias')
+    )[:6] 
+    
+    artigos_bd_esportes = Artigo.objects.filter(
+        categoria_id=categorias.get('esportes')
+    )[:6]
+    
+    artigos_bd_politica = Artigo.objects.filter(
+        categoria_id=categorias.get('política')
+    )[:6]
+    
+    artigos_bd_clima = Artigo.objects.filter(
+        categoria_id=categorias.get('clima')
+    )[:6]
+    total_ultimas_bd = len(artigos_bd_ultimas)
+    ultimas = list(artigos_bd_ultimas) + noticias_api[:(6 - total_ultimas_bd)]
+    
+    total_esportes_bd = len(artigos_bd_esportes)
+    esportes = list(artigos_bd_esportes) + esportes_api[:(6 - total_esportes_bd)]
+    
+    total_politica_bd = len(artigos_bd_politica)
+    politica = list(artigos_bd_politica) + politica_api[:(6 - total_politica_bd)]
+    
+    total_clima_bd = len(artigos_bd_clima)
+    clima = list(artigos_bd_clima) + clima_api[:(6 - total_clima_bd)]
+
 
     context = {
-        'ultimas': noticias[:6],
-        'esportes': esportes[:6],
-        'politica': politica[:6],
-        'clima': clima[:6],
+        'ultimas': ultimas,
+        'esportes': esportes,
+        'politica': politica,
+        'clima': clima,
     }
 
     return render(request, 'home.html', context)
