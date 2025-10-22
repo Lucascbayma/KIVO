@@ -113,6 +113,23 @@ O SJCC busca uma solução para **ofertar algo relevante ao usuário nas página
 
 </details> 
 
+<details><summary><b>Semana 11</b></summary>
+<ul>
+<li><a > Moodboard com elementos visuais para concepção da marca do artefato(Design)</a></li>
+<li><a > Implementação de 1 história de usuário.</a></li>
+<li><a > Atualização GitHub / bug tracker refletindo o status atual do projeto.</a></li>
+<li><a > Deployment das histórias criadas anteriormente em produção na nuvem.</a></li>
+<li><a >Adição do link do deploy na nuvem ao README.</a></li>
+
+
+
+  
+</ul>
+
+</details> 
+
+
+
 ---
 
 ## 👥 Equipe de Desenvolvimento
