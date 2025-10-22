@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal JC - Home</title>
     <link rel="stylesheet" href="{% static 'jornal/css/style.css' %}">
+    
+    <link rel="stylesheet" href="{% static 'jornal/css/global.css' %}">
+    
 </head>
 <body>
 <header class="header">
@@ -193,6 +196,20 @@
     </section>
 
   </main>
+  
+  <div id="banner-continuar-leitura" style="display: none;">
+      <div class="conteudo-banner">
+          <span class="mensagem-banner">
+              Você estava lendo: <strong id="titulo-noticia-banner"></strong>
+          </span>
+          <a id="link-noticia-banner" href="#" class="btn-voltar-leitura">
+              Deseja voltar para o artigo?
+          </a>
+          <button id="fechar-banner" class="btn-fechar">×</button>
+      </div>
+  </div>
+
+  <script src="{% static 'jornal/js/rastreamento_leitura.js' %}"></script>
 
 </body>
 </html>
