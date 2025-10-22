@@ -120,6 +120,7 @@ O SJCC busca uma solução para **ofertar algo relevante ao usuário nas página
 <li><a > Atualização GitHub / bug tracker refletindo o status atual do projeto.</a></li>
 <li><a > Deployment das histórias criadas anteriormente em produção na nuvem.</a></li>
 <li><a >Adição do link do deploy na nuvem ao README.</a></li>
+<li><a href="https://kivo.pythonanywhere.com/"> nosso site JC</a></li>
 
 
 
