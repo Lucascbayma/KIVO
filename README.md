@@ -122,7 +122,17 @@ O SJCC busca uma solução para **ofertar algo relevante ao usuário nas página
 <li><a >Adição do link do deploy na nuvem ao README.</a></li>
 <li><a href="https://kivo.pythonanywhere.com/"> nosso site JC</a></li>
 
+</ul>
 
+</details> 
+
+<details><summary><b>Semana 12</b></summary>
+<ul>
+<li><a > Marca do artefato (Design)</a></li>
+<li><a > Implementação de testes automatizados para as histórias anteriores.</a></li>
+<li><a > Implementação e deployment de (pelo menos) 1 nova história de usuário, com uso de testes automatizados.</a></li>
+<li><a > Correção de eventuais bugs / problemas no deploy.</a></li>
+<li><a > Atualização GitHub / bug tracker refletindo o status atual do projeto.</a></li>
 
   
 </ul>
