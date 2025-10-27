@@ -5,12 +5,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal JC - Home</title>
-    <link rel="stylesheet" href="{% static 'jornal/css/style.css' %}">
     
+    <link rel="stylesheet" href="{% static 'jornal/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'jornal/css/global.css' %}">
     
 </head>
 <body>
+
 <header class="header">
     <div class="col left">
         <div class="logo-container">
@@ -30,8 +31,12 @@
     </div>
 </header>
   
-  <main class="main-content">
+<main class="main-content">
     
+    <div class="bloco-anuncio horizontal-top">
+        <span>Publicidade - 970x90</span>
+    </div>
+
     <section class="em-alta ultimas-noticias">
       <div class="section-head">
         <h2>Últimas Notícias</h2>
@@ -74,6 +79,10 @@
         {% endfor %}
       </div>
     </section>
+
+    <div class="bloco-anuncio horizontal-meio">
+        <span>Publicidade - 728x90</span>
+    </div>
 
     <section class="em-alta esportes">
       <div class="section-head"><h2>Esportes</h2><a href="#" class="see-more">Ver Mais</a></div>
@@ -155,6 +164,10 @@
       </div>
     </section>
 
+    <div class="bloco-anuncio vertical-lateral">
+        <span>Publicidade - 300x250</span>
+    </div>
+
     <section class="em-alta clima">
       <div class="section-head"><h2>Clima</h2><a href="#" class="see-more">Ver Mais</a></div>
       <div class="carousel">
@@ -197,7 +210,7 @@
 
   </main>
   
-  <div id="banner-continuar-leitura" style="display: none;">
+<div id="banner-continuar-leitura" style="display: none;">
       <div class="conteudo-banner">
           <span class="mensagem-banner">
               Você estava lendo: <strong id="titulo-noticia-banner"></strong>

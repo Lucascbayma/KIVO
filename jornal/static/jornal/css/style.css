@@ -203,16 +203,24 @@ body {
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 footer {
-  position: fixed;
+  position: relative;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 64px;
+  height: auto;
   background: #f0f0f0;
   display: flex;
   align-items: center;
-  padding: 0 14px;
+  padding: 20px 16px;
   justify-content: center;
+  margin-top: 40px;
+  color: var(--muted);
+  font-size: 14px;
+  text-align: center;
+}
+
+footer p {
+    margin: 0;
 }
 
 footer .card {
@@ -346,7 +354,7 @@ footer .card .media::after {
 }
 
 .submit-button {
-    background:#007bff; 
+    background: var(--header-bg);
     color: var(--header-text); 
     border: none;
     padding: 12px 30px;
@@ -360,5 +368,45 @@ footer .card .media::after {
 }
 
 .submit-button:hover {
-    background: #0055a9;
+    background: #a90000;
+}
+
+/* --- ESTILOS PARA SIMULAR ANÚNCIOS --- */
+.bloco-anuncio {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 20px auto; 
+    background-color: #f0f0f0; 
+    border: 1px dashed #ccc; 
+    color: #888;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px;
+    width: 100%;
+}
+
+.bloco-anuncio.horizontal-top,
+.bloco-anuncio.horizontal-meio {
+    min-height: 90px; 
+    max-width: 100%;
+}
+
+.bloco-anuncio.vertical-lateral {
+    width: 300px;
+    height: 250px;
+}
+
+@media (max-width: 767px) {
+    .bloco-anuncio.horizontal-top,
+    .bloco-anuncio.horizontal-meio {
+        min-height: 60px;
+        font-size: 12px;
+    }
+    
+    .bloco-anuncio.vertical-lateral {
+        width: 100%; 
+        height: 120px; 
+    }
 }
