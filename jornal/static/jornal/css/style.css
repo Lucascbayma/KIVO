@@ -410,3 +410,56 @@ footer .card .media::after {
         height: 120px; 
     }
 }
+
+/* --- ESTILOS DE ANÚNCIO LATERAL E MOBILE INJECT --- */
+
+.bloco-anuncio.ad-mobile-inject {
+    display: none;
+}
+
+@media (min-width: 1024px) {
+    .layout-with-ads {
+        display: grid;
+        grid-template-columns: 160px 1fr 160px; 
+        gap: 20px;
+        max-width: 1200px;
+        margin: 0 auto; 
+    }
+
+    .main-form-content {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .bloco-anuncio.sidebar-left,
+    .bloco-anuncio.sidebar-right {
+        display: flex;
+        width: 160px;
+        height: 600px;
+        position: sticky;
+        top: 80px;
+    }
+}
+
+@media (max-width: 1023px) {
+    .layout-with-ads {
+        display: block; 
+        width: 100%;
+        padding: 0 16px;
+    }
+    
+    .main-form-content {
+         width: 100%;
+    }
+
+    .bloco-anuncio.sidebar-left,
+    .bloco-anuncio.sidebar-right {
+        display: none; 
+    }
+    .bloco-anuncio.ad-mobile-inject {
+        display: flex;
+        width: 100%;
+        height: 100px;
+        margin: 20px 0;
+    }
+}

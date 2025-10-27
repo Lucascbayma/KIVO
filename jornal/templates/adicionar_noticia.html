@@ -27,66 +27,86 @@
     </div>
 </header>
   
-<main class="main-content" style="max-width: 800px; margin: 0 auto;">
+<main class="main-content">
+    
+    <div class="layout-with-ads">
+        
+        <div class="bloco-anuncio sidebar-left">
+            <span>Publicidade Vertical Esquerda (160x600)</span>
+        </div>
 
-    <section class="em-alta">
-        <div class="section-head">
-            <h2>Publicar Novo Artigo</h2>
+        <div class="main-form-content">
+            <section class="em-alta">
+                <div class="section-head">
+                    <h2>Publicar Novo Artigo</h2>
+                </div>
+                
+                <form method="post" enctype="multipart/form-data" class="noticia-form">
+                    {% csrf_token %}
+                    
+                    {% if form.errors %}
+                        <div class="alert" style="color: #c90000; margin-bottom: 20px; border: 1px solid #ffcccc; padding: 15px; background: #fffafa; border-radius: 4px;">
+                            <p style="font-weight: 600;">Por favor, corrija os seguintes erros:</p>
+                            <ul style="margin-top: 5px; padding-left: 20px;">
+                                {% for field in form %}
+                                    {% for error in field.errors %}
+                                        <li>{{ field.label }}: {{ error }}</li>
+                                    {% endfor %}
+                                {% endfor %}
+                                {% for error in form.non_field_errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+
+                    <div class="form-field">
+                        <label for="{{ form.titulo.id_for_label }}">Título Principal</label>
+                        {{ form.titulo }}
+                    </div>
+                    
+                    <div class="form-field">
+                        <label for="{{ form.subtitulo.id_for_label }}">Subtítulo / Resumo</label>
+                        {{ form.subtitulo }}
+                    </div>
+
+                    <div class="bloco-anuncio ad-mobile-inject">
+                        <span>Publicidade (320x100)</span>
+                    </div>
+                    
+                    <div class="form-field">
+                        <label for="{{ form.categoria.id_for_label }}">Categoria</label>
+                        {{ form.categoria }}
+                    </div>
+                    
+                    <div class="form-field">
+                        <label for="{{ form.conteudo.id_for_label }}">Conteúdo Completo</label>
+                        {{ form.conteudo }}
+                    </div>
+
+                    <div class="bloco-anuncio ad-mobile-inject">
+                        <span>Publicidade (320x100)</span>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="{{ form.tags.id_for_label }}">Tags (Selecione)</label>
+                        {{ form.tags }}
+                    </div>
+
+                    <div class="form-field">
+                        <label for="{{ form.destaque.id_for_label }}">Destaque na Home</label>
+                        {{ form.destaque }}
+                    </div>
+
+                    <button type="submit" class="submit-button">Publicar Notícia</button>
+                </form>
+            </section>
         </div>
         
-        <form method="post" enctype="multipart/form-data" class="noticia-form">
-            {% csrf_token %}
-            
-            {% if form.errors %}
-                <div class="alert" style="color: #c90000; margin-bottom: 20px; border: 1px solid #ffcccc; padding: 15px; background: #fffafa; border-radius: 4px;">
-                    <p style="font-weight: 600;">Por favor, corrija os seguintes erros:</p>
-                    <ul style="margin-top: 5px; padding-left: 20px;">
-                        {% for field in form %}
-                            {% for error in field.errors %}
-                                <li>{{ field.label }}: {{ error }}</li>
-                            {% endfor %}
-                        {% endfor %}
-                        {% for error in form.non_field_errors %}
-                            <li>{{ error }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            {% endif %}
+        <div class="bloco-anuncio sidebar-right">
+            <span>Publicidade Vertical Direita (160x600)</span>
+        </div>
 
-            <div class="form-field">
-                <label for="{{ form.titulo.id_for_label }}">Título Principal</label>
-                {{ form.titulo }}
-            </div>
-            
-            <div class="form-field">
-                <label for="{{ form.subtitulo.id_for_label }}">Subtítulo / Resumo</label>
-                {{ form.subtitulo }}
-            </div>
-            
-            <div class="form-field">
-                <label for="{{ form.categoria.id_for_label }}">Categoria</label>
-                {{ form.categoria }}
-            </div>
-            
-            <div class="form-field">
-                <label for="{{ form.conteudo.id_for_label }}">Conteúdo Completo</label>
-                {{ form.conteudo }}
-            </div>
-
-            <div class="form-field">
-                <label for="{{ form.tags.id_for_label }}">Tags (Selecione)</label>
-                {{ form.tags }}
-            </div>
-
-            <div class="form-field">
-                <label for="{{ form.destaque.id_for_label }}">Destaque na Home</label>
-                {{ form.destaque }}
-            </div>
-
-            <button type="submit" class="submit-button">Publicar Notícia</button>
-        </form>
-    </section>
-</main>
-
+    </div> </main>
 </body>
 </html>
