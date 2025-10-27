@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Artigo, Categoria
 from .forms import ArtigoForm
 
+# Chaves de API e URLs
 NEWSDATA_API_KEY = settings.NEWSDATA_API_KEY 
 NEWSDATA_API_URL = 'https://newsdata.io/api/1/latest'
 
@@ -25,6 +26,7 @@ class ArtigoDetailView(DetailView):
         artigo_atual = self.object 
 
         try:
+             # O método artigos_relacionados deve ser definido no seu modelo Artigo
              context['recomendacoes'] = artigo_atual.artigos_relacionados(limite=3) 
         except AttributeError:
              context['recomendacoes'] = []
@@ -35,6 +37,7 @@ class ArtigoDetailView(DetailView):
 # --- VIEW PARA ADICIONAR NOTÍCIA (Baseada em Artigo Model) ---
 # -----------------------------------------------------------------
 
+@login_required
 def adicionar_artigo(request):
     if request.method == 'POST':
         form = ArtigoForm(request.POST, request.FILES) 
@@ -45,7 +48,7 @@ def adicionar_artigo(request):
             form.save_m2m()
             return redirect('home') 
     else:
-        form = ArtigoForm(initial={'autor': request.user})
+        form = ArtigoForm() 
         
     context = {
         'form': form,
@@ -58,6 +61,7 @@ def adicionar_artigo(request):
 
 def detalhe_noticia_estatica(request):
     noticia_id = request.GET.get('id')
+    secao = request.GET.get('sec', 'ultimas')
     lista_noticias = request.session.get('ultimas_noticias') 
 
     noticia_detalhe = None
@@ -96,6 +100,7 @@ def home(request):
     }
     noticias_api = []
     esportes_api, politica_api, clima_api = [], [], []
+    
     try:
         response = requests.get(NEWSDATA_API_URL, params=params)
         response.raise_for_status()
@@ -114,7 +119,6 @@ def home(request):
                     categoria = ""
 
                 titulo = (n.get('title') or "").lower()
-                descricao = (n.get('description') or "").lower()
 
                 if any(word in categoria for word in ["sport", "esporte"]) or \
                    any(word in titulo for word in ["futebol", "ginástica", "boxe", "corrida"]):
@@ -125,14 +129,13 @@ def home(request):
                     politica_api.append(n)
 
                 elif any(word in categoria for word in ["science", "environment"]) or \
-                     any(word in titulo for word in ["clima", "chuva", "tempo", "calor", "sensor"]) or \
-                     "educação" in descricao:
+                     any(word in titulo for word in ["clima", "chuva", "tempo", "calor", "sensor"]):
                     clima_api.append(n)
 
             request.session['ultimas_noticias'] = noticias_api
             request.session['esportes_noticias'] = esportes_api
             request.session['politica_noticias'] = politica_api
-            request.session['tec_noticias'] = clima_api
+            request.session['clima_noticias'] = clima_api 
 
         else:
             print("Erro: status da API não é success.")
@@ -140,23 +143,28 @@ def home(request):
     except requests.exceptions.RequestException as e:
         print(f"Erro de conexão com a API: {e}")
 
+    # ----------------------------------------------------
+    # --- Integração de Notícias do Banco de Dados (BD) ---
+    # ----------------------------------------------------
+
     categorias = {c.nome.lower(): c.id for c in Categoria.objects.all()}
     
     artigos_bd_ultimas = Artigo.objects.filter(
-        categoria_id=categorias.get('últimas notícias')
-    )[:6] 
+        categoria__nome__iexact='Últimas Notícias'
+    ).order_by('-publicado_em')[:6] 
     
     artigos_bd_esportes = Artigo.objects.filter(
-        categoria_id=categorias.get('esportes')
-    )[:6]
+        categoria__nome__iexact='Esportes'
+    ).order_by('-publicado_em')[:6]
     
     artigos_bd_politica = Artigo.objects.filter(
-        categoria_id=categorias.get('política')
-    )[:6]
+        categoria__nome__iexact='Política'
+    ).order_by('-publicado_em')[:6]
     
     artigos_bd_clima = Artigo.objects.filter(
-        categoria_id=categorias.get('clima')
-    )[:6]
+        categoria__nome__iexact='Clima'
+    ).order_by('-publicado_em')[:6]
+    
     total_ultimas_bd = len(artigos_bd_ultimas)
     ultimas = list(artigos_bd_ultimas) + noticias_api[:(6 - total_ultimas_bd)]
     
@@ -168,7 +176,6 @@ def home(request):
     
     total_clima_bd = len(artigos_bd_clima)
     clima = list(artigos_bd_clima) + clima_api[:(6 - total_clima_bd)]
-
 
     context = {
         'ultimas': ultimas,

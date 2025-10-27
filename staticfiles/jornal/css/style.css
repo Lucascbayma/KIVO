@@ -106,27 +106,36 @@ body {
   font-weight: 600;
 }
 
+/* --- CORREÇÃO PRINCIPAL: HABILITA O CARROSSEL EM TODAS AS SEÇÕES --- */
 .carousel {
   display: flex;
   flex-direction: row;
   align-items: stretch;
   
+  /* CORREÇÃO 1: PERMITE A ROLAGEM HORIZONTAL */
   overflow-x: auto; 
   overflow-y: hidden;
   
+  /* CORREÇÃO 2: FORÇA OS ITENS A FICAREM NA MESMA LINHA */
   flex-wrap: nowrap; 
+  
+  /* Habilita o "encaixe" da rolagem (melhora a experiência) */
   scroll-snap-type: x mandatory; 
   
   gap: var(--gap);
-  padding-bottom: 10px;
+  padding-bottom: 10px; /* Adicionado padding para a barra de rolagem, se visível */
   width: 100%;
   white-space: normal;
 }
 
 .carousel::-webkit-scrollbar {
-  height: 8px;
+  height: 8px; /* Mostra a barra de rolagem sutilmente */
   display: block; 
 }
+/* Opcional: Para esconder a barra de rolagem (em navegadores que suportam)
+.carousel::-webkit-scrollbar { display: none; }
+.carousel { -ms-overflow-style: none; scrollbar-width: none; }
+*/
 
 .carousel::before,
 .carousel::after {
@@ -134,10 +143,14 @@ body {
   flex: 0 0 0;
 }
 
+/* --- CORREÇÃO E AJUSTE DO CARD DENTRO DO CARROSSEL --- */
 .card {
   background: var(--card-bg);
   border: none;
   border-radius: 4px;
+  
+  /* CORREÇÃO 3: Define uma largura para os cards no carrossel. 
+     Isso anula o flex-basis de 33.33% que forçava a quebra de linha. */
   flex: 0 0 300px; 
   max-width: 300px;
   
@@ -147,6 +160,7 @@ body {
   padding: 0;
   text-align: left;
   position: relative;
+  /* min-height: 100%; REMOVIDO para evitar problemas de alinhamento */
 }
 .card .media {
   width: 100%;
@@ -214,7 +228,6 @@ footer {
   padding: 0 14px;
   justify-content: center;
 }
-
 footer .card {
   background: var(--card-bg);
   flex: 0 0 60%;
@@ -226,7 +239,6 @@ footer .card {
   padding: 20px;
   text-align: center;
 }
-
 footer .card .media::before {
   content: "";
   position: absolute;
@@ -239,7 +251,6 @@ footer .card .media::before {
   transform: translate(-50%, -50%);
   z-index: 1;
 }
-
 footer .card .media::after {
   content: "▶";
   position: absolute;
@@ -251,33 +262,42 @@ footer .card .media::after {
   z-index: 2;
 }
 
+/* --- MEDIA QUERIES --- */
+
+/* Mobile: 2 cards visíveis */
 @media (max-width: 767px) {
     .carousel .card {
-        flex: 0 0 calc(95% - (var(--gap)));
+        /* Ajuste para mobile: Mostra 1 card grande ou 2 menores */
+        flex: 0 0 calc(95% - (var(--gap))); /* Exemplo: um card quase completo */
         max-width: calc(95% - (var(--gap)));
     }
 }
 
+/* Tablet / Desktop */
 @media (min-width: 768px) {
     .carousel .card {
+        /* Padrão para desktop: 300px ou ajuste para 3 cards visíveis (mais complexo) */
         flex: 0 0 300px; 
         max-width: 300px;
-        margin-bottom: 0;
+        margin-bottom: 0; /* Removendo margem de grid, se aplicável */
     }
+    /* Regra genérica de .card removida do bloco anterior para não interferir */
 }
 
+/* --- ESTILOS DE ESPORTES AJUSTADOS (AGORA SERÁ SEMPRE UM CARROSSEL ROLÁVEL) --- */
+/* Removida a anulação de carrossel em desktop que estava neste bloco */
 .esportes .carousel {
+    /* Herda o comportamento de carrossel do .carousel */
     overflow-x: auto;
     flex-wrap: nowrap;
     scroll-snap-type: x mandatory;
     padding-bottom: 10px;
 }
-
 .esportes .carousel .card {
+    /* Se você quiser que o card de esportes seja diferente (menor), pode manter este ajuste: */
     flex: 0 0 280px; 
     max-width: 280px;
 }
-
 @media (max-width: 767px) {
     .esportes .carousel .card {
         flex: 0 0 calc(65% - (var(--gap) / 2));
@@ -285,7 +305,8 @@ footer .card .media::after {
     }
 }
 
-/* --- ESTILOS PARA O FORMULÁRIO DE ADIÇÃO DE NOTÍCIA --- */
+
+/* --- ESTILOS PARA O FORMULÁRIO DE ADIÇÃO DE NOTÍCIA (Mantidos) --- */
 
 .noticia-form {
     background: var(--card-bg);
@@ -346,7 +367,7 @@ footer .card .media::after {
 }
 
 .submit-button {
-    background:#007bff; 
+    background: var(--header-bg); 
     color: var(--header-text); 
     border: none;
     padding: 12px 30px;
@@ -360,5 +381,5 @@ footer .card .media::after {
 }
 
 .submit-button:hover {
-    background: #0055a9;
+    background: #a90000;
 }
