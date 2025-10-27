@@ -26,7 +26,6 @@ class ArtigoDetailView(DetailView):
         artigo_atual = self.object 
 
         try:
-             # O método artigos_relacionados deve ser definido no seu modelo Artigo
              context['recomendacoes'] = artigo_atual.artigos_relacionados(limite=3) 
         except AttributeError:
              context['recomendacoes'] = []
@@ -48,7 +47,7 @@ def adicionar_artigo(request):
             form.save_m2m()
             return redirect('home') 
     else:
-        form = ArtigoForm() 
+        form = ArtigoForm()
         
     context = {
         'form': form,
@@ -60,25 +59,28 @@ def adicionar_artigo(request):
 # -----------------------------------------------------------------
 
 def detalhe_noticia_estatica(request):
-    noticia_id = request.GET.get('id')
-    secao = request.GET.get('sec', 'ultimas')
-    lista_noticias = request.session.get('ultimas_noticias') 
+    # CORREÇÃO: Usando 'link' como identificador em vez de 'id' de índice.
+    noticia_link = request.GET.get('link')
+    
+    # Busca a lista completa de notícias da API na sessão.
+    lista_noticias_api = request.session.get('ultimas_noticias') 
 
     noticia_detalhe = None
     
     try:
-        if lista_noticias and noticia_id is not None:
-            noticia_id = int(noticia_id)
+        if lista_noticias_api and noticia_link:
+            # Itera sobre a lista para encontrar a notícia pelo link único
+            for noticia in lista_noticias_api:
+                if noticia.get('link') == noticia_link:
+                    noticia_detalhe = noticia
+                    break
             
-            if 0 <= noticia_id < len(lista_noticias):
-                noticia_detalhe = lista_noticias[noticia_id]
-            else:
-                raise Http404("ID da notícia fora do alcance da lista.")
+            if noticia_detalhe is None:
+                raise Http404("Notícia não encontrada pelo link na sessão.")
+                
         else:
-            raise Http404("Notícia não encontrada ou lista da API não está na sessão.")
+            raise Http404("Link da notícia não fornecido ou lista da API não está na sessão.")
             
-    except (TypeError, ValueError):
-        raise Http404("Parâmetro de ID inválido.")
     except Http404:
         return redirect('home')
         
@@ -109,6 +111,7 @@ def home(request):
         if data.get('status') == 'success':
             noticias_api = data.get('results', [])
 
+            # LÓGICA DE FILTRAGEM CORRIGIDA (com if/elif para evitar duplicação)
             for n in noticias_api:
                 categoria_raw = n.get('category')
                 if isinstance(categoria_raw, list):
@@ -119,19 +122,23 @@ def home(request):
                     categoria = ""
 
                 titulo = (n.get('title') or "").lower()
-
+                
+                # Prioridade 1: Esportes
                 if any(word in categoria for word in ["sport", "esporte"]) or \
                    any(word in titulo for word in ["futebol", "ginástica", "boxe", "corrida"]):
                     esportes_api.append(n)
 
+                # Prioridade 2: Política
                 elif any(word in categoria for word in ["politic", "government", "world"]) or \
                      any(word in titulo for word in ["lula", "boulos", "presidente", "governo", "eleição"]):
                     politica_api.append(n)
 
+                # Prioridade 3: Clima/Ciência
                 elif any(word in categoria for word in ["science", "environment"]) or \
                      any(word in titulo for word in ["clima", "chuva", "tempo", "calor", "sensor"]):
                     clima_api.append(n)
 
+            # Armazena na sessão
             request.session['ultimas_noticias'] = noticias_api
             request.session['esportes_noticias'] = esportes_api
             request.session['politica_noticias'] = politica_api
@@ -146,7 +153,7 @@ def home(request):
     # ----------------------------------------------------
     # --- Integração de Notícias do Banco de Dados (BD) ---
     # ----------------------------------------------------
-
+    
     categorias = {c.nome.lower(): c.id for c in Categoria.objects.all()}
     
     artigos_bd_ultimas = Artigo.objects.filter(
@@ -165,6 +172,7 @@ def home(request):
         categoria__nome__iexact='Clima'
     ).order_by('-publicado_em')[:6]
     
+    # Combinação BD + API
     total_ultimas_bd = len(artigos_bd_ultimas)
     ultimas = list(artigos_bd_ultimas) + noticias_api[:(6 - total_ultimas_bd)]
     

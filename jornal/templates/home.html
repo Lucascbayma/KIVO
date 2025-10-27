@@ -50,7 +50,7 @@
                 {% endif %}
               </a>
               {% else %}
-              <a href="{% url 'detalhe_noticia_estatica' %}?sec=ultimas&id={{ forloop.counter0 }}">
+              <a href="{% url 'detalhe_noticia_estatica' %}?link={{ n.link }}">
                 {% if n.image_url %}
                   <img src="{{ n.image_url }}" alt="{{ n.title }}" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
                 {% else %}
@@ -90,7 +90,7 @@
                 {% endif %}
               </a>
               {% else %}
-              <a href="{% url 'detalhe_noticia_estatica' %}?sec=esportes&id={{ forloop.counter0 }}">
+              <a href="{% url 'detalhe_noticia_estatica' %}?link={{ n.link }}">
                 {% if n.image_url %}
                   <img src="{{ n.image_url }}" alt="{{ n.title }}" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
                 {% else %}
@@ -130,7 +130,7 @@
                 {% endif %}
               </a>
               {% else %}
-              <a href="{% url 'detalhe_noticia_estatica' %}?sec=politica&id={{ forloop.counter0 }}">
+              <a href="{% url 'detalhe_noticia_estatica' %}?link={{ n.link }}">
                 {% if n.image_url %}
                   <img src="{{ n.image_url }}" alt="{{ n.title }}" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
                 {% else %}
@@ -170,7 +170,7 @@
                 {% endif %}
               </a>
               {% else %}
-              <a href="{% url 'detalhe_noticia_estatica' %}?sec=clima&id={{ forloop.counter0 }}">
+              <a href="{% url 'detalhe_noticia_estatica' %}?link={{ n.link }}">
                 {% if n.image_url %}
                   <img src="{{ n.image_url }}" alt="{{ n.title }}" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
                 {% else %}
