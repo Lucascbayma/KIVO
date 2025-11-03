@@ -139,6 +139,19 @@ O SJCC busca uma solução para **ofertar algo relevante ao usuário nas página
 
 </details> 
 
+<details><summary><b>Semana 13</b></summary>
+<ul>
+<li><a > Aplicações da marca em positivo e negativo, mais gama cromática (RGB e CMYK) (Design)</a></li>
+<li><a > Implementação e deployment de (pelo menos) 1 nova história de usuário, com uso de testes automatizados.</a></li>
+<li><a > Correção de eventuais bugs / problemas no deploy.</a></li>
+<li><a > Atualização GitHub / bug tracker refletindo o status atual do projeto.</a></li>
+
+  
+</ul>
+
+</details> 
+
+
 
 
 ---
