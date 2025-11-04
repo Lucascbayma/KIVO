@@ -26,9 +26,9 @@ class ArtigoDetailView(DetailView):
         artigo_atual = self.object 
 
         try:
-             context['recomendacoes'] = artigo_atual.artigos_relacionados(limite=3) 
+            context['recomendacoes'] = artigo_atual.artigos_relacionados(limite=3) 
         except AttributeError:
-             context['recomendacoes'] = []
+            context['recomendacoes'] = []
         
         return context
 
@@ -59,17 +59,13 @@ def adicionar_artigo(request):
 # -----------------------------------------------------------------
 
 def detalhe_noticia_estatica(request):
-    # CORREÇÃO: Usando 'link' como identificador em vez de 'id' de índice.
     noticia_link = request.GET.get('link')
-    
-    # Busca a lista completa de notícias da API na sessão.
     lista_noticias_api = request.session.get('ultimas_noticias') 
 
     noticia_detalhe = None
     
     try:
         if lista_noticias_api and noticia_link:
-            # Itera sobre a lista para encontrar a notícia pelo link único
             for noticia in lista_noticias_api:
                 if noticia.get('link') == noticia_link:
                     noticia_detalhe = noticia
@@ -111,7 +107,6 @@ def home(request):
         if data.get('status') == 'success':
             noticias_api = data.get('results', [])
 
-            # LÓGICA DE FILTRAGEM CORRIGIDA (com if/elif para evitar duplicação)
             for n in noticias_api:
                 categoria_raw = n.get('category')
                 if isinstance(categoria_raw, list):
@@ -123,22 +118,18 @@ def home(request):
 
                 titulo = (n.get('title') or "").lower()
                 
-                # Prioridade 1: Esportes
                 if any(word in categoria for word in ["sport", "esporte"]) or \
                    any(word in titulo for word in ["futebol", "ginástica", "boxe", "corrida"]):
                     esportes_api.append(n)
 
-                # Prioridade 2: Política
                 elif any(word in categoria for word in ["politic", "government", "world"]) or \
                      any(word in titulo for word in ["lula", "boulos", "presidente", "governo", "eleição"]):
                     politica_api.append(n)
 
-                # Prioridade 3: Clima/Ciência
                 elif any(word in categoria for word in ["science", "environment"]) or \
                      any(word in titulo for word in ["clima", "chuva", "tempo", "calor", "sensor"]):
                     clima_api.append(n)
 
-            # Armazena na sessão
             request.session['ultimas_noticias'] = noticias_api
             request.session['esportes_noticias'] = esportes_api
             request.session['politica_noticias'] = politica_api
@@ -150,10 +141,6 @@ def home(request):
     except requests.exceptions.RequestException as e:
         print(f"Erro de conexão com a API: {e}")
 
-    # ----------------------------------------------------
-    # --- Integração de Notícias do Banco de Dados (BD) ---
-    # ----------------------------------------------------
-    
     categorias = {c.nome.lower(): c.id for c in Categoria.objects.all()}
     
     artigos_bd_ultimas = Artigo.objects.filter(
@@ -172,7 +159,6 @@ def home(request):
         categoria__nome__iexact='Clima'
     ).order_by('-publicado_em')[:6]
     
-    # Combinação BD + API
     total_ultimas_bd = len(artigos_bd_ultimas)
     ultimas = list(artigos_bd_ultimas) + noticias_api[:(6 - total_ultimas_bd)]
     
@@ -192,4 +178,49 @@ def home(request):
         'clima': clima,
     }
 
+    context.update({
+        'ultimas_noticias': context.get('ultimas', []),
+        'destaques': Artigo.objects.filter(destaque=True).order_by('-publicado_em')[:3],
+        'categorias': Categoria.objects.all(),
+        'atalhos': [
+            {'nome': 'Home', 'url': '/'},
+            {'nome': 'Esportes', 'url': '/categoria/1/'},
+            {'nome': 'Política', 'url': '/categoria/2/'},
+            {'nome': 'Clima', 'url': '/categoria/3/'},
+        ],
+        'anuncios': [
+            {'titulo': 'Curso de Jornalismo Online', 'formato': 'desktop'},
+            {'titulo': 'Assine o Portal Premium', 'formato': 'mobile'},
+        ]
+    })
+        # -----------------------------------------------------------------
+    # Conteúdo simulado apenas se a API falhar (para manter proporção do feed)
+    # -----------------------------------------------------------------
+    if not context.get('ultimas'):
+        context['ultimas'] = [
+            {'title': 'Notícia de exemplo 1', 'link': '#', 'description': 'Conteúdo simulado para testes.'},
+            {'title': 'Notícia de exemplo 2', 'link': '#', 'description': 'Conteúdo simulado para testes.'},
+            {'title': 'Notícia de exemplo 3', 'link': '#', 'description': 'Conteúdo simulado para testes.'},
+            {'title': 'Notícia de exemplo 4', 'link': '#', 'description': 'Conteúdo simulado para testes.'},
+            {'title': 'Notícia de exemplo 5', 'link': '#', 'description': 'Conteúdo simulado para testes.'},
+        ]
+
     return render(request, 'home.html', context)
+
+# -----------------------------------------------------------------
+# --- VIEW PARA EXIBIÇÃO DE CATEGORIAS ESPECÍFICAS (História 2) ---
+# -----------------------------------------------------------------
+
+def categoria_view(request, pk):
+    """
+    Exibe as notícias de uma categoria específica, agrupadas por relevância.
+    Adicionada para suportar os testes de organização do portal (História 2).
+    """
+    categoria = get_object_or_404(Categoria, pk=pk)
+    artigos = Artigo.objects.filter(categoria=categoria).order_by('-destaque', '-publicado_em')
+
+    context = {
+        'categoria': categoria,
+        'artigos': artigos,
+    }
+    return render(request, 'categoria.html', context)
