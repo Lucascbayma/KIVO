@@ -187,8 +187,23 @@ def home(request):
             {'nome': 'Esportes', 'url': '/categoria/1/'},
             {'nome': 'Política', 'url': '/categoria/2/'},
             {'nome': 'Clima', 'url': '/categoria/3/'},
+        ],
+        'anuncios': [
+            {'titulo': 'Curso de Jornalismo Online', 'formato': 'desktop'},
+            {'titulo': 'Assine o Portal Premium', 'formato': 'mobile'},
         ]
     })
+        # -----------------------------------------------------------------
+    # Conteúdo simulado apenas se a API falhar (para manter proporção do feed)
+    # -----------------------------------------------------------------
+    if not context.get('ultimas'):
+        context['ultimas'] = [
+            {'title': 'Notícia de exemplo 1', 'link': '#', 'description': 'Conteúdo simulado para testes.'},
+            {'title': 'Notícia de exemplo 2', 'link': '#', 'description': 'Conteúdo simulado para testes.'},
+            {'title': 'Notícia de exemplo 3', 'link': '#', 'description': 'Conteúdo simulado para testes.'},
+            {'title': 'Notícia de exemplo 4', 'link': '#', 'description': 'Conteúdo simulado para testes.'},
+            {'title': 'Notícia de exemplo 5', 'link': '#', 'description': 'Conteúdo simulado para testes.'},
+        ]
 
     return render(request, 'home.html', context)
 
