@@ -42,7 +42,7 @@ O SJCC busca uma solução para **ofertar algo relevante ao usuário nas página
 
 ---
 
-## Nossa Implementação 👩🏻‍💻
+## 👩🏻‍💻 Nossa Implementação 
 
 <ul>
 Site do Jornal do Commercio que estamos produzindo:
