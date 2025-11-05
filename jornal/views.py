@@ -7,6 +7,7 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from .models import Artigo, Categoria
 from .forms import ArtigoForm
+from django.core.paginator import Paginator
 
 # Chaves de API e URLs
 NEWSDATA_API_KEY = settings.NEWSDATA_API_KEY 
@@ -224,3 +225,35 @@ def categoria_view(request, pk):
         'artigos': artigos,
     }
     return render(request, 'categoria.html', context)
+
+#view para página de todas as notícias
+
+def todas_noticias(request):
+    """Página com todas as notícias — inclui busca e filtro de categoria."""
+    categoria_nome = request.GET.get('categoria')
+    busca = request.GET.get('q')
+
+    noticias = Artigo.objects.all().order_by('-publicado_em')
+
+    if categoria_nome:
+        noticias = noticias.filter(categoria__nome__icontains=categoria_nome)
+
+    if busca:
+        noticias = noticias.filter(
+            Q(titulo__icontains=busca) |
+            Q(conteudo__icontains=busca)
+        )
+
+    paginator = Paginator(noticias, 8)  # 8 notícias por página
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    categorias = Categoria.objects.all()
+
+    contexto = {
+        'page_obj': page_obj,
+        'categorias': categorias,
+        'categoria_nome': categoria_nome,
+        'busca': busca,
+    }
+    return render(request, 'jornal/todas-noticias.html', contexto)
