@@ -40,6 +40,16 @@ O problema central que o JCPE trouxe para o grupo é o desafio de **aumentar a f
 
 O SJCC busca uma solução para **ofertar algo relevante ao usuário nas páginas de matéria**, que são a principal fonte de aquisição, a fim de que ele continue navegando pelo portal.
 
+---
+
+## Nossa Implementação 👩🏻‍💻
+
+<ul>
+Site do Jornal do Commercio que estamos produzindo:
+<li><a href="https://kivo.pythonanywhere.com/"> Nosso Site JC</a></li>
+</ul>
+
+
 ## ✅ Entregas do Projeto
 
 <details><summary><b>Entregas</b></summary>
