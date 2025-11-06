@@ -1,0 +1,84 @@
+{% load static %}
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todas as Notícias - Portal JC</title>
+    <link rel="stylesheet" href="{% static 'jornal/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'jornal/css/global.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body>
+
+<header class="header">
+    <div class="col left">
+        <div class="logo-container">
+            <a href="{% url 'home' %}">
+                <img src="{% static 'jornal/imagens/JC.png' %}" alt="JC" class="logo-img">
+            </a>
+        </div>
+    </div>
+    <div class="col center">
+        <nav class="menu">
+            <a href="{% url 'home' %}">Início</a>
+            <a href="?categoria=Esportes">Esportes</a>
+            <a href="?categoria=Política">Política</a>
+            <a href="?categoria=Clima">Clima</a>
+        </nav>
+    </div>
+    <div class="col right">
+        <a href="{% url 'adicionar_artigo' %}" class="btn-adicionar-noticia">+ Adicionar Notícia</a>
+    </div>
+</header>
+
+<main class="main-content" style="max-width:1000px; margin:40px auto;">
+    <h1 style="text-align:center; margin-bottom:30px;">
+        {% if categoria_nome %}Notícias sobre {{ categoria_nome }}{% else %}Todas as Notícias{% endif %}
+    </h1>
+
+    <form method="get" style="display:flex; justify-content:center; margin-bottom:20px;">
+        <input type="text" name="q" value="{{ busca|default:'' }}" placeholder="Pesquisar notícia..." style="width:60%; padding:8px;">
+        <button type="submit" style="padding:8px 15px; margin-left:5px;">Buscar</button>
+        {% if categoria_nome %}
+            <input type="hidden" name="categoria" value="{{ categoria_nome }}">
+        {% endif %}
+    </form>
+
+    <div class="grid-noticias" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:20px;">
+        {% for n in page_obj %}
+        <div class="card">
+            <div class="media">
+                <a href="{% url 'artigo_detalhe' pk=n.pk %}">
+                    {% if n.imagem %}
+                        <img src="{{ n.imagem.url }}" alt="{{ n.titulo }}" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
+                    {% else %}
+                        <img src="{% static 'jornal/imagens/sem-imagem.png' %}" alt="Sem imagem" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
+                    {% endif %}
+                </a>
+            </div>
+            <div class="meta" style="padding:10px;">
+                <p class="title">{{ n.titulo|truncatechars:80 }}</p>
+                <p class="time">{{ n.autor.username }} — {{ n.publicado_em|date:"d-m-Y" }}</p>
+            </div>
+        </div>
+        {% empty %}
+            <p>Nenhuma notícia encontrada.</p>
+        {% endfor %}
+    </div>
+
+    {% if page_obj.has_other_pages %}
+    <div class="pagination" style="text-align:center; margin-top:30px;">
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}{% if categoria_nome %}&categoria={{ categoria_nome }}{% endif %}{% if busca %}&q={{ busca }}{% endif %}">&laquo; Anterior</a>
+        {% endif %}
+        <span>Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}{% if categoria_nome %}&categoria={{ categoria_nome }}{% endif %}{% if busca %}&q={{ busca }}{% endif %}">Próxima &raquo;</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</main>
+
+</body>
+</html>

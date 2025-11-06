@@ -67,7 +67,6 @@
 
 <label for="hamburger-toggle" class="mobile-menu-overlay"></label>
 
-
 <header class="header">
     <div class="col left">
         <div class="logo-container">
@@ -99,10 +98,11 @@
         <span>Publicidade - 970x90</span>
     </div>
 
+    <!-- Últimas Notícias -->
     <section class="em-alta ultimas-noticias">
       <div class="section-head">
         <h2>Últimas Notícias</h2>
-        <a href="#" class="see-more">Ver Mais</a>
+        <a href="{% url 'categoria_view' 1 %}" class="see-more">Ver Mais</a>
       </div>
       <div class="carousel">
         {% for n in ultimas %}
@@ -146,8 +146,9 @@
         <span>Publicidade - 728x90</span>
     </div>
 
+    <!-- Esportes -->
     <section class="em-alta esportes">
-      <div class="section-head"><h2>Esportes</h2><a href="#" class="see-more">Ver Mais</a></div>
+      <div class="section-head"><h2>Esportes</h2><a href="{% url 'categoria_view' 2 %}" class="see-more">Ver Mais</a></div>
       <div class="carousel">
         {% for n in esportes %}
           <div class="card">
@@ -186,8 +187,9 @@
       </div>
     </section>
 
+    <!-- Política -->
     <section class="em-alta politica">
-      <div class="section-head"><h2>Política</h2><a href="#" class="see-more">Ver Mais</a></div>
+      <div class="section-head"><h2>Política</h2><a href="{% url 'categoria_view' 3 %}" class="see-more">Ver Mais</a></div>
       <div class="carousel">
         {% for n in politica %}
           <div class="card">
@@ -230,8 +232,9 @@
         <span>Publicidade - 300x250</span>
     </div>
 
+    <!-- Clima -->
     <section class="em-alta clima">
-      <div class="section-head"><h2>Clima</h2><a href="#" class="see-more">Ver Mais</a></div>
+      <div class="section-head"><h2>Clima</h2><a href="{% url 'categoria_view' 4 %}" class="see-more">Ver Mais</a></div>
       <div class="carousel">
         {% for n in clima %}
           <div class="card">
