@@ -1,0 +1,79 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JC KIVO | Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'jornal/css/login.css' %}"> 
+</head>
+<body>
+
+    <div class="login-wrapper">
+
+        <div class="container">
+            <h1>Bem-vindo de volta!</h1>
+
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <p class="error-message" style="color: red; text-align: center;">{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <form method="POST" action="{% url 'jornal:login' %}">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="apelido">Apelido</label>
+                    <input type="text" id="apelido" name="username" placeholder="Insira seu Apelido" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="senha">Senha</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="senha" name="password" placeholder="Insira sua senha" required>
+                        <span class="toggle-password" onclick="togglePasswordVisibility('senha', this)">
+                            <i class="fas fa-eye-slash"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="manter_conectado" name="manter_conectado">
+                    <label for="manter_conectado" style="margin-bottom: 0;">Continuar conectado</label>
+                </div>
+
+                <button type="submit">Login</button>
+            </form>
+
+            <p class="login-text">
+                Não tem conta? <a href="{% url 'jornal:registro' %}">Registre-se</a>
+            </p>
+        </div>
+
+        <div class="logo-container">
+            <img src="{% static 'jornal/imagens/JC.png' %}" alt="Jornal do Commercio Logo" class="project-logo">
+        </div>
+
+    </div> 
+    
+    <script>
+        function togglePasswordVisibility(id, iconElement) {
+            const input = document.getElementById(id);
+            const icon = iconElement.querySelector('i');
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            } else {
+                input.type = "password";
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            }
+        }
+    </script>
+</body>
+</html>
