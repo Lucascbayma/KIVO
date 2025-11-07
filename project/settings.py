@@ -18,6 +18,10 @@ import os
 from dotenv import load_dotenv
 from pathlib import Path
 
+# Define o caminho para a sua view de login
+LOGIN_URL = '/login/' 
+LOGIN_REDIRECT_URL = '/'
+
 load_dotenv()
 
 NEWSDATA_API_KEY = os.environ.get("NEWSDATA_API_KEY")

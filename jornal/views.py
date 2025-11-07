@@ -8,10 +8,52 @@ from django.contrib.auth.decorators import login_required
 from .models import Artigo, Categoria
 from .forms import ArtigoForm
 from django.core.paginator import Paginator
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.contrib import messages
 
 # Chaves de API e URLs
 NEWSDATA_API_KEY = settings.NEWSDATA_API_KEY 
 NEWSDATA_API_URL = 'https://newsdata.io/api/1/latest'
+
+def registro(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        password2 = request.POST.get('password2')
+        if password != password2:
+            messages.error(request, 'As senhas não coincidem!')
+            return redirect('jornal:registro')
+        if User.objects.filter(username=username).exists():
+            messages.error(request, f'O apelido "{username}" já está em uso!')
+            return redirect('jornal:registro')
+        if User.objects.filter(email=email).exists():
+            messages.error(request, f'O e-mail "{email}" já foi cadastrado!')
+            return redirect('jornal:registro')
+        user = User.objects.create_user(username=username, email=email, password=password)
+        user.save()
+        auth_login(request, user)
+        messages.success(request, f'Conta criada com sucesso! Bem-vindo, {username}.')
+        return redirect('jornal:home')
+    return render(request, 'registro.html')
+
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            auth_login(request, user)
+            return redirect('jornal:home')
+        else:
+            messages.error(request, 'Apelido ou senha inválidos.')
+            return redirect('jornal:login')
+    return render(request, 'login.html')
+
+def logout_view(request):
+    auth_logout(request)
+    return redirect('jornal:login')
 
 # -----------------------------------------------------------------
 # --- VIEWS BASEADAS EM MODELO (Artigos no Banco de Dados) ---
