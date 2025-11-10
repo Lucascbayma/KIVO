@@ -298,4 +298,4 @@ def todas_noticias(request):
         'categoria_nome': categoria_nome,
         'busca': busca,
     }
-    return render(request, 'jornal/todas-noticias.html', contexto)
+    return render(request, 'todas_as_noticias.html', contexto)
