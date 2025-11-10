@@ -271,22 +271,36 @@ def categoria_view(request, pk):
 #view para página de todas as notícias
 
 def todas_noticias(request):
-    """Página com todas as notícias — inclui busca e filtro de categoria."""
+    """Página com todas as notícias — inclui busca, filtro e ordenação."""
     categoria_nome = request.GET.get('categoria')
     busca = request.GET.get('q')
+    ordenacao = request.GET.get('ordenar', '-publicado_em')  # padrão: mais recentes primeiro
 
-    noticias = Artigo.objects.all().order_by('-publicado_em')
+    # Consulta base
+    noticias = Artigo.objects.all()
 
+    # Filtro por categoria
     if categoria_nome:
         noticias = noticias.filter(categoria__nome__icontains=categoria_nome)
 
+    # Filtro por busca
     if busca:
         noticias = noticias.filter(
             Q(titulo__icontains=busca) |
             Q(conteudo__icontains=busca)
         )
 
-    paginator = Paginator(noticias, 8)  # 8 notícias por página
+    # Ordenação
+    opcoes_validas = {
+        'mais_recentes': '-publicado_em',
+        'mais_antigas': 'publicado_em',
+        'titulo_az': 'titulo',
+        'titulo_za': '-titulo'
+    }
+    noticias = noticias.order_by(opcoes_validas.get(ordenacao, '-publicado_em'))
+
+    # Paginação
+    paginator = Paginator(noticias, 8)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
@@ -297,5 +311,6 @@ def todas_noticias(request):
         'categorias': categorias,
         'categoria_nome': categoria_nome,
         'busca': busca,
+        'ordenacao': ordenacao,
     }
     return render(request, 'todas_as_noticias.html', contexto)
