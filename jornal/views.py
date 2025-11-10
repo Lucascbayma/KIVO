@@ -276,21 +276,17 @@ def todas_noticias(request):
     busca = request.GET.get('q')
     ordenacao = request.GET.get('ordenar', '-publicado_em')  # padrão: mais recentes primeiro
 
-    # Consulta base
     noticias = Artigo.objects.all()
 
-    # Filtro por categoria
     if categoria_nome:
         noticias = noticias.filter(categoria__nome__icontains=categoria_nome)
 
-    # Filtro por busca
     if busca:
         noticias = noticias.filter(
             Q(titulo__icontains=busca) |
             Q(conteudo__icontains=busca)
         )
 
-    # Ordenação
     opcoes_validas = {
         'mais_recentes': '-publicado_em',
         'mais_antigas': 'publicado_em',
@@ -299,7 +295,6 @@ def todas_noticias(request):
     }
     noticias = noticias.order_by(opcoes_validas.get(ordenacao, '-publicado_em'))
 
-    # Paginação
     paginator = Paginator(noticias, 8)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
