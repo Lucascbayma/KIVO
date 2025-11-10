@@ -156,6 +156,18 @@ Site do Jornal do Commercio que estamos produzindo:
 <li><a > Correção de eventuais bugs / problemas no deploy.</a></li>
 <li><a > Atualização GitHub / bug tracker refletindo o status atual do projeto.</a></li>
 
+</ul>
+
+</details> 
+
+<details><summary><b>Semana 14</b></summary>
+<ul>
+<li><a > Definir paleta de cores da interface com base na regra 60, 30, 10, mais a iconografia. Lembrar que a interface deve remeter a marca (Design)</a></li>
+<li><a > Implementação e deployment de (pelo menos) 1 nova história de usuário, com uso de testes automatizados.</a></li>
+<li><a > Correção de eventuais bugs / problemas no deploy.</a></li>
+<li><a > Atualização GitHub / bug tracker refletindo o status atual do projeto.</a></li>
+<li><a > Implementação de CI/CD com build e deployment automatizado (pipeline criada no Github) </a></li> 
+
   
 </ul>
 
