@@ -162,7 +162,7 @@ Site do Jornal do Commercio que estamos produzindo:
 
 <details><summary><b>Semana 14</b></summary>
 <ul>
-<li><a href="https://drive.google.com/drive/folders/1dgGpbnuYnMqaxKFgdk2QmGpZoSYGN7GS"> Definir paleta de cores da interface com base na regra 60, 30, 10, mais a iconografia. Lembrar que a interface deve remeter a marca (Design)</a></li>
+<li><a > Definir paleta de cores da interface com base na regra 60, 30, 10, mais a iconografia. Lembrar que a interface deve remeter a marca (Design)</a></li>
 <li><a > Implementação e deployment de (pelo menos) 1 nova história de usuário, com uso de testes automatizados.</a></li>
 <li><a > Correção de eventuais bugs / problemas no deploy.</a></li>
 <li><a > Atualização GitHub / bug tracker refletindo o status atual do projeto.</a></li>
@@ -172,6 +172,20 @@ Site do Jornal do Commercio que estamos produzindo:
 </ul>
 
 </details> 
+
+<details><summary><b>Semana 15</b></summary>
+<ul>
+<li><a > Layout das Principais Telas da Interface (pelo menos 5) (Design)</a></li>
+<li><a href = "http://docs.google.com/document/d/1NUlOzn2lN7KKmu2dX7d3OVzhEDwSa1h1lmMCi4xqAaU/edit?tab=t.0"> Relatório de Programação em Par (Versão 1)</a>
+<li><a > Implementação e deployment de (pelo menos) 1 nova história de usuário, com uso de testes automatizados.</a></li>
+<li><a > Correção de eventuais bugs / problemas no deploy.</a></li>
+<li><a > Atualização GitHub / bug tracker refletindo o status atual do projeto.</a></li>
+
+
+</ul>
+
+</details> 
+
 
 
 
