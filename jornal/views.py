@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import DetailView
 from django.db.models import Q
 import requests 
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from .models import Artigo, Categoria
@@ -11,6 +11,7 @@ from django.core.paginator import Paginator
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib import messages
+from django.template.loader import render_to_string
 
 # Chaves de API e URLs
 NEWSDATA_API_KEY = settings.NEWSDATA_API_KEY 
@@ -309,3 +310,25 @@ def todas_noticias(request):
         'ordenacao': ordenacao,
     }
     return render(request, 'todas_as_noticias.html', contexto)
+
+def ajax_todas_noticias(request):
+    page_number = request.GET.get('page', 1)
+    categoria_nome = request.GET.get('categoria')
+    busca = request.GET.get('q')
+    ordenar = request.GET.get('ordenar', '-publicado_em')
+    noticias = Artigo.objects.all()
+    if categoria_nome:
+        noticias = noticias.filter(categoria__nome__icontains=categoria_nome)
+    if busca:
+        noticias = noticias.filter(Q(titulo__icontains=busca) | Q(conteudo__icontains=busca))
+    opcoes_validas = {
+        'mais_recentes': '-publicado_em',
+        'mais_antigas': 'publicado_em',
+        'titulo_az': 'titulo',
+        'titulo_za': '-titulo'
+    }
+    noticias = noticias.order_by(opcoes_validas.get(ordenar, '-publicado_em'))
+    paginator = Paginator(noticias, 8)
+    page_obj = paginator.get_page(page_number)
+    artigos_html = [render_to_string('partials/card_noticia.html', {'n': n}) for n in page_obj]
+    return JsonResponse({'artigos': artigos_html, 'has_next': page_obj.has_next()})

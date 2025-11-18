@@ -40,6 +40,7 @@ class Artigo(models.Model):
     atualizado_em = models.DateTimeField(auto_now=True, verbose_name="Atualizado em")
     destaque = models.BooleanField(default=False, verbose_name="Destaque na Home")
     autor = models.ForeignKey(User, on_delete=models.CASCADE, related_name="artigos")
+    imagem = models.ImageField(upload_to="artigos/", null=True, blank=True)  # Adicionando campo imagem
 
     class Meta:
         verbose_name = "Artigo"
@@ -51,15 +52,11 @@ class Artigo(models.Model):
 
     @classmethod
     def artigos_populares(cls, limite=5):
-        """
-        Retorna os artigos mais populares baseados em quantidade de recomendações.
-        """
         return cls.objects.annotate(total=models.Count("recomendacoes_origem")) \
             .order_by("-total")[:limite]
 
     def artigos_relacionados(self, limite=3):
         tags_ids = self.tags.values_list('id', flat=True)
-        
         recomendacoes_por_tag = Artigo.objects.filter(
             tags__in=tags_ids
         ).exclude(

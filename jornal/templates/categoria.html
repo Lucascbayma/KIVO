@@ -15,7 +15,7 @@
                         <img src="{{ artigo.imagem.url }}" alt="{{ artigo.titulo }}" class="artigo-img">
                     {% endif %}
                     <h2 class="artigo-titulo">{{ artigo.titulo }}</h2>
-                    <p class="artigo-resumo">{{ artigo.resumo }}</p>
+                    <p class="artigo-resumo">{{ artigo.subtitulo }}</p>
                     <a href="{% url 'artigo_detalhe' artigo.pk %}" class="btn-leia-mais">Ler mais</a>
                 </div>
             {% endfor %}
