@@ -13,299 +13,299 @@
 </head>
 <body>
 
-<input type="checkbox" id="hamburger-toggle" class="hamburger-toggle">
+  <input type="checkbox" id="hamburger-toggle" class="hamburger-toggle">
 
-<nav class="mobile-menu" id="mobile-menu-panel">
-    <label for="hamburger-toggle" class="mobile-menu-close" aria-label="Fechar menu">
-        &times; 
-    </label>
+  <nav class="mobile-menu" id="mobile-menu-panel">
+      <label for="hamburger-toggle" class="mobile-menu-close" aria-label="Fechar menu">
+          &times; 
+      </label>
 
-    <div class="mobile-menu-body">
-        
-        <div class="menu-group">
-    
-            <input 
-                type="checkbox" 
-                id="nav-toggle-navegacao" 
-                class="submenu-toggle"
-            >
-            
-            <label for="nav-toggle-navegacao">
-                <span class="menu-heading">
-                    <span class="chevron">&#8964;</span> Navegação
-                </span>
-            </label>
-            
-            <ul class="menu-indented">
-                <li><a href="#">Editoria</a></li>
-                <li><a href="#">Esportes</a></li>
-                <li><a href="#">Pernambuco</a></li>
-                <li><a href="#">Mais</a></li>
-            </ul>
-        </div>
-
-        <div class="menu-group">
-            <a class="menu-link-main" href="#">Em Alta</a>
-            <a class="menu-link-main" href="#">Últimas Notícias</a>
-            <a class="menu-link-main" href="#">Newsletter</a>
-        </div>
-
-        <a href="{% url 'adicionar_artigo' %}" class="btn-adicionar-noticia-mobile">
-            + Adicionar Notícia
-        </a>
-
-        <div class="social-icons-grid">
-          <a href="https://www.instagram.com/jc_pe/#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
-          <a href="https://www.tiktok.com/@jc_pe" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
-          <a href="https://www.linkedin.com/company/sistema-jornal-do-commercio" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
-          <a href="https://www.facebook.com/jornaldocommercioPE" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
-          <a href="https://www.youtube.com/@JCPlayOficial" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
-          <a href="https://x.com/jc_pe" aria-label="X (Twitter)"><i class="bi bi-twitter-x"></i></a>
-        </div>
-    </div>
-</nav>
-
-<label for="hamburger-toggle" class="mobile-menu-overlay"></label>
-
-<header class="header">
-    <div class="col left">
-        <div class="logo-container">
-            <img src="{% static 'jornal/imagens/logo.svg' %}" alt="JC" class="logo-img">
-        </div>
-    </div>
-    <div class="col center">
-        <nav class="menu">
-            <a href="#">Editoria</a>
-            <a href="#">Esportes</a>
-            <a href="#">Pernambuco</a>
-            <a href="#">Mais</a>
-        </nav>
-    </div>
-    <div class="col right">
-        {# O botão 'Adicionar Notícia' só aparece se o usuário estiver logado #}
-        {% if user.is_authenticated %}
-            <a href="{% url 'adicionar_artigo' %}" class="btn-adicionar-noticia" style="color: white; text-decoration: none; font-weight: 600; padding: 5px 10px; border: 1px solid white; border-radius: 4px; white-space: nowrap;">
-                + Adicionar Notícia
-            </a>
-        {% endif %}
-        
-        {# Ícone de Perfil / Login (Novo Elemento) #}
-        <a href="{% if user.is_authenticated %}{% url 'jornal:logout' %}{% else %}{% url 'jornal:login' %}{% endif %}" 
-           class="profile-login-icon" 
-           title="{% if user.is_authenticated %}Sair ({{ user.username }}){% else %}Login / Criar Conta{% endif %}"
-           style="color: white; font-size: 1.5rem; margin-left: 10px; text-decoration: none; display: flex; align-items: center;">
-            
-            {% if user.is_authenticated %}
-                <i class="bi bi-box-arrow-right" style="margin-right: 5px;"></i>
-                <span class="username-display" style="font-size: 0.8rem; font-weight: 600;">{{ user.username }}</span>
-            {% else %}
-                <i class="bi bi-person-circle"></i>
-            {% endif %}
-        </a>
-        <label class="hamburger-label" for="hamburger-toggle" aria-label="Abrir menu">
-            <span class="hamburger-line"></span>
-            <span class="hamburger-line"></span>
-            <span class="hamburger-line"></span>
-        </label>
-    </div>
-</header>
-
-<main class="main-content">
-    
-    <div class="bloco-anuncio horizontal-top">
-        <span>Publicidade - 970x90</span>
-    </div>
-
-    <!-- Últimas Notícias -->
-    <section class="em-alta ultimas-noticias">
-      <div class="section-head">
-        <h2>Últimas Notícias</h2>
-        <a href="{% url 'categoria_view' 1 %}" class="see-more">Ver Mais</a>
-      </div>
-      <div class="carousel">
-        {% for n in ultimas %}
-          <div class="card">
-            <div class="media">
-              {% if n.pk %}
-              <a href="{% url 'artigo_detalhe' pk=n.pk %}">
-                {% if n.imagem %}
-                  <img src="{{ n.imagem.url }}" alt="{{ n.titulo }}" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
-                {% else %}
-                  <img src="{% static 'jornal/imagens/sem-imagem.png' %}" alt="Sem imagem" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
-                {% endif %}
-              </a>
-              {% else %}
-              <a href="{% url 'detalhe_noticia_estatica' %}?link={{ n.link }}">
-                {% if n.image_url %}
-                  <img src="{{ n.image_url }}" alt="{{ n.title }}" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
-                {% else %}
-                  <img src="{% static 'jornal/imagens/sem-imagem.png' %}" alt="Sem imagem" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
-                {% endif %}
-              </a>
-              {% endif %}
-            </div>
-            <div class="meta">
-              {% if n.pk %}
-              <p class="title">{{ n.titulo|truncatechars:80 }}</p>
-              <p class="time">{{ n.autor.username }} — {{ n.publicado_em|date:"d-m-Y" }}</p>
-              {% else %}
-              <p class="title">{{ n.title|truncatechars:80 }}</p>
-              <p class="time">{{ n.source_name }} — {{ n.pubDate|slice:":10" }}</p>
-              {% endif %}
-            </div>
+      <div class="mobile-menu-body">
+          
+          <div class="menu-group">
+      
+              <input 
+                  type="checkbox" 
+                  id="nav-toggle-navegacao" 
+                  class="submenu-toggle"
+              >
+              
+              <label for="nav-toggle-navegacao">
+                  <span class="menu-heading">
+                      <span class="chevron">&#8964;</span> Navegação
+                  </span>
+              </label>
+              
+              <ul class="menu-indented">
+                  <li><a href="#">Editoria</a></li>
+                  <li><a href="#">Esportes</a></li>
+                  <li><a href="#">Pernambuco</a></li>
+                  <li><a href="#">Mais</a></li>
+              </ul>
           </div>
-        {% empty %}
-          <p>Nenhuma notícia disponível.</p>
-        {% endfor %}
-      </div>
-    </section>
 
-    <div class="bloco-anuncio horizontal-meio">
-        <span>Publicidade - 728x90</span>
-    </div>
-
-    <!-- Esportes -->
-    <section class="em-alta esportes">
-      <div class="section-head"><h2>Esportes</h2><a href="{% url 'categoria_view' 2 %}" class="see-more">Ver Mais</a></div>
-      <div class="carousel">
-        {% for n in esportes %}
-          <div class="card">
-            <div class="media">
-              {% if n.pk %}
-              <a href="{% url 'artigo_detalhe' pk=n.pk %}">
-                {% if n.imagem %}
-                  <img src="{{ n.imagem.url }}" alt="{{ n.titulo }}" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
-                {% else %}
-                  <img src="{% static 'jornal/imagens/sem-imagem.png' %}" alt="Sem imagem" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
-                {% endif %}
-              </a>
-              {% else %}
-              <a href="{% url 'detalhe_noticia_estatica' %}?link={{ n.link }}">
-                {% if n.image_url %}
-                  <img src="{{ n.image_url }}" alt="{{ n.title }}" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
-                {% else %}
-                  <img src="{% static 'jornal/imagens/sem-imagem.png' %}" alt="Sem imagem" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
-                {% endif %}
-              </a>
-              {% endif %}
-            </div>
-            <div class="meta">
-              {% if n.pk %}
-              <p class="title">{{ n.titulo|truncatechars:80 }}</p>
-              <p class="time">{{ n.autor.username }} — {{ n.publicado_em|date:"d-m-Y" }}</p>
-              {% else %}
-              <p class="title">{{ n.title|truncatechars:80 }}</p>
-              <p class="time">{{ n.source_name }} — {{ n.pubDate|slice:":10" }}</p>
-              {% endif %}
-            </div>
+          <div class="menu-group">
+              <a class="menu-link-main" href="#">Em Alta</a>
+              <a class="menu-link-main" href="#">Últimas Notícias</a>
+              <a class="menu-link-main" href="#">Newsletter</a>
           </div>
-        {% empty %}
-          <p>Nenhuma notícia de esportes.</p>
-        {% endfor %}
-      </div>
-    </section>
 
-    <!-- Política -->
-    <section class="em-alta politica">
-      <div class="section-head"><h2>Política</h2><a href="{% url 'categoria_view' 3 %}" class="see-more">Ver Mais</a></div>
-      <div class="carousel">
-        {% for n in politica %}
-          <div class="card">
-            <div class="media">
-              {% if n.pk %}
-              <a href="{% url 'artigo_detalhe' pk=n.pk %}">
-                {% if n.imagem %}
-                  <img src="{{ n.imagem.url }}" alt="{{ n.titulo }}" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
-                {% else %}
-                  <img src="{% static 'jornal/imagens/sem-imagem.png' %}" alt="Sem imagem" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
-                {% endif %}
-              </a>
-              {% else %}
-              <a href="{% url 'detalhe_noticia_estatica' %}?link={{ n.link }}">
-                {% if n.image_url %}
-                  <img src="{{ n.image_url }}" alt="{{ n.title }}" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
-                {% else %}
-                  <img src="{% static 'jornal/imagens/sem-imagem.png' %}" alt="Sem imagem" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
-                {% endif %}
-              </a>
-              {% endif %}
-            </div>
-            <div class="meta">
-              {% if n.pk %}
-              <p class="title">{{ n.titulo|truncatechars:80 }}</p>
-              <p class="time">{{ n.autor.username }} — {{ n.publicado_em|date:"d-m-Y" }}</p>
-              {% else %}
-              <p class="title">{{ n.title|truncatechars:80 }}</p>
-              <p class="time">{{ n.source_name }} — {{ n.pubDate|slice:":10" }}</p>
-              {% endif %}
-            </div>
-          </div>
-        {% empty %}
-          <p>Nenhuma notícia de política.</p>
-        {% endfor %}
-      </div>
-    </section>
-
-    <div class="bloco-anuncio vertical-lateral">
-        <span>Publicidade - 300x250</span>
-    </div>
-
-    <!-- Clima -->
-    <section class="em-alta clima">
-      <div class="section-head"><h2>Clima</h2><a href="{% url 'categoria_view' 4 %}" class="see-more">Ver Mais</a></div>
-      <div class="carousel">
-        {% for n in clima %}
-          <div class="card">
-            <div class="media">
-              {% if n.pk %}
-              <a href="{% url 'artigo_detalhe' pk=n.pk %}">
-                {% if n.imagem %}
-                  <img src="{{ n.imagem.url }}" alt="{{ n.titulo }}" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
-                {% else %}
-                  <img src="{% static 'jornal/imagens/sem-imagem.png' %}" alt="Sem imagem" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
-                {% endif %}
-              </a>
-              {% else %}
-              <a href="{% url 'detalhe_noticia_estatica' %}?link={{ n.link }}">
-                {% if n.image_url %}
-                  <img src="{{ n.image_url }}" alt="{{ n.title }}" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
-                {% else %}
-                  <img src="{% static 'jornal/imagens/sem-imagem.png' %}" alt="Sem imagem" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
-                {% endif %}
-              </a>
-              {% endif %}
-            </div>
-            <div class="meta">
-              {% if n.pk %}
-              <p class="title">{{ n.titulo|truncatechars:80 }}</p>
-              <p class="time">{{ n.autor.username }} — {{ n.publicado_em|date:"d-m-Y" }}</p>
-              {% else %}
-              <p class="title">{{ n.title|truncatechars:80 }}</p>
-              <p class="time">{{ n.source_name }} — {{ n.pubDate|slice:":10" }}</p>
-              {% endif %}
-            </div>
-          </div>
-        {% empty %}
-          <p>Nenhuma notícia de clima.</p>
-        {% endfor %}
-      </div>
-    </section>
-
-  </main>
-  
-<div id="banner-continuar-leitura" style="display: none;">
-      <div class="conteudo-banner">
-          <span class="mensagem-banner">
-              Você estava lendo: <strong id="titulo-noticia-banner"></strong>
-          </span>
-          <a id="link-noticia-banner" href="#" class="btn-voltar-leitura">
-              Deseja voltar para o artigo?
+          <a href="{% url 'adicionar_artigo' %}" class="btn-adicionar-noticia-mobile">
+              + Adicionar Notícia
           </a>
-          <button id="fechar-banner" class="btn-fechar">×</button>
-      </div>
-  </div>
 
-  <script src="{% static 'jornal/js/rastreamento_leitura.js' %}"></script>
+          <div class="social-icons-grid">
+            <a href="https://www.instagram.com/jc_pe/#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+            <a href="https://www.tiktok.com/@jc_pe" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
+            <a href="https://www.linkedin.com/company/sistema-jornal-do-commercio" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+            <a href="https://www.facebook.com/jornaldocommercioPE" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+            <a href="https://www.youtube.com/@JCPlayOficial" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+            <a href="https://x.com/jc_pe" aria-label="X (Twitter)"><i class="bi bi-twitter-x"></i></a>
+          </div>
+      </div>
+  </nav>
+
+  <label for="hamburger-toggle" class="mobile-menu-overlay"></label>
+
+  <header class="header">
+      <div class="col left">
+          <div class="logo-container">
+              <img src="{% static 'jornal/imagens/logo.svg' %}" alt="JC" class="logo-img">
+          </div>
+      </div>
+      <div class="col center">
+          <nav class="menu">
+              <a href="#">Editoria</a>
+              <a href="#">Esportes</a>
+              <a href="#">Pernambuco</a>
+              <a href="#">Mais</a>
+          </nav>
+      </div>
+      <div class="col right">
+          {# O botão 'Adicionar Notícia' só aparece se o usuário estiver logado #}
+          {% if user.is_authenticated %}
+              <a href="{% url 'adicionar_artigo' %}" class="btn-adicionar-noticia" style="#111; text-decoration: none; font-weight: 600; padding: 5px 10px; border: 1px solid white; border-radius: 4px; white-space: nowrap;">
+                  + Adicionar Notícia
+              </a>
+          {% endif %}
+          
+          {# Ícone de Perfil / Login (Novo Elemento) #}
+          <a href="{% if user.is_authenticated %}{% url 'jornal:logout' %}{% else %}{% url 'jornal:login' %}{% endif %}" 
+            class="profile-login-icon" 
+            title="{% if user.is_authenticated %}Sair ({{ user.username }}){% else %}Login / Criar Conta{% endif %}"
+            style="color: #111; font-size: 1.5rem; margin-left: 10px; text-decoration: none; display: flex; align-items: center;">
+              
+              {% if user.is_authenticated %}
+                  <i class="bi bi-box-arrow-right" style="margin-right: 5px;"></i>
+                  <span class="username-display" style="font-size: 0.8rem; font-weight: 600;">{{ user.username }}</span>
+              {% else %}
+                  <i class="bi bi-person-circle"></i>
+              {% endif %}
+          </a>
+          <label class="hamburger-label" for="hamburger-toggle" aria-label="Abrir menu">
+              <span class="hamburger-line"></span>
+              <span class="hamburger-line"></span>
+              <span class="hamburger-line"></span>
+          </label>
+      </div>
+  </header>
+
+  <main class="main-content">
+      
+      <div class="bloco-anuncio horizontal-top">
+          <span>Publicidade - 970x90</span>
+      </div>
+
+      <!-- Últimas Notícias -->
+      <section class="em-alta ultimas-noticias">
+        <div class="section-head">
+          <h2>Últimas Notícias</h2>
+          <a href="{% url 'categoria_view' 1 %}" class="see-more">Ver Mais</a>
+        </div>
+        <div class="carousel">
+          {% for n in ultimas %}
+            <div class="card">
+              <div class="media">
+                {% if n.pk %}
+                <a href="{% url 'artigo_detalhe' pk=n.pk %}">
+                  {% if n.imagem %}
+                    <img src="{{ n.imagem.url }}" alt="{{ n.titulo }}" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
+                  {% else %}
+                    <img src="{% static 'jornal/imagens/sem-imagem.png' %}" alt="Sem imagem" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
+                  {% endif %}
+                </a>
+                {% else %}
+                <a href="{% url 'detalhe_noticia_estatica' %}?link={{ n.link }}">
+                  {% if n.image_url %}
+                    <img src="{{ n.image_url }}" alt="{{ n.title }}" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
+                  {% else %}
+                    <img src="{% static 'jornal/imagens/sem-imagem.png' %}" alt="Sem imagem" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
+                  {% endif %}
+                </a>
+                {% endif %}
+              </div>
+              <div class="meta">
+                {% if n.pk %}
+                <p class="title">{{ n.titulo|truncatechars:80 }}</p>
+                <p class="time">{{ n.autor.username }} — {{ n.publicado_em|date:"d-m-Y" }}</p>
+                {% else %}
+                <p class="title">{{ n.title|truncatechars:80 }}</p>
+                <p class="time">{{ n.source_name }} — {{ n.pubDate|slice:":10" }}</p>
+                {% endif %}
+              </div>
+            </div>
+          {% empty %}
+            <p>Nenhuma notícia disponível.</p>
+          {% endfor %}
+        </div>
+      </section>
+
+      <div class="bloco-anuncio horizontal-meio">
+          <span>Publicidade - 728x90</span>
+      </div>
+
+      <!-- Esportes -->
+      <section class="em-alta esportes">
+        <div class="section-head"><h2>Esportes</h2><a href="{% url 'categoria_view' 2 %}" class="see-more">Ver Mais</a></div>
+        <div class="carousel">
+          {% for n in esportes %}
+            <div class="card">
+              <div class="media">
+                {% if n.pk %}
+                <a href="{% url 'artigo_detalhe' pk=n.pk %}">
+                  {% if n.imagem %}
+                    <img src="{{ n.imagem.url }}" alt="{{ n.titulo }}" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
+                  {% else %}
+                    <img src="{% static 'jornal/imagens/sem-imagem.png' %}" alt="Sem imagem" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
+                  {% endif %}
+                </a>
+                {% else %}
+                <a href="{% url 'detalhe_noticia_estatica' %}?link={{ n.link }}">
+                  {% if n.image_url %}
+                    <img src="{{ n.image_url }}" alt="{{ n.title }}" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
+                  {% else %}
+                    <img src="{% static 'jornal/imagens/sem-imagem.png' %}" alt="Sem imagem" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
+                  {% endif %}
+                </a>
+                {% endif %}
+              </div>
+              <div class="meta">
+                {% if n.pk %}
+                <p class="title">{{ n.titulo|truncatechars:80 }}</p>
+                <p class="time">{{ n.autor.username }} — {{ n.publicado_em|date:"d-m-Y" }}</p>
+                {% else %}
+                <p class="title">{{ n.title|truncatechars:80 }}</p>
+                <p class="time">{{ n.source_name }} — {{ n.pubDate|slice:":10" }}</p>
+                {% endif %}
+              </div>
+            </div>
+          {% empty %}
+            <p>Nenhuma notícia de esportes.</p>
+          {% endfor %}
+        </div>
+      </section>
+
+      <!-- Política -->
+      <section class="em-alta politica">
+        <div class="section-head"><h2>Política</h2><a href="{% url 'categoria_view' 3 %}" class="see-more">Ver Mais</a></div>
+        <div class="carousel">
+          {% for n in politica %}
+            <div class="card">
+              <div class="media">
+                {% if n.pk %}
+                <a href="{% url 'artigo_detalhe' pk=n.pk %}">
+                  {% if n.imagem %}
+                    <img src="{{ n.imagem.url }}" alt="{{ n.titulo }}" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
+                  {% else %}
+                    <img src="{% static 'jornal/imagens/sem-imagem.png' %}" alt="Sem imagem" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
+                  {% endif %}
+                </a>
+                {% else %}
+                <a href="{% url 'detalhe_noticia_estatica' %}?link={{ n.link }}">
+                  {% if n.image_url %}
+                    <img src="{{ n.image_url }}" alt="{{ n.title }}" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
+                  {% else %}
+                    <img src="{% static 'jornal/imagens/sem-imagem.png' %}" alt="Sem imagem" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
+                  {% endif %}
+                </a>
+                {% endif %}
+              </div>
+              <div class="meta">
+                {% if n.pk %}
+                <p class="title">{{ n.titulo|truncatechars:80 }}</p>
+                <p class="time">{{ n.autor.username }} — {{ n.publicado_em|date:"d-m-Y" }}</p>
+                {% else %}
+                <p class="title">{{ n.title|truncatechars:80 }}</p>
+                <p class="time">{{ n.source_name }} — {{ n.pubDate|slice:":10" }}</p>
+                {% endif %}
+              </div>
+            </div>
+          {% empty %}
+            <p>Nenhuma notícia de política.</p>
+          {% endfor %}
+        </div>
+      </section>
+
+      <div class="bloco-anuncio vertical-lateral">
+          <span>Publicidade - 300x250</span>
+      </div>
+
+      <!-- Clima -->
+      <section class="em-alta clima">
+        <div class="section-head"><h2>Clima</h2><a href="{% url 'categoria_view' 4 %}" class="see-more">Ver Mais</a></div>
+        <div class="carousel">
+          {% for n in clima %}
+            <div class="card">
+              <div class="media">
+                {% if n.pk %}
+                <a href="{% url 'artigo_detalhe' pk=n.pk %}">
+                  {% if n.imagem %}
+                    <img src="{{ n.imagem.url }}" alt="{{ n.titulo }}" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
+                  {% else %}
+                    <img src="{% static 'jornal/imagens/sem-imagem.png' %}" alt="Sem imagem" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
+                  {% endif %}
+                </a>
+                {% else %}
+                <a href="{% url 'detalhe_noticia_estatica' %}?link={{ n.link }}">
+                  {% if n.image_url %}
+                    <img src="{{ n.image_url }}" alt="{{ n.title }}" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
+                  {% else %}
+                    <img src="{% static 'jornal/imagens/sem-imagem.png' %}" alt="Sem imagem" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
+                  {% endif %}
+                </a>
+                {% endif %}
+              </div>
+              <div class="meta">
+                {% if n.pk %}
+                <p class="title">{{ n.titulo|truncatechars:80 }}</p>
+                <p class="time">{{ n.autor.username }} — {{ n.publicado_em|date:"d-m-Y" }}</p>
+                {% else %}
+                <p class="title">{{ n.title|truncatechars:80 }}</p>
+                <p class="time">{{ n.source_name }} — {{ n.pubDate|slice:":10" }}</p>
+                {% endif %}
+              </div>
+            </div>
+          {% empty %}
+            <p>Nenhuma notícia de clima.</p>
+          {% endfor %}
+        </div>
+      </section>
+
+    </main>
+    
+  <div id="banner-continuar-leitura" style="display: none;">
+        <div class="conteudo-banner">
+            <span class="mensagem-banner">
+                Você estava lendo: <strong id="titulo-noticia-banner"></strong>
+            </span>
+            <a id="link-noticia-banner" href="#" class="btn-voltar-leitura">
+                Deseja voltar para o artigo?
+            </a>
+            <button id="fechar-banner" class="btn-fechar">×</button>
+        </div>
+    </div>
+
+    <script src="{% static 'jornal/js/rastreamento_leitura.js' %}"></script>
 
 </body>
 </html>

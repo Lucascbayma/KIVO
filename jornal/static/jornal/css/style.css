@@ -18,13 +18,16 @@ body {
   color: var(--dark);
   padding-top: 64px;
 }
+header.header {
+  background: #D9D9D9 !important;
+  color: #111 !important;
+}
 .header {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   height: 64px;
-  background: var(--header-bg);
   display: flex;
   align-items: center;
   padding: 0 16px;
@@ -40,7 +43,9 @@ body {
 }
 .header .col.right {
   justify-content: flex-end;
+  color: var(--dark);
 }
+
 .header .col.center {
   justify-content: center;
   font-size: 14px;
@@ -49,7 +54,7 @@ body {
 }
 .header .col.center .menu a,
 .header .col.center .menu a:visited {
-  color: var(--header-text);
+  color: var(--dark);
   text-decoration: none;
   padding: 0 10px;
 }
@@ -438,7 +443,7 @@ footer .card .media::after {
 .hamburger-line {
   width: 30px;
   height: 3px;
-  background: var(--header-text);
+  background: var(--dark);
   border-radius: 2px;
   transition: all 0.3s ease-in-out;
 }
@@ -459,6 +464,7 @@ footer .card .media::after {
   transition: right 0.3s ease-in-out;
   padding: 0;
   overflow-y: auto;
+  color:#111;
 }
 .mobile-menu .btn-adicionar-noticia-mobile {
   color: var(--dark);
@@ -509,6 +515,10 @@ footer .card .media::after {
 .hamburger-toggle:checked ~ .header .hamburger-label .hamburger-line:nth-child(3) {
   transform: translateY(-11px) rotate(-45deg);
 }
+.hamburger-line {
+  background: var(--header-text); 
+}
+
 .mobile-menu-close {
   position: absolute;
   top: 20px;
