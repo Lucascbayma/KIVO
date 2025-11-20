@@ -1,0 +1,230 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+:root {
+    --cor-fundo-principal: #ffffff;
+    --cor-fundo-input: #d6d7d9;
+    --cor-texto: #000000;                  
+    
+    --cor-destaque-primaria: #cc0000;
+    --cor-destaque-secundaria: #ff3333;
+    
+    --cor-borda-input: #444444;
+    --cor-borda-foco: #cc0000;
+    --cor-placeholder: #888888;            
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif; 
+}
+
+body {
+    background-color: var(--cor-fundo-principal);
+    color: var(--cor-texto);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.login-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 1000px; 
+    width: 100%;
+    gap: 80px; 
+    padding: 20px; 
+    flex-wrap: wrap; 
+}
+
+.container {
+    width: 100%;
+    max-width: 400px; 
+    background-color: transparent;
+    padding: 0; 
+    border-radius: 0;
+    flex-shrink: 0; 
+}
+
+.header {
+    display: none;
+}
+
+h1 {
+    text-align: left; 
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 40px; 
+    color: var(--cor-texto);
+    letter-spacing: 0.5px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 400;
+    font-size: 0.95rem;
+}
+
+label.required::after {
+    content: none;
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+    width: 100%;
+    padding: 12px 15px;
+    background-color: var(--cor-fundo-input);
+    border: 1px solid var(--cor-borda-input);
+    border-radius: 8px;
+    color: var(--cor-texto);
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input::placeholder {
+    color: var(--cor-placeholder);
+}
+
+input:focus {
+    border-color: var(--cor-borda-foco); 
+    box-shadow: 0 0 0 3px rgba(204, 0, 0, 0.3);
+}
+
+.toggle-password {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--cor-borda-input);
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.toggle-password:hover {
+    color: var(--cor-destaque-primaria);
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    margin: 25px 0;
+    user-select: none;
+}
+
+.checkbox-group input[type="checkbox"] {
+    margin-right: 10px;
+    width: 18px;
+    height: 18px;
+    accent-color: var(--cor-destaque-primaria);
+}
+
+button {
+    width: 100%;
+    padding: 15px;
+    background: var(--cor-destaque-primaria);
+    border: none;
+    border-radius: 8px;
+    color: white; 
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.1s;
+    margin-top: 30px; 
+}
+
+button:hover {
+    background: var(--cor-destaque-secundaria);
+}
+
+button:active {
+    transform: scale(0.99);
+}
+
+.login-text {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 0.95rem;
+    color: #999999;
+}
+
+.login-text a {
+    color: var(--cor-destaque-secundaria);
+    text-decoration: none;
+    font-weight: 700;
+    transition: color 0.3s;
+}
+
+.login-text a:hover {
+    color: var(--cor-destaque-primaria); 
+    text-decoration: none;
+}
+
+.logo-container {
+    width: clamp(150px, 30vw, 300px); 
+    height: clamp(150px, 30vw, 300px); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.project-logo {
+    max-width: 100%;
+    max-height: 100%;
+    height: auto;
+    object-fit: contain; 
+}
+
+.error-message {
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    background-color: #ffffff;
+    border-left: 5px solid var(--cor-destaque-primaria);
+    color: var(--cor-texto);
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+@media (max-width: 900px) {
+    .logo-container {
+        display: none;
+    }
+    .login-wrapper {
+        max-width: 500px; 
+        gap: 0;
+        justify-content: center;
+    }
+    .container {
+        padding: 40px 20px; 
+    }
+}
+
+@media (max-width: 500px) {
+    .container {
+        padding: 30px 15px; 
+    }
+
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    button {
+        padding: 12px;
+        font-size: 1rem;
+    }
+}
