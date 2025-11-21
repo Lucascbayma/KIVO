@@ -68,47 +68,25 @@
   <label for="hamburger-toggle" class="mobile-menu-overlay"></label>
 
   <header class="header">
-      <div class="col left">
-          <div class="logo-container">
-              <img src="{% static 'jornal/imagens/logo.svg' %}" alt="JC" class="logo-img">
-          </div>
-      </div>
-      <div class="col center">
-          <nav class="menu">
-              <a href="#">Editoria</a>
-              <a href="#">Esportes</a>
-              <a href="#">Pernambuco</a>
-              <a href="#">Mais</a>
-          </nav>
-      </div>
-      <div class="col right">
-          {# O botão 'Adicionar Notícia' só aparece se o usuário estiver logado #}
-          {% if user.is_authenticated %}
-              <a href="{% url 'adicionar_artigo' %}" class="btn-adicionar-noticia" style="#111; text-decoration: none; font-weight: 600; padding: 5px 10px; border: 1px solid white; border-radius: 4px; white-space: nowrap;">
-                  + Adicionar Notícia
-              </a>
-          {% endif %}
-          
-          {# Ícone de Perfil / Login (Novo Elemento) #}
-          <a href="{% if user.is_authenticated %}{% url 'jornal:logout' %}{% else %}{% url 'jornal:login' %}{% endif %}" 
-            class="profile-login-icon" 
-            title="{% if user.is_authenticated %}Sair ({{ user.username }}){% else %}Login / Criar Conta{% endif %}"
-            style="color: #111; font-size: 1.5rem; margin-left: 10px; text-decoration: none; display: flex; align-items: center;">
-              
-              {% if user.is_authenticated %}
-                  <i class="bi bi-box-arrow-right" style="margin-right: 5px;"></i>
-                  <span class="username-display" style="font-size: 0.8rem; font-weight: 600;">{{ user.username }}</span>
-              {% else %}
-                  <i class="bi bi-person-circle"></i>
-              {% endif %}
-          </a>
-          <label class="hamburger-label" for="hamburger-toggle" aria-label="Abrir menu">
-              <span class="hamburger-line"></span>
-              <span class="hamburger-line"></span>
-              <span class="hamburger-line"></span>
-          </label>
-      </div>
-  </header>
+    <div class="col left">
+        </div>
+
+    <div class="col center">
+        <div class="logo-container">
+            <img src="{% static 'jornal/imagens/logo.svg' %}" alt="JC" class="logo-img">
+        </div>
+    </div>
+
+    <div class="col right">
+        <button class="header-icon-btn search-btn" aria-label="Buscar">
+            <i class="bi bi-search"></i>
+        </button>
+        
+        <label for="hamburger-toggle" class="hamburger-label" id="frame1">
+            <i class="bi bi-list" style="font-size: 24px;"></i>
+        </label>
+    </div>
+</header>
 
   <main class="main-content">
       
