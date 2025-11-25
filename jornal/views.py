@@ -15,7 +15,7 @@ from django.template.loader import render_to_string
 
 # Chaves de API e URLs
 NEWSDATA_API_KEY = settings.NEWSDATA_API_KEY 
-NEWSDATA_API_URL = 'https://newsdata.io/api/1/latest'
+NEWSDATA_API_URL = 'https://newsdata.io/api/1/news'
 
 def registro(request):
     if request.method == 'POST':
