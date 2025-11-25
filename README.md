@@ -186,6 +186,22 @@ Site do Jornal do Commercio que estamos produzindo:
 
 </details> 
 
+<details><summary><b>Semana 16</b></summary>
+<ul>
+<li><a > Protótipo Navegável em FIGMA com Interface Aplicada (Design)</a></li>
+<li><a > Pipeline CI / CD no GitHub alterada com adição dos testes automatizados.</a>
+<li><a > Implementação e deployment de eventuais histórias restantes no backlog, com uso de testes automatizados.</a></li>
+<li><a > Criação de screencast de testes (também disponível no Youtube) dedicado a exibição da execução dos testes automatizados.</a></li>
+<li><a > Criação de screencast (disponível no Youtube) com a exibição do processo de build e deployment napipeline do GitHub (incluindo testes automatizados), (com áudio explicativo ou legenda) acessível via github.
+<li><a > Atualização GitHub .</a></li>
+
+
+</ul>
+
+</details> 
+
+
+
 
 
 
