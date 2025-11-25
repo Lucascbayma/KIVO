@@ -112,19 +112,21 @@ def logout_view(request):
 
 class ArtigoDetailView(DetailView):
     model = Artigo
-    template_name = 'ler_noticia.html' 
-    context_object_name = 'artigo' 
+    template_name = 'ler_noticia.html'
+    context_object_name = 'conteudo'
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)    
-        artigo_atual = self.object 
+        context = super().get_context_data(**kwargs)
+
+        artigo = self.object
 
         try:
-            context['recomendacoes'] = artigo_atual.artigos_relacionados(limite=3) 
-        except AttributeError:
+            context['recomendacoes'] = artigo.artigos_relacionados(limite=3)
+        except:
             context['recomendacoes'] = []
-        
+
         return context
+
 
 # -----------------------------------------------------------------
 # --- VIEW PARA ADICIONAR NOTÍCIA (Baseada em Artigo Model) ---
@@ -156,29 +158,52 @@ def detalhe_noticia_estatica(request):
     noticia_link = request.GET.get('link')
     lista_noticias_api = request.session.get('ultimas_noticias') 
 
+    if not lista_noticias_api or not noticia_link:
+        raise Http404("Link inválido ou lista não encontrada.")
+
     noticia_detalhe = None
-    
-    try:
-        if lista_noticias_api and noticia_link:
-            for noticia in lista_noticias_api:
-                if noticia.get('link') == noticia_link:
-                    noticia_detalhe = noticia
-                    break
-            
-            if noticia_detalhe is None:
-                raise Http404("Notícia não encontrada pelo link na sessão.")
-                
-        else:
-            raise Http404("Link da notícia não fornecido ou lista da API não está na sessão.")
-            
-    except Http404:
-        return redirect('home')
-        
+
+    for n in lista_noticias_api:
+        if n.get('link') == noticia_link:
+            noticia_detalhe = n
+            break
+
+    if noticia_detalhe is None:
+        raise Http404("Notícia não encontrada na sessão.")
+
+    # -------------------------
+    # RECOMENDAÇÕES RELACIONADAS (API)
+    # -------------------------
+    categoria_atual = noticia_detalhe.get('category', [])
+    if isinstance(categoria_atual, str):
+        categoria_atual = [categoria_atual]
+
+    categoria_atual = [c.lower() for c in categoria_atual]
+
+    recomendacoes = []
+    for n in lista_noticias_api:
+        if n == noticia_detalhe:
+            continue
+
+        categorias = n.get('category', [])
+        if isinstance(categorias, str):
+            categorias = [categorias]
+
+        categorias = [c.lower() for c in categorias]
+
+        if any(cat in categorias for cat in categoria_atual):
+            recomendacoes.append(n)
+
+        if len(recomendacoes) >= 3:
+            break
+
     context = {
-        'noticia': noticia_detalhe
+        'conteudo': noticia_detalhe,
+        'recomendacoes': recomendacoes
     }
-    
+
     return render(request, 'ler_noticia.html', context)
+
 
 # -----------------------------------------------------------------
 # --- VIEW DA HOME (Faz a Requisição da API e Integra o BD) ---
