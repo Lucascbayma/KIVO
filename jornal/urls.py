@@ -14,4 +14,5 @@ urlpatterns = [
     path('categoria/<int:pk>/', views.categoria_view, name='categoria_view'),
     path('adicionar/', views.adicionar_artigo, name='adicionar_artigo'),
     path('artigo/<int:pk>/', ArtigoDetailView.as_view(), name='artigo_detalhe'),
+    path('webhook/github/', views.webhook_github, name='webhook_github'),
 ]

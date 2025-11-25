@@ -1,3 +1,5 @@
+import os
+import git # Requer: pip install GitPython no servidor
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import DetailView
 from django.db.models import Q
@@ -5,6 +7,8 @@ import requests
 from django.http import Http404, JsonResponse
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt # Necessário para o Webhook
+from django.core.management import call_command # Necessário para rodar migrate
 from .models import Artigo, Categoria
 from .forms import ArtigoForm
 from django.core.paginator import Paginator
@@ -16,6 +20,52 @@ from django.template.loader import render_to_string
 # Chaves de API e URLs
 NEWSDATA_API_KEY = settings.NEWSDATA_API_KEY 
 NEWSDATA_API_URL = 'https://newsdata.io/api/1/news'
+
+# =================================================================
+# === WEBHOOK PARA DEPLOY AUTOMÁTICO (PythonAnywhere) ===
+# =================================================================
+
+@csrf_exempt
+def webhook_github(request):
+    """
+    Recebe o sinal do GitHub Actions, puxa o código novo,
+    roda as migrações (importante para seus vídeos/imagens)
+    e reinicia o servidor.
+    """
+    if request.method == "POST":
+        repo_path = settings.BASE_DIR
+
+        try:
+            # 1. Conectar ao repositório local e baixar mudanças
+            repo = git.Repo(repo_path)
+            origin = repo.remotes.origin
+            origin.pull()
+            
+            # 2. Atualizar Banco de Dados (CRÍTICO para os novos campos de mídia)
+            call_command('migrate', interactive=False)
+            
+            # 3. Atualizar Arquivos Estáticos (CSS/JS)
+            call_command('collectstatic', interactive=False)
+
+            # 4. Forçar o Reload do Site no PythonAnywhere
+            # ATENÇÃO: Verifique se o nome do arquivo bate com seu usuário
+            wsgi_path = '/var/www/lucasbayma_pythonanywhere_com_wsgi.py'
+            
+            if os.path.exists(wsgi_path):
+                os.utime(wsgi_path, None) # Isso "toca" no arquivo e força o reload
+                return JsonResponse({"status": "success", "message": "Deploy realizado: Pull + Migrate + Reload."})
+            else:
+                return JsonResponse({"status": "warning", "message": "Pull feito, mas arquivo WSGI não encontrado para reload."}, status=200)
+
+        except Exception as e:
+            return JsonResponse({"status": "error", "message": str(e)}, status=500)
+
+    return JsonResponse({"status": "invalid method"}, status=405)
+
+
+# =================================================================
+# === VIEWS DE AUTENTICAÇÃO ===
+# =================================================================
 
 def registro(request):
     if request.method == 'POST':
@@ -237,9 +287,7 @@ def home(request):
             {'titulo': 'Assine o Portal Premium', 'formato': 'mobile'},
         ]
     })
-        # -----------------------------------------------------------------
-    # Conteúdo simulado apenas se a API falhar (para manter proporção do feed)
-    # -----------------------------------------------------------------
+    
     if not context.get('ultimas'):
         context['ultimas'] = [
             {'title': 'Notícia de exemplo 1', 'link': '#', 'description': 'Conteúdo simulado para testes.'},
@@ -252,14 +300,10 @@ def home(request):
     return render(request, 'home.html', context)
 
 # -----------------------------------------------------------------
-# --- VIEW PARA EXIBIÇÃO DE CATEGORIAS ESPECÍFICAS (História 2) ---
+# --- VIEW PARA EXIBIÇÃO DE CATEGORIAS ESPECÍFICAS ---
 # -----------------------------------------------------------------
 
 def categoria_view(request, pk):
-    """
-    Exibe as notícias de uma categoria específica, agrupadas por relevância.
-    Adicionada para suportar os testes de organização do portal (História 2).
-    """
     categoria = get_object_or_404(Categoria, pk=pk)
     artigos = Artigo.objects.filter(categoria=categoria).order_by('-destaque', '-publicado_em')
 
@@ -269,13 +313,15 @@ def categoria_view(request, pk):
     }
     return render(request, 'categoria.html', context)
 
-#view para página de todas as notícias
+# -----------------------------------------------------------------
+# --- VIEW PARA PÁGINA DE TODAS AS NOTÍCIAS ---
+# -----------------------------------------------------------------
 
 def todas_noticias(request):
     """Página com todas as notícias — inclui busca, filtro e ordenação."""
     categoria_nome = request.GET.get('categoria')
     busca = request.GET.get('q')
-    ordenacao = request.GET.get('ordenar', '-publicado_em')  # padrão: mais recentes primeiro
+    ordenacao = request.GET.get('ordenar', '-publicado_em')  
 
     noticias = Artigo.objects.all()
 
