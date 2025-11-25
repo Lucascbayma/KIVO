@@ -40,7 +40,20 @@ class Artigo(models.Model):
     atualizado_em = models.DateTimeField(auto_now=True, verbose_name="Atualizado em")
     destaque = models.BooleanField(default=False, verbose_name="Destaque na Home")
     autor = models.ForeignKey(User, on_delete=models.CASCADE, related_name="artigos")
-    imagem = models.ImageField(upload_to="artigos/", null=True, blank=True)  # Adicionando campo imagem
+    
+    imagem = models.ImageField(
+        upload_to="artigos/imagens/%Y/%m/", 
+        null=True, 
+        blank=True,
+        verbose_name="Imagem de Capa"
+    )
+    
+    video = models.FileField(
+        upload_to="artigos/videos/%Y/%m/", 
+        null=True, 
+        blank=True,
+        verbose_name="Vídeo da Matéria"
+    )
 
     class Meta:
         verbose_name = "Artigo"

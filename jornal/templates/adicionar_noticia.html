@@ -70,6 +70,22 @@
                         {{ form.subtitulo }}
                     </div>
 
+                    <div class="form-field" style="background: #f8f9fa; padding: 15px; border: 1px solid #e9ecef; border-radius: 5px; margin-bottom: 20px;">
+                        <h3 style="margin-top: 0; font-size: 1.1rem; color: #444; border-bottom: 1px solid #ddd; padding-bottom: 8px; margin-bottom: 15px;">Mídia e Arquivos</h3>
+                        
+                        <div style="margin-bottom: 15px;">
+                            <label for="{{ form.imagem.id_for_label }}" style="font-weight: 600; display: block; margin-bottom: 5px;">Imagem de Capa</label>
+                            {{ form.imagem }}
+                            <small style="display: block; color: #666; margin-top: 5px;">Formatos: JPG, PNG, WEBP</small>
+                        </div>
+
+                        <div>
+                            <label for="{{ form.video.id_for_label }}" style="font-weight: 600; display: block; margin-bottom: 5px;">Vídeo da Matéria (Opcional)</label>
+                            {{ form.video }}
+                            <small style="display: block; color: #666; margin-top: 5px;">Formatos: MP4, MOV</small>
+                        </div>
+                    </div>
+
                     <div class="bloco-anuncio ad-mobile-inject">
                         <span>Publicidade (320x100)</span>
                     </div>
@@ -93,9 +109,9 @@
                         {{ form.tags }}
                     </div>
 
-                    <div class="form-field">
-                        <label for="{{ form.destaque.id_for_label }}">Destaque na Home</label>
+                    <div class="form-field" style="display: flex; align-items: center; gap: 10px;">
                         {{ form.destaque }}
+                        <label for="{{ form.destaque.id_for_label }}" style="margin-bottom: 0; cursor: pointer;">Destaque na Home</label>
                     </div>
 
                     <button type="submit" class="submit-button">Publicar Notícia</button>
