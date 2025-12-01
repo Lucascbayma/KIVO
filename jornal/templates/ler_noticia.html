@@ -48,7 +48,9 @@
     <!-- TÍTULO -->
     <header class="header-noticia">
         <h1 class="titulo-noticia">{{ noticia.title|default:noticia.titulo }}</h1>
-        <p class="lead-noticia">{{ noticia.description|default:noticia.resumo }}</p>
+        
+        <!-- CORREÇÃO AQUI: Trocado 'resumo' por 'subtitulo' -->
+        <p class="lead-noticia">{{ noticia.description|default:noticia.subtitulo }}</p>
     </header>
 
     <!-- AUTOR / FONTE / DATA -->
@@ -65,8 +67,10 @@
 
             {% if noticia.pubDate %}
                 <p class="datas">Publicado em {{ noticia.pubDate|date:"d/m/Y" }} às {{ noticia.pubDate|date:"H:i" }}</p>
+            {% elif noticia.publicado_em %}
+                <p class="datas">Publicado em {{ noticia.publicado_em|date:"d/m/Y H:i" }}</p>
             {% elif noticia.data_publicacao %}
-                <p class="datas">Publicado em {{ noticia.data_publicacao }}</p>
+                 <p class="datas">Publicado em {{ noticia.data_publicacao }}</p>
             {% endif %}
         </div>
     </div>
@@ -79,7 +83,10 @@
         {% elif noticia.imagem %}
             <img src="{{ noticia.imagem.url }}" alt="{{ noticia.titulo }}">
         {% else %}
-            <p style="text-align:center;color:#999;">(Imagem não disponível)</p>
+            <!-- Espaço reservado se não houver imagem -->
+            <div style="padding:40px; text-align:center; background:#f9f9f9; color:#999; border-radius:8px;">
+                (Sem imagem de capa)
+            </div>
         {% endif %}
     </figure>
 
@@ -87,6 +94,9 @@
     <section class="conteudo-noticia">
         {% if noticia.conteudo %}
             <p style="white-space: pre-line;">{{ noticia.conteudo }}</p>
+        {% elif noticia.content %}
+            <!-- Adicionado suporte para 'content' caso venha da API com esse nome -->
+            <p style="white-space: pre-line;">{{ noticia.content }}</p>
         {% else %}
             <p><strong>A notícia completa só pode ser acessada na fonte original.</strong></p>
             <p>Para continuar lendo, use o link abaixo:</p>
@@ -110,25 +120,30 @@
         <h2 class="titulo-relacionadas">LEIA TAMBÉM</h2>
 
         {% if recomendacoes %}
+            <div class="grid-relacionadas" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px;">
             {% for rec in recomendacoes %}
                 <article class="relacionada-item">
-                    <a href="{% url 'jornal:artigo_detalhe' rec.id %}" class="link-relacionada">
+                    <!-- Verifica se é objeto do BD (tem .id) ou dict da API (usa link como id ou similar) -->
+                    <a href="{% if rec.id %}{% url 'artigo_detalhe' rec.id %}{% else %}{% url 'detalhe_noticia_estatica' %}?link={{ rec.link }}{% endif %}" class="link-relacionada">
 
                         <div class="thumb-relacionada">
                             {% if rec.image_url %}
-                                <img src="{{ rec.image_url }}" alt="{{ rec.titulo }}">
+                                <img src="{{ rec.image_url }}" alt="{{ rec.title|default:rec.titulo }}" style="width:100%; height:150px; object-fit:cover; border-radius:4px;">
                             {% elif rec.imagem %}
-                                <img src="{{ rec.imagem.url }}" alt="{{ rec.titulo }}">
+                                <img src="{{ rec.imagem.url }}" alt="{{ rec.titulo }}" style="width:100%; height:150px; object-fit:cover; border-radius:4px;">
+                            {% else %}
+                                <div style="width:100%; height:150px; background:#eee; display:flex; align-items:center; justify-content:center; border-radius:4px;">Sem Imagem</div>
                             {% endif %}
                         </div>
 
-                        <p class="titulo-item-relacionado">
+                        <p class="titulo-item-relacionado" style="margin-top:10px; font-weight:600;">
                             {{ rec.title|default:rec.titulo }}
                         </p>
 
                     </a>
                 </article>
             {% endfor %}
+            </div>
         {% else %}
             <p style="color:#777;">Nenhuma recomendação disponível.</p>
         {% endif %}
@@ -139,6 +154,7 @@
     <header class="header-noticia">
         <h1 class="titulo-noticia">Erro ao Carregar Notícia</h1>
         <p class="lead-noticia">
+            Não foi possível carregar os dados desta notícia. <br>
             Volte para a <a href="{% url 'home' %}">Página Inicial</a> e tente novamente.
         </p>
     </header>
