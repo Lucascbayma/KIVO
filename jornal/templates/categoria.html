@@ -4,20 +4,97 @@
 {% block title %}{{ categoria.nome }} — Portal JC{% endblock %}
 
 {% block content %}
-<div class="categoria-container">
-    <h1 class="categoria-titulo">{{ categoria.nome }}</h1>
+<style>
+    a.artigo-link {
+        text-decoration: none !important;
+        color: inherit !important;
+        display: block; 
+    }
 
+    .categoria-container {
+        max-width: 600px;
+        margin: 0;
+        padding: 10px; 
+        background-color: #fff;
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+    }
+    
+    .artigos-lista {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .artigo-card {
+        background: #fff;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .artigo-img-crop {
+        width: 100%;
+        height: 200px; 
+        overflow: hidden;
+        border-radius: 8px; 
+        margin-bottom: 12px;
+        background-color: #f0f0f0; 
+    }
+
+    .artigo-img-crop img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; 
+        display: block;
+    }
+
+    .artigo-titulo {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #111;
+        margin: 0 0 8px 0;
+        line-height: 1.3;
+    }
+
+    .artigo-data {
+        font-size: 0.85rem;
+        color: #666; 
+        margin: 0;
+    }
+
+    .sem-artigos {
+        text-align: center;
+        color: #888;
+        padding: 40px;
+    }
+</style>
+
+<div class="categoria-container">
     {% if artigos %}
         <div class="artigos-lista">
             {% for artigo in artigos %}
-                <div class="artigo-card">
-                    {% if artigo.imagem %}
-                        <img src="{{ artigo.imagem.url }}" alt="{{ artigo.titulo }}" class="artigo-img">
-                    {% endif %}
-                    <h2 class="artigo-titulo">{{ artigo.titulo }}</h2>
-                    <p class="artigo-resumo">{{ artigo.subtitulo }}</p>
-                    <a href="{% url 'artigo_detalhe' artigo.pk %}" class="btn-leia-mais">Ler mais</a>
-                </div>
+                <a href="{% url 'artigo_detalhe' artigo.pk %}" class="artigo-link">
+                    <div class="artigo-card">
+                        
+                        {% if artigo.imagem %}
+                            <div class="artigo-img-crop">
+                                <img src="{{ artigo.imagem.url }}" alt="{{ artigo.titulo }}">
+                            </div>
+                        {% endif %}
+                        
+                        <div class="artigo-conteudo">
+                            <h2 class="artigo-titulo">{{ artigo.titulo }}</h2>
+                            <p class="artigo-data">
+                                {% if artigo.publicado_ha_horas %}
+                                    Há {{ artigo.publicado_ha_horas }} horas
+                                {% else %}
+                                    Recente
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </a>
             {% endfor %}
         </div>
     {% else %}

@@ -1,6 +1,8 @@
 from django.urls import path
 from .views import ArtigoDetailView, detalhe_noticia_estatica 
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 app_name = 'jornal'
 
@@ -16,3 +18,6 @@ urlpatterns = [
     path('artigo/<int:pk>/', ArtigoDetailView.as_view(), name='artigo_detalhe'),
     path('webhook/github/', views.webhook_github, name='webhook_github'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
