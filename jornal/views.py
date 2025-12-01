@@ -1,5 +1,4 @@
 import os
-# import git -> REMOVIDO DO TOPO PARA NÃO QUEBRAR O SITE SE FALTAR BIBLIOTECA
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import DetailView
 from django.db.models import Q
@@ -31,7 +30,6 @@ def webhook_github(request):
     Recebe o sinal do GitHub Actions, puxa o código novo,
     roda as migrações e reinicia o servidor.
     """
-    # Importação segura: só tenta carregar o git quando o deploy é chamado
     try:
         import git
     except ImportError:
@@ -41,18 +39,14 @@ def webhook_github(request):
         repo_path = settings.BASE_DIR
 
         try:
-            # 1. Conectar ao repositório local e baixar mudanças
             repo = git.Repo(repo_path)
             origin = repo.remotes.origin
             origin.pull()
             
-            # 2. Atualizar Banco de Dados
             call_command('migrate', interactive=False)
             
-            # 3. Atualizar Arquivos Estáticos
             call_command('collectstatic', interactive=False)
 
-            # 4. Forçar o Reload do Site
             wsgi_path = '/var/www/lucasbayma_pythonanywhere_com_wsgi.py'
             
             if os.path.exists(wsgi_path):
@@ -117,18 +111,14 @@ def logout_view(request):
 class ArtigoDetailView(DetailView):
     model = Artigo
     template_name = 'ler_noticia.html'
-    # Define o nome padrão, mas vamos adicionar 'noticia' extra no contexto
     context_object_name = 'artigo'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         artigo_atual = self.object
 
-        # --- COMPATIBILIDADE ---
-        # Passamos a variável com o nome 'noticia' para o template funcionar
         context['noticia'] = artigo_atual
         context['conteudo'] = artigo_atual 
-        # ------------------------
 
         try:
             context['recomendacoes'] = artigo_atual.artigos_relacionados(limite=3)
@@ -169,7 +159,6 @@ def detalhe_noticia_estatica(request):
     lista_noticias_api = request.session.get('ultimas_noticias') 
 
     if not lista_noticias_api or not noticia_link:
-        # Se não tiver dados, redireciona para home em vez de erro 404
         return redirect('home')
 
     noticia_encontrada = None
@@ -181,10 +170,6 @@ def detalhe_noticia_estatica(request):
 
     if noticia_encontrada is None:
         raise Http404("Notícia não encontrada na sessão.")
-
-    # --- CORREÇÃO: PADRONIZAÇÃO DOS DADOS DA API ---
-    # Convertemos as chaves da API (title, description) para as do BD (titulo, subtitulo)
-    # Assim o template 'ler_noticia.html' funciona para os dois casos.
     
     autor_api = noticia_encontrada.get('creator')
     if isinstance(autor_api, list):
@@ -193,19 +178,14 @@ def detalhe_noticia_estatica(request):
         autor_formatado = autor_api or noticia_encontrada.get('source_id')
 
     noticia_padronizada = {
-        # Campos que o template espera (baseados no Model)
         'titulo': noticia_encontrada.get('title'),
         'subtitulo': noticia_encontrada.get('description'),
         'conteudo': noticia_encontrada.get('content') or noticia_encontrada.get('description'),
         'autor': autor_formatado,
         'publicado_em': noticia_encontrada.get('pubDate'),
-        
-        # Campos específicos da API
         'image_url': noticia_encontrada.get('image_url'),
         'link': noticia_encontrada.get('link'),
         'source_id': noticia_encontrada.get('source_id'),
-        
-        # Campos originais (backup)
         'title': noticia_encontrada.get('title'),
         'description': noticia_encontrada.get('description'),
     }
@@ -224,7 +204,6 @@ def detalhe_noticia_estatica(request):
         if n == noticia_encontrada:
             continue
         
-        # Também padronizamos a recomendação para o card funcionar
         rec_padronizada = n.copy()
         rec_padronizada['titulo'] = n.get('title')
 
@@ -241,7 +220,6 @@ def detalhe_noticia_estatica(request):
             break
 
     context = {
-        # Aqui usamos 'noticia' com o objeto padronizado
         'noticia': noticia_padronizada, 
         'conteudo': noticia_padronizada,
         'recomendacoes': recomendacoes
@@ -255,64 +233,58 @@ def detalhe_noticia_estatica(request):
 # -----------------------------------------------------------------
 
 def home(request):
+    params = {
+        'apikey': NEWSDATA_API_KEY,
+        'country': 'br',
+        'size': 10,
+    }
     noticias_api = []
     esportes_api, politica_api, clima_api = [], [], []
+    
+    try:
+        response = requests.get(NEWSDATA_API_URL, params=params)
+        response.raise_for_status()
+        data = response.json()
 
-    # Só chama a API se a chave estiver configurada
-    if NEWSDATA_API_KEY:
-        params = {
-            'apikey': NEWSDATA_API_KEY,
-            'country': 'br',
-            'size': 10,
-        }
-        try:
-            response = requests.get(NEWSDATA_API_URL, params=params)
-            response.raise_for_status()
-            data = response.json()
+        if data.get('status') == 'success':
+            noticias_api = data.get('results', [])
 
-            if data.get('status') == 'success':
-                noticias_api = data.get('results', [])
+            for n in noticias_api:
+                categoria_raw = n.get('category')
+                if isinstance(categoria_raw, list):
+                    categoria = ",".join(categoria_raw).lower()
+                elif isinstance(categoria_raw, str):
+                    categoria = categoria_raw.lower()
+                else:
+                    categoria = ""
 
-                for n in noticias_api:
-                    categoria_raw = n.get('category')
-                    if isinstance(categoria_raw, list):
-                        categoria = ",".join(categoria_raw).lower()
-                    elif isinstance(categoria_raw, str):
-                        categoria = categoria_raw.lower()
-                    else:
-                        categoria = ""
+                titulo = (n.get('title') or "").lower()
+                
+                if any(word in categoria for word in ["sport", "esporte"]) or \
+                   any(word in titulo for word in ["futebol", "ginástica", "boxe", "corrida"]):
+                    esportes_api.append(n)
 
-                    titulo = (n.get('title') or "").lower()
-                    
-                    if any(word in categoria for word in ["sport", "esporte"]) or \
-                       any(word in titulo for word in ["futebol", "ginástica", "boxe", "corrida"]):
-                        esportes_api.append(n)
+                elif any(word in categoria for word in ["politic", "government", "world"]) or \
+                     any(word in titulo for word in ["lula", "boulos", "presidente", "governo", "eleição"]):
+                    politica_api.append(n)
 
-                    elif any(word in categoria for word in ["politic", "government", "world"]) or \
-                         any(word in titulo for word in ["lula", "boulos", "presidente", "governo", "eleição"]):
-                        politica_api.append(n)
+                elif any(word in categoria for word in ["science", "environment"]) or \
+                     any(word in titulo for word in ["clima", "chuva", "tempo", "calor", "sensor"]):
+                    clima_api.append(n)
 
-                    elif any(word in categoria for word in ["science", "environment"]) or \
-                         any(word in titulo for word in ["clima", "chuva", "tempo", "calor", "sensor"]):
-                        clima_api.append(n)
+            request.session['ultimas_noticias'] = noticias_api
+            request.session['esportes_noticias'] = esportes_api
+            request.session['politica_noticias'] = politica_api
+            request.session['clima_noticias'] = clima_api 
 
-                request.session['ultimas_noticias'] = noticias_api
-                request.session['esportes_noticias'] = esportes_api
-                request.session['politica_noticias'] = politica_api
-                request.session['clima_noticias'] = clima_api 
+        else:
+            print("Erro: status da API não é success.")
 
-            else:
-                print("Erro: status da API não é success.")
-        except requests.exceptions.RequestException as e:
-            print(f"Erro de conexão com a API: {e}")
-    else:
-        # Em ambiente de dev/test sem chave, não chama a API
-        print("NEWSDATA_API_KEY não configurada; ignorando chamada à API.")
+    except requests.exceptions.RequestException as e:
+        print(f"Erro de conexão com a API: {e}")
 
-    # Pega categorias do banco
     categorias = {c.nome.lower(): c.id for c in Categoria.objects.all()}
     
-    # Busca artigos do banco
     artigos_bd_ultimas = Artigo.objects.filter(
         categoria__nome__iexact='Últimas Notícias'
     ).order_by('-publicado_em')[:6] 
@@ -329,7 +301,6 @@ def home(request):
         categoria__nome__iexact='Clima'
     ).order_by('-publicado_em')[:6]
     
-    # Mescla Banco + API
     total_ultimas_bd = len(artigos_bd_ultimas)
     ultimas = list(artigos_bd_ultimas) + noticias_api[:(6 - total_ultimas_bd)]
     
@@ -341,6 +312,21 @@ def home(request):
     
     total_clima_bd = len(artigos_bd_clima)
     clima = list(artigos_bd_clima) + clima_api[:(6 - total_clima_bd)]
+    
+    cat_esportes_obj = Categoria.objects.filter(nome__iexact="Esportes").first()
+    cat_politica_obj = Categoria.objects.filter(nome__iexact="Política").first()
+    cat_clima_obj = Categoria.objects.filter(nome__iexact="Clima").first()
+
+    atalhos_dinamicos = [{'nome': 'Home', 'url': '/'}]
+    
+    if cat_esportes_obj:
+        atalhos_dinamicos.append({'nome': 'Esportes', 'url': f'/categoria/{cat_esportes_obj.id}/'})
+    
+    if cat_politica_obj:
+        atalhos_dinamicos.append({'nome': 'Política', 'url': f'/categoria/{cat_politica_obj.id}/'})
+        
+    if cat_clima_obj:
+        atalhos_dinamicos.append({'nome': 'Clima', 'url': f'/categoria/{cat_clima_obj.id}/'})
 
     context = {
         'ultimas': ultimas,
@@ -349,27 +335,19 @@ def home(request):
         'clima': clima,
     }
 
-    # Bloco de contexto adicional exigido pelos testes
     context.update({
         'ultimas_noticias': context.get('ultimas', []),
         'destaques': Artigo.objects.filter(destaque=True).order_by('-publicado_em')[:3],
         'categorias': Categoria.objects.all(),
-        # Atalhos dinâmicos (melhor prática: usar IDs reais se possível, mas mantendo seu padrão atual)
-        'atalhos': [
-            {'nome': 'Home', 'url': '/'},
-            {'nome': 'Esportes', 'url': '/categoria/1/'}, # Certifique-se que o ID 1 existe
-            {'nome': 'Política', 'url': '/categoria/2/'}, # Certifique-se que o ID 2 existe
-            {'nome': 'Clima', 'url': '/categoria/3/'},    # Certifique-se que o ID 3 existe
-        ],
+        'atalhos': atalhos_dinamicos,
         'anuncios': [
             {'titulo': 'Curso de Jornalismo Online', 'formato': 'desktop'},
             {'titulo': 'Assine o Portal Premium', 'formato': 'mobile'},
-            {'titulo': 'Promoção de Assinatura', 'formato': 'desktop'}, # Adicionado para teste de fluxo
+            {'titulo': 'Promoção de Assinatura', 'formato': 'desktop'},
             {'titulo': 'App do Portal JC', 'formato': 'mobile'},
         ]
     })
     
-    # Fallback: se não tiver nada em 'ultimas' (nem API nem Banco), cria um feed simulado
     if not context.get('ultimas'):
         context['ultimas'] = [
             {'title': 'Notícia de exemplo 1', 'link': '#', 'description': 'Conteúdo simulado para testes.'},
@@ -378,7 +356,6 @@ def home(request):
             {'title': 'Notícia de exemplo 4', 'link': '#', 'description': 'Conteúdo simulado para testes.'},
         ]
 
-    # --- LÓGICA DE INSERÇÃO DE ANÚNCIOS (CORRIGIDA) ---
     ultimas = context.get('ultimas', [])
     anuncios_disponiveis = context.get('anuncios', [])
 
@@ -386,16 +363,9 @@ def home(request):
     num_anuncios_total = len(anuncios_disponiveis)
 
     if num_conteudo > 0 and num_anuncios_total > 0:
-        # Regra de Negócio: Anúncios não podem passar de 30% do total de itens (conteúdo + anúncios)
-        # Fórmula derivada: A <= 0.3 * (N + A)  =>  0.7A <= 0.3N  =>  A <= (0.3/0.7)N  =>  A <= 3N/7
-        
         max_anuncios_permitidos = int((3 * num_conteudo) / 7)
-        
-        # Garante que, se houver conteúdo, pelo menos 1 anúncio tenta ser exibido (se a regra permitir)
-        # Mas respeita o limite máximo de 4 anúncios por página para não poluir
         qtd_final = min(max_anuncios_permitidos, 4, num_anuncios_total)
         
-        # Se a conta der 0, mas temos bastante conteúdo (ex: 3 noticias), forçamos 1 anúncio
         if qtd_final == 0 and num_conteudo >= 3:
             qtd_final = 1
 
