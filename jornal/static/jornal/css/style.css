@@ -382,84 +382,42 @@ footer .card .media::after {
 .submit-button:hover {
   background: #333;
 }
+/* ========================
+   ANÚNCIOS – 320 x 100
+======================== */
 .bloco-anuncio {
   display: flex;
   justify-content: center;
   align-items: center;
-  text-align: center;
   margin: 20px auto;
-  background-color: #f0f0f0;
-  border: 1px dashed #ccc;
-  color: #888;
-  font-size: 14px;
-  font-weight: 500;
-  padding: 10px;
-  width: 100%;
+  padding: 0;
+  width: 320px;
+  height: 100px;
+  background: transparent;
+  border: none;
 }
-.bloco-anuncio.horizontal-top,
-.bloco-anuncio.horizontal-meio {
-  min-height: 90px;
-  max-width: 100%;
+
+/* Imagem do anúncio */
+.bloco-anuncio img {
+  width: 320px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 6px;
 }
-.bloco-anuncio.vertical-lateral {
-  width: 300px;
-  height: 250px;
-}
+
+/* Mobile – mantém 320×100 */
 @media (max-width: 767px) {
-  .bloco-anuncio.horizontal-top,
-  .bloco-anuncio.horizontal-meio {
-    min-height: 60px;
-    font-size: 12px;
-  }
-  .bloco-anuncio.vertical-lateral {
-    width: 100%;
-    height: 120px;
-  }
-}
-.bloco-anuncio.ad-mobile-inject {
-  display: none;
-}
-@media (min-width: 1024px) {
-  .layout-with-ads {
-    display: grid;
-    grid-template-columns: 160px 1fr 160px;
-    gap: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  .main-form-content {
-    max-width: 800px;
-    margin: 0 auto;
-  }
-  .bloco-anuncio.sidebar-left,
-  .bloco-anuncio.sidebar-right {
-    display: flex;
-    width: 160px;
-    height: 600px;
-    position: sticky;
-    top: 80px;
-  }
-}
-@media (max-width: 1023px) {
-  .layout-with-ads {
-    display: block;
-    width: 100%;
-    padding: 0 16px;
-  }
-  .main-form-content {
-    width: 100%;
-  }
-  .bloco-anuncio.sidebar-left,
-  .bloco-anuncio.sidebar-right {
-    display: none;
-  }
-  .bloco-anuncio.ad-mobile-inject {
-    display: flex;
-    width: 100%;
+  .bloco-anuncio {
+    width: 320px;
     height: 100px;
-    margin: 20px 0;
+  }
+
+  .bloco-anuncio img {
+    width: 320px;
+    height: 100px;
   }
 }
+
 .hamburger-toggle {
   display: none;
 }
