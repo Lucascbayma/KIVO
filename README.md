@@ -54,7 +54,7 @@ Site do Jornal do Commercio que estamos produzindo:
 ## 🎥 Screencasts
 
 - [Screencast 1 – Screencast de testes](https://youtu.be/0eayAF3NDRA)
-- [Screencast 2 – screencast processo de buid e deployment ](https://link-do-video.com)
+- [Screencast 2 – screencast processo de buid e deployment ](https://youtu.be/UIbzFPQYTnQ)
 
 
 
