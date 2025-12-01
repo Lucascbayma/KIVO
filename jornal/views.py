@@ -1,5 +1,5 @@
 import os
-import git # Requer: pip install GitPython no servidor
+# import git -> REMOVIDO DO TOPO PARA NÃO QUEBRAR O SITE SE FALTAR BIBLIOTECA
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import DetailView
 from django.db.models import Q
@@ -7,8 +7,8 @@ import requests
 from django.http import Http404, JsonResponse
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_exempt # Necessário para o Webhook
-from django.core.management import call_command # Necessário para rodar migrate
+from django.views.decorators.csrf import csrf_exempt 
+from django.core.management import call_command 
 from .models import Artigo, Categoria
 from .forms import ArtigoForm
 from django.core.paginator import Paginator
@@ -29,9 +29,14 @@ NEWSDATA_API_URL = 'https://newsdata.io/api/1/news'
 def webhook_github(request):
     """
     Recebe o sinal do GitHub Actions, puxa o código novo,
-    roda as migrações (importante para seus vídeos/imagens)
-    e reinicia o servidor.
+    roda as migrações e reinicia o servidor.
     """
+    # Importação segura: só tenta carregar o git quando o deploy é chamado
+    try:
+        import git
+    except ImportError:
+        return JsonResponse({"status": "error", "message": "Biblioteca GitPython não instalada no servidor."}, status=500)
+
     if request.method == "POST":
         repo_path = settings.BASE_DIR
 
@@ -41,21 +46,20 @@ def webhook_github(request):
             origin = repo.remotes.origin
             origin.pull()
             
-            # 2. Atualizar Banco de Dados (CRÍTICO para os novos campos de mídia)
+            # 2. Atualizar Banco de Dados
             call_command('migrate', interactive=False)
             
-            # 3. Atualizar Arquivos Estáticos (CSS/JS)
+            # 3. Atualizar Arquivos Estáticos
             call_command('collectstatic', interactive=False)
 
-            # 4. Forçar o Reload do Site no PythonAnywhere
-            # ATENÇÃO: Verifique se o nome do arquivo bate com seu usuário
+            # 4. Forçar o Reload do Site
             wsgi_path = '/var/www/lucasbayma_pythonanywhere_com_wsgi.py'
             
             if os.path.exists(wsgi_path):
-                os.utime(wsgi_path, None) # Isso "toca" no arquivo e força o reload
+                os.utime(wsgi_path, None)
                 return JsonResponse({"status": "success", "message": "Deploy realizado: Pull + Migrate + Reload."})
             else:
-                return JsonResponse({"status": "warning", "message": "Pull feito, mas arquivo WSGI não encontrado para reload."}, status=200)
+                return JsonResponse({"status": "warning", "message": "Pull feito, mas arquivo WSGI não encontrado."}, status=200)
 
         except Exception as e:
             return JsonResponse({"status": "error", "message": str(e)}, status=500)
@@ -113,16 +117,22 @@ def logout_view(request):
 class ArtigoDetailView(DetailView):
     model = Artigo
     template_name = 'ler_noticia.html'
-    context_object_name = 'conteudo'
+    # Define o nome padrão, mas vamos adicionar 'noticia' extra no contexto
+    context_object_name = 'artigo'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        artigo_atual = self.object
 
-        artigo = self.object
+        # --- CORREÇÃO DO ERRO ---
+        # Passamos a variável com o nome 'noticia' para o template funcionar
+        context['noticia'] = artigo_atual
+        context['conteudo'] = artigo_atual # Mantemos compatibilidade caso use esse nome
+        # ------------------------
 
         try:
-            context['recomendacoes'] = artigo.artigos_relacionados(limite=3)
-        except:
+            context['recomendacoes'] = artigo_atual.artigos_relacionados(limite=3)
+        except AttributeError:
             context['recomendacoes'] = []
 
         return context
@@ -159,6 +169,8 @@ def detalhe_noticia_estatica(request):
     lista_noticias_api = request.session.get('ultimas_noticias') 
 
     if not lista_noticias_api or not noticia_link:
+        # Se não tiver dados, redireciona para home em vez de erro 404
+        # ou exibe erro amigável se preferir
         raise Http404("Link inválido ou lista não encontrada.")
 
     noticia_detalhe = None
@@ -198,6 +210,8 @@ def detalhe_noticia_estatica(request):
             break
 
     context = {
+        # Aqui usamos 'noticia' também para padronizar com o template
+        'noticia': noticia_detalhe, 
         'conteudo': noticia_detalhe,
         'recomendacoes': recomendacoes
     }
@@ -260,8 +274,10 @@ def home(request):
     except requests.exceptions.RequestException as e:
         print(f"Erro de conexão com a API: {e}")
 
+    # Pega categorias do banco
     categorias = {c.nome.lower(): c.id for c in Categoria.objects.all()}
     
+    # Busca artigos do banco
     artigos_bd_ultimas = Artigo.objects.filter(
         categoria__nome__iexact='Últimas Notícias'
     ).order_by('-publicado_em')[:6] 
@@ -278,6 +294,7 @@ def home(request):
         categoria__nome__iexact='Clima'
     ).order_by('-publicado_em')[:6]
     
+    # Mescla Banco + API
     total_ultimas_bd = len(artigos_bd_ultimas)
     ultimas = list(artigos_bd_ultimas) + noticias_api[:(6 - total_ultimas_bd)]
     
@@ -313,13 +330,11 @@ def home(request):
         ]
     })
     
+    # Fallback se não tiver nada
     if not context.get('ultimas'):
         context['ultimas'] = [
             {'title': 'Notícia de exemplo 1', 'link': '#', 'description': 'Conteúdo simulado para testes.'},
             {'title': 'Notícia de exemplo 2', 'link': '#', 'description': 'Conteúdo simulado para testes.'},
-            {'title': 'Notícia de exemplo 3', 'link': '#', 'description': 'Conteúdo simulado para testes.'},
-            {'title': 'Notícia de exemplo 4', 'link': '#', 'description': 'Conteúdo simulado para testes.'},
-            {'title': 'Notícia de exemplo 5', 'link': '#', 'description': 'Conteúdo simulado para testes.'},
         ]
 
     return render(request, 'home.html', context)
