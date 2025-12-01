@@ -354,19 +354,22 @@ def home(request):
         'ultimas_noticias': context.get('ultimas', []),
         'destaques': Artigo.objects.filter(destaque=True).order_by('-publicado_em')[:3],
         'categorias': Categoria.objects.all(),
+        # Atalhos dinâmicos (melhor prática: usar IDs reais se possível, mas mantendo seu padrão atual)
         'atalhos': [
             {'nome': 'Home', 'url': '/'},
-            {'nome': 'Esportes', 'url': '/categoria/1/'},
-            {'nome': 'Política', 'url': '/categoria/2/'},
-            {'nome': 'Clima', 'url': '/categoria/3/'},
+            {'nome': 'Esportes', 'url': '/categoria/1/'}, # Certifique-se que o ID 1 existe
+            {'nome': 'Política', 'url': '/categoria/2/'}, # Certifique-se que o ID 2 existe
+            {'nome': 'Clima', 'url': '/categoria/3/'},    # Certifique-se que o ID 3 existe
         ],
         'anuncios': [
             {'titulo': 'Curso de Jornalismo Online', 'formato': 'desktop'},
             {'titulo': 'Assine o Portal Premium', 'formato': 'mobile'},
+            {'titulo': 'Promoção de Assinatura', 'formato': 'desktop'}, # Adicionado para teste de fluxo
+            {'titulo': 'App do Portal JC', 'formato': 'mobile'},
         ]
     })
     
-    # Fallback: se não tiver nada em 'ultimas', cria um feed mínimo
+    # Fallback: se não tiver nada em 'ultimas' (nem API nem Banco), cria um feed simulado
     if not context.get('ultimas'):
         context['ultimas'] = [
             {'title': 'Notícia de exemplo 1', 'link': '#', 'description': 'Conteúdo simulado para testes.'},
@@ -375,23 +378,30 @@ def home(request):
             {'title': 'Notícia de exemplo 4', 'link': '#', 'description': 'Conteúdo simulado para testes.'},
         ]
 
-    # --- AJUSTE FINO DA PROPORÇÃO DE ANÚNCIOS NO FEED ---
+    # --- LÓGICA DE INSERÇÃO DE ANÚNCIOS (CORRIGIDA) ---
     ultimas = context.get('ultimas', [])
-    anuncios = context.get('anuncios', [])
+    anuncios_disponiveis = context.get('anuncios', [])
 
     num_conteudo = len(ultimas)
+    num_anuncios_total = len(anuncios_disponiveis)
 
-    if num_conteudo > 0:
-        # Para garantir proporção <= 0.3:
-        # A <= 0.3 * (N + A)  => A <= 3N/7
-        max_anuncios = int((3 * num_conteudo) / 7)
-        # Cenário de teste exige pelo menos 1 anúncio, e menos de 5
-        max_anuncios = max(1, max_anuncios)
-        max_anuncios = min(max_anuncios, 4)
+    if num_conteudo > 0 and num_anuncios_total > 0:
+        # Regra de Negócio: Anúncios não podem passar de 30% do total de itens (conteúdo + anúncios)
+        # Fórmula derivada: A <= 0.3 * (N + A)  =>  0.7A <= 0.3N  =>  A <= (0.3/0.7)N  =>  A <= 3N/7
+        
+        max_anuncios_permitidos = int((3 * num_conteudo) / 7)
+        
+        # Garante que, se houver conteúdo, pelo menos 1 anúncio tenta ser exibido (se a regra permitir)
+        # Mas respeita o limite máximo de 4 anúncios por página para não poluir
+        qtd_final = min(max_anuncios_permitidos, 4, num_anuncios_total)
+        
+        # Se a conta der 0, mas temos bastante conteúdo (ex: 3 noticias), forçamos 1 anúncio
+        if qtd_final == 0 and num_conteudo >= 3:
+            qtd_final = 1
+
+        context['anuncios'] = anuncios_disponiveis[:qtd_final]
     else:
-        max_anuncios = 0
-
-    context['anuncios'] = anuncios[:max_anuncios]
+        context['anuncios'] = []
 
     return render(request, 'home.html', context)
 
