@@ -49,6 +49,14 @@ Site do Jornal do Commercio que estamos produzindo:
 <li><a href="https://kivo.pythonanywhere.com/"> Nosso Site JC</a></li>
 </ul>
 
+---
+
+## 🎥 Screencasts
+
+- [Screencast 1 – Screencast de testes](https://link-do-video.com)
+- [Screencast 2 – screencast processo de buid e deployment ](https://link-do-video.com)
+
+
 
 ## ✅ Entregas do Projeto
 
