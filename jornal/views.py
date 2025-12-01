@@ -124,10 +124,10 @@ class ArtigoDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         artigo_atual = self.object
 
-        # --- CORREÇÃO DO ERRO ---
+        # --- COMPATIBILIDADE ---
         # Passamos a variável com o nome 'noticia' para o template funcionar
         context['noticia'] = artigo_atual
-        context['conteudo'] = artigo_atual # Mantemos compatibilidade caso use esse nome
+        context['conteudo'] = artigo_atual 
         # ------------------------
 
         try:
@@ -170,23 +170,50 @@ def detalhe_noticia_estatica(request):
 
     if not lista_noticias_api or not noticia_link:
         # Se não tiver dados, redireciona para home em vez de erro 404
-        # ou exibe erro amigável se preferir
-        raise Http404("Link inválido ou lista não encontrada.")
+        return redirect('home')
 
-    noticia_detalhe = None
+    noticia_encontrada = None
 
     for n in lista_noticias_api:
         if n.get('link') == noticia_link:
-            noticia_detalhe = n
+            noticia_encontrada = n
             break
 
-    if noticia_detalhe is None:
+    if noticia_encontrada is None:
         raise Http404("Notícia não encontrada na sessão.")
+
+    # --- CORREÇÃO: PADRONIZAÇÃO DOS DADOS DA API ---
+    # Convertemos as chaves da API (title, description) para as do BD (titulo, subtitulo)
+    # Assim o template 'ler_noticia.html' funciona para os dois casos.
+    
+    autor_api = noticia_encontrada.get('creator')
+    if isinstance(autor_api, list):
+        autor_formatado = ", ".join(autor_api)
+    else:
+        autor_formatado = autor_api or noticia_encontrada.get('source_id')
+
+    noticia_padronizada = {
+        # Campos que o template espera (baseados no Model)
+        'titulo': noticia_encontrada.get('title'),
+        'subtitulo': noticia_encontrada.get('description'),
+        'conteudo': noticia_encontrada.get('content') or noticia_encontrada.get('description'),
+        'autor': autor_formatado,
+        'publicado_em': noticia_encontrada.get('pubDate'),
+        
+        # Campos específicos da API
+        'image_url': noticia_encontrada.get('image_url'),
+        'link': noticia_encontrada.get('link'),
+        'source_id': noticia_encontrada.get('source_id'),
+        
+        # Campos originais (backup)
+        'title': noticia_encontrada.get('title'),
+        'description': noticia_encontrada.get('description'),
+    }
 
     # -------------------------
     # RECOMENDAÇÕES RELACIONADAS (API)
     # -------------------------
-    categoria_atual = noticia_detalhe.get('category', [])
+    categoria_atual = noticia_encontrada.get('category', [])
     if isinstance(categoria_atual, str):
         categoria_atual = [categoria_atual]
 
@@ -194,8 +221,12 @@ def detalhe_noticia_estatica(request):
 
     recomendacoes = []
     for n in lista_noticias_api:
-        if n == noticia_detalhe:
+        if n == noticia_encontrada:
             continue
+        
+        # Também padronizamos a recomendação para o card funcionar
+        rec_padronizada = n.copy()
+        rec_padronizada['titulo'] = n.get('title')
 
         categorias = n.get('category', [])
         if isinstance(categorias, str):
@@ -204,15 +235,15 @@ def detalhe_noticia_estatica(request):
         categorias = [c.lower() for c in categorias]
 
         if any(cat in categorias for cat in categoria_atual):
-            recomendacoes.append(n)
+            recomendacoes.append(rec_padronizada)
 
         if len(recomendacoes) >= 3:
             break
 
     context = {
-        # Aqui usamos 'noticia' também para padronizar com o template
-        'noticia': noticia_detalhe, 
-        'conteudo': noticia_detalhe,
+        # Aqui usamos 'noticia' com o objeto padronizado
+        'noticia': noticia_padronizada, 
+        'conteudo': noticia_padronizada,
         'recomendacoes': recomendacoes
     }
 
