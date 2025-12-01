@@ -1,17 +1,14 @@
 name: Django CI/CD - Webhook
 
 on:
-  # Dispara a pipeline quando há código novo na main
   push:
     branches:
       - main
-  # Dispara a pipeline para testar Pull Requests (mas não faz deploy)
   pull_request:
     branches:
       - main
 
 jobs:
-  # 1. Job de Integração Contínua (Testes)
   ci:
     runs-on: ubuntu-latest
     env:
@@ -34,17 +31,16 @@ jobs:
         pip install -r requirements.txt
         
     - name: Run Tests
+      # AQUI ESTÁ A CORREÇÃO MÁGICA 👇
+      env:
+        NEWSDATA_API_KEY: ${{ secrets.NEWSDATA_API_KEY }}
+        SECRET_KEY: 'ci-secret-key-para-testes'
       run: |
-        export SECRET_KEY='ci-secret-key-para-testes'
         python manage.py test
       
-  # 2. Job de Deployment (CD)
   cd:
     needs: ci
     runs-on: ubuntu-latest
-    # ATUALIZAÇÃO IMPORTANTE:
-    # Garante que o deploy só roda se for um PUSH na MAIN.
-    # Evita deploys acidentais durante Pull Requests.
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     
     steps:
