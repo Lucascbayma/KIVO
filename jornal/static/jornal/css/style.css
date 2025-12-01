@@ -27,7 +27,7 @@ header.header {
 }
 .header {
   position: fixed;
-  top: 0;
+  top: 40px;
   left: 50%;
   transform: translateX(-50%);
   width: 440px;
@@ -56,6 +56,23 @@ header.header {
   justify-content: flex-end;
   flex: 1;
   gap: 0px;
+}
+
+.uol-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #333333;
+    padding: 8px 0;
+    display: flex;
+    justify-content: center;
+    z-index: 9999; 
+}
+
+.uol-logo {
+height: 28px;
+display: block;
 }
 .logo-container {
   width: 79px;
