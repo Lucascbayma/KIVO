@@ -200,6 +200,19 @@ Site do Jornal do Commercio que estamos produzindo:
 
 </details> 
 
+<details><summary><b>Semana 17</b></summary>
+<ul>
+<li><a > Protótipo navegável com interface aplicada (Design)</a></li>
+<li><a > Adicionar ao README documentação clara e objetiva conduzindo qualquer pessoa a montar o ambiente corretamente e contribuir com o projeto.</a>
+<li><a > Finalização do relatório da programação em PAR.</a></li>
+<li><a > Criação de usuários na aplicação para uso dos avaliadores para fins de testes.</a></li>
+
+
+</ul>
+
+</details> 
+
+
 
 
 
