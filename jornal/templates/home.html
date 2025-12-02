@@ -19,56 +19,58 @@
   <input type="checkbox" id="hamburger-toggle" class="hamburger-toggle">
 
   <nav class="mobile-menu" id="mobile-menu-panel">
-      <label for="hamburger-toggle" class="mobile-menu-close" aria-label="Fechar menu">
-          &times; 
-      </label>
+    
+    <div class="menu-header">
+        <label for="hamburger-toggle" class="mobile-menu-close" aria-label="Fechar menu">
+            &times; 
+        </label>
+    </div>
 
-      <div class="mobile-menu-body">
-          
-          <div class="menu-group">
-      
-              <input 
-                  type="checkbox" 
-                  id="nav-toggle-navegacao" 
-                  class="submenu-toggle"
-              >
-              
-              <label for="nav-toggle-navegacao">
-                  <span class="menu-heading">
-                      <span class="chevron">&#8964;</span> Navegação
-                  </span>
-              </label>
-              
-              <ul class="menu-indented">
-                  <li><a href="#">Editoria</a></li>
-                  <li><a href="#">Esportes</a></li>
-                  <li><a href="#">Pernambuco</a></li>
-                  <li><a href="#">Mais</a></li>
-              </ul>
-          </div>
+    <div class="mobile-menu-body">
+        
+        <div class="menu-group-accordion">
+            <input type="checkbox" id="nav-toggle-institucional" class="submenu-toggle">
+            
+            <label for="nav-toggle-institucional" class="menu-label-accordion">
+                <span class="chevron">&#8964;</span> Institucional
+            </label>
+            
+            <ul class="menu-indented">
+                <li><a href="#">Quem somos</a></li>
+                <li><a href="#">História</a></li>
+            </ul>
+        </div>
 
-          <div class="menu-group">
-              <a class="menu-link-main" href="#">Em Alta</a>
-              <a class="menu-link-main" href="#">Últimas Notícias</a>
-              <a class="menu-link-main" href="#">Newsletter</a>
-              <a href="{% url 'jornal:todas_as_noticias' %}" class="menu-link-main">
-                Todas as noticias
-              </a>
-          </div>
+        <a class="menu-link-main" href="#">Em Alta</a>
+        <a class="menu-link-main" href="#">Últimas Notícias</a>
 
-          <a href="{% url 'adicionar_artigo' %}" class="btn-adicionar-noticia-mobile">
+        <div class="menu-group-accordion">
+            <input type="checkbox" id="nav-toggle-noticias" class="submenu-toggle">
+            
+            <label for="nav-toggle-noticias" class="menu-label-accordion">
+                <span class="chevron">&#8964;</span> Todas as Notícias
+            </label>
+            
+            <ul class="menu-indented">
+                <li><a href="#">Ver todas</a></li> <li><a href="#">Esportes</a></li>
+                <li><a href="#">Política</a></li>
+                <li><a href="#">Educação</a></li>
+            </ul>
+        </div>
+        <a class="menu-link-main" href="#">Newsletter</a>
+        <a href="/adicionar/" class="btn-adicionar-noticia-mobile">
               + Adicionar Notícia
-          </a>
+        </a>
 
-          <div class="social-icons-grid">
-            <a href="https://www.instagram.com/jc_pe/#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
-            <a href="https://www.tiktok.com/@jc_pe" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
-            <a href="https://www.linkedin.com/company/sistema-jornal-do-commercio" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
-            <a href="https://www.facebook.com/jornaldocommercioPE" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
-            <a href="https://www.youtube.com/@JCPlayOficial" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
-            <a href="https://x.com/jc_pe" aria-label="X (Twitter)"><i class="bi bi-twitter-x"></i></a>
-          </div>
-      </div>
+        <div class="social-icons-grid">
+            <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+            <a href="#" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
+            <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+            <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+            <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+            <a href="#" aria-label="X"><i class="bi bi-twitter-x"></i></a>
+        </div>
+    </div>
   </nav>
 
   <label for="hamburger-toggle" class="mobile-menu-overlay"></label>
@@ -84,9 +86,9 @@
     </div>
 
     <div class="col right">
-  <a href="{% url 'jornal:todas_as_noticias' %}" class="header-icon-btn search-btn" aria-label="Buscar">
-      <i class="bi bi-search"></i>
-</a>
+        <button class="header-icon-btn search-btn" aria-label="Buscar">
+            <i class="bi bi-search"></i>
+        </button>
         
         <label for="hamburger-toggle" class="hamburger-label" id="frame1">
             <i class="bi bi-list" style="font-size: 24px;"></i>
