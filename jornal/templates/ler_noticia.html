@@ -8,7 +8,6 @@
     
     <link rel="stylesheet" href="{% static 'jornal/css/ler_noticia.css' %}">
     <link rel="stylesheet" href="{% static 'jornal/css/style.css' %}">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
@@ -16,55 +15,45 @@
       data-noticia-titulo="{{ noticia.title|default:noticia.titulo }}">
 
 <header class="header">
-    <div class="col left">
-        <div class="logo-container">
-            <img src="{% static 'jornal/imagens/logo.svg' %}" alt="JC" class="logo-img">
-        </div>
+    
+    <a href="#" class="header-icon back-arrow" title="Voltar">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+    
+    <div class="logo-container">
+        <img src="{% static 'jornal/imagens/logo.svg' %}" alt="JC" class="logo-img">
     </div>
+    
+    <div class="header-right-group">
+        
+        <a href="#" class="header-icon search-btn" title="Buscar">
+            <i class="fas fa-magnifying-glass"></i>
+        </a>
 
-    <div class="col center">
-        <nav class="menu">
-            <a href="#">Editoria</a>
-            <a href="#">Esportes</a>
-            <a href="#">Pernambuco</a>
-            <a href="#">Mais</a>
-        </nav>
-    </div>
-
-    <div class="col right">
-        <a href="{% url 'adicionar_artigo' %}" 
-           class="btn-adicionar-noticia"
-           style="color: white; text-decoration: none; font-weight: 600; padding: 5px 10px; border: 1px solid white; border-radius: 4px;">
-           + Adicionar Notícia
+        <a href="#" class="header-icon hamburger-label" id="Frame-1" title="Menu">
+            <i class="fas fa-bars"></i>
         </a>
     </div>
-</header>
 
+</header>
 
 <main class="container-noticia" style="padding-top: 64px;">
 
 {% if noticia %}
 
-    <!-- TÍTULO -->
     <header class="header-noticia">
         <h1 class="titulo-noticia">{{ noticia.title|default:noticia.titulo }}</h1>
-        
-        <!-- CORREÇÃO AQUI: Trocado 'resumo' por 'subtitulo' -->
         <p class="lead-noticia">{{ noticia.description|default:noticia.subtitulo }}</p>
     </header>
 
-    <!-- AUTOR / FONTE / DATA -->
     <div class="metadados-e-compartilhamento">
         <div class="info-data-autor">
-
             {% if noticia.source_id %}
                 <p class="autor">Fonte: <strong>{{ noticia.source_id }}</strong></p>
             {% endif %}
-
             {% if noticia.autor %}
                 <p class="autor">Autor: <strong>{{ noticia.autor }}</strong></p>
             {% endif %}
-
             {% if noticia.pubDate %}
                 <p class="datas">Publicado em {{ noticia.pubDate|date:"d/m/Y" }} às {{ noticia.pubDate|date:"H:i" }}</p>
             {% elif noticia.publicado_em %}
@@ -75,71 +64,45 @@
         </div>
     </div>
 
-    <!-- IMAGEM PRINCIPAL -->
     <figure class="imagem-principal">
         {% if noticia.image_url %}
-            <img src="{{ noticia.image_url }}" alt="{{ noticia.title }}" 
-                 onerror="this.onerror=null; this.style.display='none';">
+            <img src="{{ noticia.image_url }}" alt="{{ noticia.title }}" onerror="this.onerror=null; this.style.display='none';">
         {% elif noticia.imagem %}
             <img src="{{ noticia.imagem.url }}" alt="{{ noticia.titulo }}">
         {% else %}
-            <!-- Espaço reservado se não houver imagem -->
-            <div style="padding:40px; text-align:center; background:#f9f9f9; color:#999; border-radius:8px;">
-                (Sem imagem de capa)
-            </div>
+            <div style="padding:40px; text-align:center; background:#f9f9f9; color:#999; border-radius:8px;">(Sem imagem de capa)</div>
         {% endif %}
     </figure>
 
-    <!-- CONTEÚDO -->
     <section class="conteudo-noticia">
         {% if noticia.conteudo %}
             <p style="white-space: pre-line;">{{ noticia.conteudo }}</p>
         {% elif noticia.content %}
-            <!-- Adicionado suporte para 'content' caso venha da API com esse nome -->
             <p style="white-space: pre-line;">{{ noticia.content }}</p>
         {% else %}
             <p><strong>A notícia completa só pode ser acessada na fonte original.</strong></p>
             <p>Para continuar lendo, use o link abaixo:</p>
-
-            <a href="{{ noticia.link }}" 
-               target="_blank"
-               class="destaque-link"
-               id="link-fonte-original"
-               style="display:block;margin-top:15px;font-size:1.15rem;">
-               [LEIA MAIS] Fonte: {{ noticia.source_id|default:"Fonte Externa" }}
-            </a>
+            <a href="{{ noticia.link }}" target="_blank" class="destaque-link" id="link-fonte-original" style="display:block;margin-top:15px;font-size:1.15rem;">[LEIA MAIS] Fonte: {{ noticia.source_id|default:"Fonte Externa" }}</a>
         {% endif %}
     </section>
 
-
-    <!-- ======================================================== -->
-    <!-- RECOMENDAÇÕES CONTEXTUAIS DINÂMICAS                     -->
-    <!-- ======================================================== -->
-
     <section class="noticias-relacionadas">
         <h2 class="titulo-relacionadas">LEIA TAMBÉM</h2>
-
         {% if recomendacoes %}
             <div class="grid-relacionadas" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px;">
             {% for rec in recomendacoes %}
                 <article class="relacionada-item">
-                    <!-- Verifica se é objeto do BD (tem .id) ou dict da API (usa link como id ou similar) -->
                     <a href="{% if rec.id %}{% url 'artigo_detalhe' rec.id %}{% else %}{% url 'detalhe_noticia_estatica' %}?link={{ rec.link }}{% endif %}" class="link-relacionada">
-
                         <div class="thumb-relacionada">
                             {% if rec.image_url %}
-                                <img src="{{ rec.image_url }}" alt="{{ rec.title|default:rec.titulo }}" style="width:100%; height:150px; object-fit:cover; border-radius:4px;">
+                                <img src="{{ rec.image_url }}" alt="{{ rec.title|default:rec.titulo }}">
                             {% elif rec.imagem %}
-                                <img src="{{ rec.imagem.url }}" alt="{{ rec.titulo }}" style="width:100%; height:150px; object-fit:cover; border-radius:4px;">
+                                <img src="{{ rec.imagem.url }}" alt="{{ rec.titulo }}">
                             {% else %}
                                 <div style="width:100%; height:150px; background:#eee; display:flex; align-items:center; justify-content:center; border-radius:4px;">Sem Imagem</div>
                             {% endif %}
                         </div>
-
-                        <p class="titulo-item-relacionado" style="margin-top:10px; font-weight:600;">
-                            {{ rec.title|default:rec.titulo }}
-                        </p>
-
+                        <p class="titulo-item-relacionado" style="margin-top:10px; font-weight:600;">{{ rec.title|default:rec.titulo }}</p>
                     </a>
                 </article>
             {% endfor %}
@@ -150,36 +113,22 @@
     </section>
 
 {% else %}
-
     <header class="header-noticia">
         <h1 class="titulo-noticia">Erro ao Carregar Notícia</h1>
-        <p class="lead-noticia">
-            Não foi possível carregar os dados desta notícia. <br>
-            Volte para a <a href="{% url 'home' %}">Página Inicial</a> e tente novamente.
-        </p>
+        <p class="lead-noticia">Não foi possível carregar os dados desta notícia. <br> Volte para a <a href="{% url 'home' %}">Página Inicial</a> e tente novamente.</p>
     </header>
-
 {% endif %}
 
 </main>
 
-
-<!-- BANNER "CONTINUAR LENDO" -->
 <div id="banner-continuar-leitura" style="display: none;">
     <div class="conteudo-banner">
-        <span class="mensagem-banner">
-            Você estava lendo: <strong id="titulo-noticia-banner"></strong>
-        </span>
-
-        <a id="link-noticia-banner" href="#" class="btn-voltar-leitura">
-            Deseja voltar para o artigo?
-        </a>
-
+        <span class="mensagem-banner">Você estava lendo: <strong id="titulo-noticia-banner"></strong></span>
+        <a id="link-noticia-banner" href="#" class="btn-voltar-leitura">Deseja voltar para o artigo?</a>
         <button id="fechar-banner" class="btn-fechar">×</button>
     </div>
 </div>
 
 <script src="{% static 'jornal/js/rastreamento_leitura.js' %}"></script>
-
 </body>
 </html>

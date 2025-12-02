@@ -29,17 +29,87 @@ body {
     flex-shrink: 0;
     background-color: #D9D9D9; 
     margin: 0 auto; 
-    display: flex; 
+    
+    /* Layout Flex para as pontas (Seta e Grupo Direita) */
+    display: flex;
     align-items: center;
-    padding: 0 10px;
+    justify-content: space-between; 
+    padding: 0 15px; 
+    
+    /* Necessário para o posicionamento absoluto do logo */
+    position: relative; 
 }
+
+/* Estilo geral para links/ícones no header */
+.header-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #000; 
+    flex-shrink: 0;
+}
+
+/* 1. Seta Voltar (Imagem frame 2) */
+.back-arrow {
+    padding: 0;
+    /* Removemos qualquer tamanho fixo do link, deixamos a imagem definir */
+}
+
+.back-arrow img {
+    width: 50px;
+    height: 46px;
+    display: block;
+}
+
+/* 2. Logo Container (Centralizado Absolutamente) */
+/* Isso garante que o logo fique EXATAMENTE no centro, independente do tamanho dos ícones laterais */
+.logo-container {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-img {
+    height: 40px; 
+    width: auto;
+}
+
+/* Grupo da Direita (Agrupa Busca + Menu) */
+.header-right-group {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Espaço entre a Lupa e o Menu */
+}
+
+/* 3. Busca (search-btn) */
+.search-btn i {
+    font-size: 22px; 
+}
+
+/* 4. Menu Hamburguer (Frame 1) */
+.hamburger-label {
+    width: 44px;
+    height: 44px;
+}
+
+.hamburger-label i {
+    font-size: 30px; 
+}
+
+/* ========================================= */
+/* CONTEÚDO DA NOTÍCIA             */
+/* ========================================= */
 
 .container-noticia {
     max-width: var(--largura-maxima);
     margin: 0 auto;
     padding: 20px;
 }
-
 
 .titulo-noticia {
     font-size: 2.2rem; 
@@ -55,12 +125,10 @@ body {
     margin-bottom: 25px;
 }
 
-
 .metadados-e-compartilhamento {
     display: flex;
     margin-bottom: 20px;
     position: relative;
-
     border-bottom: 1px solid #eee; 
     padding-bottom: 15px;
 }
@@ -84,7 +152,6 @@ body {
     font-size: 0.8rem;
     color: var(--cor-secundaria-texto);
 }
-
 
 .compartilhamento-lateral {
     position: absolute;
@@ -113,7 +180,6 @@ body {
 .facebook { background-color: #3b5998; }
 .compartilhar { background-color: #666; } 
 
-
 .imagem-principal {
     margin: 20px 0;
 }
@@ -133,7 +199,6 @@ body {
     margin-top: 5px;
 }
 
-
 .conteudo-noticia p {
     font-size: 1.15rem;
     margin-bottom: 25px;
@@ -146,11 +211,11 @@ body {
     font-weight: 700;
 }
 
-
 .destaque-link {
     font-weight: 700;
     color: var(--cor-link);
 }
+
 
 .noticias-relacionadas {
     margin-top: 40px;
