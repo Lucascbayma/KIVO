@@ -863,3 +863,100 @@ ul.menu-indented {
     font-size: 15px;
     border: 1px solid #dcdcdc;
 }
+
+/* ============================
+   HEADER ESPECÍFICO - TODAS AS NOTÍCIAS
+   Colocar no FINAL de style.css
+   ============================ */
+
+.header.header-todas {
+  /* anulamos comportamento fixo/global e posicionamos normalmente na página */
+  position: static !important;
+  top: auto !important;
+  left: auto !important;
+  transform: none !important;
+  width: 100%;
+  max-width: 1000px; /* ajusta largura da página */
+  margin: 12px auto; /* centraliza horizontalmente */
+  height: auto;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: transparent; /* ou mantenha var(--header-bg) se quiser */
+  box-shadow: none;
+  z-index: 5;
+}
+
+/* botão voltar (esquerda) */
+.header.header-todas .btn-voltar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: transparent;
+  border: none;
+  color: var(--dark);
+  font-size: 22px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+/* logo central, posicionada para garantir centralização perfeita */
+.header.header-todas .logo-container {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 140px; /* ajuste conforme o tamanho real do logo */
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none; /* evita clique por trás do link da logo, mas o <a> ainda capta o clique */
+}
+
+/* permite clique no <a> interno da logo */
+.header.header-todas .logo-container a {
+  pointer-events: auto;
+}
+
+/* imagem do logo - evita que estoure em telas pequenas */
+.header.header-todas .logo-img {
+  max-width: 140px;
+  height: auto;
+  display: block;
+}
+
+/* menu hamburguer (direita) */
+.header.header-todas .menu-hamburguer {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--dark);
+}
+
+/* Responsividade: em telas pequenas reduz o logo e mantém espaçamento */
+@media (max-width: 480px) {
+  .header.header-todas {
+    padding: 8px 12px;
+  }
+  .header.header-todas .logo-container {
+    max-width: 110px;
+  }
+  .header.header-todas .logo-img {
+    max-width: 110px;
+  }
+  .header.header-todas .btn-voltar,
+  .header.header-todas .menu-hamburguer {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+}
