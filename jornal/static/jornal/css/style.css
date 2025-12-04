@@ -786,3 +786,50 @@ ul.menu-indented {
 .submenu-toggle:checked ~ .menu-label-accordion .chevron {
   transform: rotate(180deg); 
 }
+
+.filtros-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    position: relative;
+}
+.campo-busca-wrapper {
+    position: relative;
+    width: 45%;
+}
+
+.campo-busca {
+    width: 100%;
+    padding: 8px;
+}
+
+.sugestoes {
+    position: absolute;
+    top: 38px;
+    left: 0;
+    width: 100%;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    z-index: 99;
+}
+
+.sugestoes.hidden {
+    display: none;
+}
+
+.sugestoes-item {
+    padding: 8px;
+    cursor: pointer;
+}
+
+.sugestoes-item:hover {
+    background: #f0f0f0;
+}
+
+.select-ordenar,
+.botao-filtrar {
+    padding: 8px;
+}

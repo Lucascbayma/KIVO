@@ -15,6 +15,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib import messages
 from django.template.loader import render_to_string
+from django.http import JsonResponse
+from .models import Artigo
 
 # Chaves de API e URLs
 NEWSDATA_API_KEY = settings.NEWSDATA_API_KEY 
@@ -454,3 +456,17 @@ def ajax_todas_noticias(request):
     page_obj = paginator.get_page(page_number)
     artigos_html = [render_to_string('partials/card_noticia.html', {'n': n}) for n in page_obj]
     return JsonResponse({'artigos': artigos_html, 'has_next': page_obj.has_next()})
+
+def sugestoes_busca(request):
+    termo = request.GET.get("q", "").strip()
+
+    if termo == "":
+        return JsonResponse([], safe=False)
+
+    sugestoes = (
+        Artigo.objects
+        .filter(titulo__icontains=termo)
+        .values_list("titulo", flat=True)[:5]
+    )
+
+    return JsonResponse(list(sugestoes), safe=False)

@@ -37,21 +37,31 @@
         {% if categoria_nome %}Notícias sobre {{ categoria_nome }}{% else %}Todas as Notícias{% endif %}
     </h1>
 
-    <form method="get" style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin-bottom:20px;">
-    <input type="text" name="q" value="{{ busca|default:'' }}" placeholder="Pesquisar notícia..." style="width:45%; padding:8px;">
+    <form method="get" class="filtros-container">
 
-    <select name="ordenar" style="padding:8px;">
+    <div class="campo-busca-wrapper">
+        <input id="campo-busca"
+               type="text"
+               name="q"
+               value="{{ busca|default:'' }}"
+               placeholder="Pesquisar notícia..."
+               class="campo-busca">
+
+        <div id="caixa-sugestoes" class="sugestoes hidden"></div>
+    </div>
+
+    <select name="ordenar" class="select-ordenar">
         <option value="mais_recentes" {% if ordenacao == "mais_recentes" %}selected{% endif %}>Mais recentes</option>
         <option value="mais_antigas" {% if ordenacao == "mais_antigas" %}selected{% endif %}>Mais antigas</option>
         <option value="titulo_az" {% if ordenacao == "titulo_az" %}selected{% endif %}>Título A–Z</option>
-        <option value="titulo_az" {% if ordenacao == "titulo_za" %}selected{% endif %}>Título Z-A</option>
+        <option value="titulo_za" {% if ordenacao == "titulo_za" %}selected{% endif %}>Título Z–A</option>
     </select>
 
     {% if categoria_nome %}
         <input type="hidden" name="categoria" value="{{ categoria_nome }}">
     {% endif %}
 
-    <button type="submit" style="padding:8px 15px;">Filtrar</button>
+    <button type="submit" class="botao-filtrar">Filtrar</button>
 </form>
 
     <div class="grid-noticias" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:20px;">
@@ -87,6 +97,7 @@
         {% endif %}
     </div>
     {% endif %}
+    <script src="{% static 'jornal/js/todas_noticias.js' %}"></script>
 </main>
 
 </body>
