@@ -382,9 +382,9 @@ footer .card .media::after {
 .submit-button:hover {
   background: #333;
 }
-/* ========================
-   ANÚNCIOS – 320 x 100
-======================== */
+/*
+ ANÚNCIOS – 320 x 100
+ */
 .bloco-anuncio {
   display: flex;
   justify-content: center;
@@ -405,7 +405,7 @@ footer .card .media::after {
   border-radius: 6px;
 }
 
-/* Mobile – mantém 320×100 */
+
 @media (max-width: 767px) {
   .bloco-anuncio {
     width: 320px;
