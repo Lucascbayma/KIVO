@@ -56,6 +56,11 @@ Site do Jornal do Commercio que estamos produzindo:
 - [Screencast 1 – Screencast de testes](https://youtu.be/0eayAF3NDRA)
 - [Screencast 2 – screencast processo de buid e deployment ](https://youtu.be/UIbzFPQYTnQ)
 
+---
+
+## 🤝 Como Montar o Ambiente e Contribuir com o Projeto ?
+
+<li></li>
 
 
 ## ✅ Entregas do Projeto
