@@ -39,30 +39,42 @@
 
     <form method="get" class="filtros-container">
 
-    <div class="campo-busca-wrapper">
+    <!-- Campo de busca -->
+    <div class="campo-busca">
+        <i class="bi bi-search"></i>
         <input id="campo-busca"
                type="text"
                name="q"
                value="{{ busca|default:'' }}"
-               placeholder="Pesquisar notícia..."
-               class="campo-busca">
-
-        <div id="caixa-sugestoes" class="sugestoes hidden"></div>
+               placeholder="Buscar">
     </div>
 
-    <select name="ordenar" class="select-ordenar">
-        <option value="mais_recentes" {% if ordenacao == "mais_recentes" %}selected{% endif %}>Mais recentes</option>
-        <option value="mais_antigas" {% if ordenacao == "mais_antigas" %}selected{% endif %}>Mais antigas</option>
-        <option value="titulo_az" {% if ordenacao == "titulo_az" %}selected{% endif %}>Título A–Z</option>
-        <option value="titulo_za" {% if ordenacao == "titulo_za" %}selected{% endif %}>Título Z–A</option>
-    </select>
+    <div id="caixa-sugestoes" class="sugestoes hidden"></div>
+
+    <!-- Filtrar (ícone + texto) -->
+    <div class="item-filtro">
+        <i class="bi bi-funnel"></i>
+        <span>Filtrar</span>
+    </div>
+
+    <!-- Ordenação -->
+    <div class="item-ordenar">
+        <i class="bi bi-sort-down"></i>
+        <span>Ordenar por:</span>
+        <select name="ordenar" class="select-ordenar">
+            <option value="mais_recentes" {% if ordenacao == "mais_recentes" %}selected{% endif %}>Mais recentes</option>
+            <option value="mais_antigas" {% if ordenacao == "mais_antigas" %}selected{% endif %}>Mais antigas</option>
+            <option value="titulo_az" {% if ordenacao == "titulo_az" %}selected{% endif %}>Título A–Z</option>
+            <option value="titulo_za" {% if ordenacao == "titulo_za" %}selected{% endif %}>Título Z–A</option>
+        </select>
+    </div>
 
     {% if categoria_nome %}
         <input type="hidden" name="categoria" value="{{ categoria_nome }}">
     {% endif %}
 
-    <button type="submit" class="botao-filtrar">Filtrar</button>
 </form>
+
 
     <div class="grid-noticias" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:20px;">
         {% for n in page_obj %}
