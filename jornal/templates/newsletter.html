@@ -13,40 +13,45 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"> 
 
     <style>
-        /* RESET TOTAL PARA O CONTAINER DA NEWSLETTER */
+
         #newsletter-main {
-            /* Força bruta para anular o Flexbox do body do style.css */
             display: block !important;
             position: relative !important;
             width: 440px !important;
-            height: 3766px !important;
-            margin: 20px auto !important; /* Centraliza na tela */
-            background-color: #FFFFFF !important;
             
-            /* Reseta heranças de texto */
+
+            height: auto !important; 
+            
+
+            margin: 20px auto 16px auto !important; 
+            
+            background-color: #FFFFFF !important;
             color: #000000 !important;
             font-family: 'Inter', sans-serif !important;
             text-align: left !important;
-            
-            /* Remove bordas ou paddings globais */
             border: none !important;
-            padding-top: 20px !important;
+            
+            padding: 20px 0 0 0 !important; 
+            
             box-shadow: none !important;
             z-index: 1 !important;
         }
 
-        /* Garante que TUDO dentro da newsletter obedeça ao Box Model correto */
         #newsletter-main * {
             box-sizing: border-box !important;
             font-family: 'Inter', sans-serif !important;
         }
 
-        /* --- TÍTULOS (H2) --- */
+
         #newsletter-main h2 {
-            font-size: 18px !important;
-            font-weight: 700 !important;
+            width: 408px !important;
+            margin: 0 auto 25px auto !important;
             color: #000000 !important;
-            margin: 0 0 20px 16px !important;
+            font-family: 'Inter', sans-serif !important;
+            font-size: 28px !important;
+            font-style: normal !important;
+            font-weight: 600 !important;
+            line-height: normal !important;
             padding: 0 !important;
             text-align: left !important;
             border: none !important;
@@ -54,15 +59,12 @@
             text-transform: none !important;
         }
 
-        /* --- CARTÕES (NEWSLETTER OPTION) --- */
+
         #newsletter-main .newsletter-option {
-            /* Dimensões e Cores Fixas */
             width: 408px !important;
             height: 209px !important;
             background-color: #D9D9D9 !important;
             margin: 0 auto 20px auto !important;
-            
-            /* Layout Absoluto Interno */
             display: block !important; 
             position: relative !important;
             border-radius: 4px !important;
@@ -70,45 +72,46 @@
             box-shadow: none !important;
         }
 
-        /* Ícone */
+
         #newsletter-main .option-icon {
             position: absolute !important;
-            left: 20px !important;
-            top: 20px !important;
-            width: 56px !important;
-            height: 56px !important;
-            background: transparent !important;
+            left: 12px !important;
+            top: 12px !important;
+            width: 64px !important;
+            height: 64px !important;
+            aspect-ratio: 1/1 !important;
+            border-radius: 84px !important;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            background: #000000 !important; 
         }
 
-        /* Título do Card (H3) */
+
         #newsletter-main .newsletter-option h3 {
             position: absolute !important;
             left: 92px !important;
             top: 20px !important;
             width: 300px !important;
             height: 48px !important;
-            
             display: flex !important;
             flex-direction: column !important;
             justify-content: center !important;
             align-items: flex-start !important;
-            
             color: #000000 !important;
             font-size: 22px !important;
             font-weight: 600 !important;
             line-height: normal !important;
-            
             margin: 0 !important;
             background: transparent !important;
         }
 
-        /* Texto Descritivo (P) */
+
         #newsletter-main .newsletter-option p {
             position: absolute !important;
             top: 84px !important;
             left: 12.5px !important;
             width: 383px !important;
-            
             color: #4B4B4B !important;
             font-size: 16px !important;
             font-weight: 400 !important;
@@ -117,24 +120,21 @@
             margin: 0 !important;
         }
 
-        /* --- BOTÃO VERMELHO "ADICIONAR" --- */
+
         #newsletter-main .add-button {
             position: absolute !important;
             top: 157px !important;
             left: 123px !important;
-            
             display: inline-flex !important;
             justify-content: center !important;
             align-items: center !important;
             padding: 6px 24px !important;
-            
+            gap: 6px !important;
             background-color: #D4040C !important;
             color: #FFFFFF !important;
-            
             border: none !important;
             border-radius: 4px !important;
             cursor: pointer !important;
-            
             font-size: 18px !important;
             font-weight: 600 !important;
             text-transform: none !important;
@@ -146,7 +146,7 @@
             background-color: #b0030a !important;
         }
 
-        /* --- ELEMENTOS FINAIS --- */
+
         #newsletter-main hr.separator {
             width: 100% !important;
             border: 0 !important;
@@ -155,29 +155,40 @@
             opacity: 1 !important;
         }
 
-        /* Lista Selecionada */
+
         #newsletter-main .selected-item {
-            background-color: #f0f0f0 !important;
-            padding: 10px !important;
-            margin: 0 16px 10px 16px !important;
+            width: 408px !important;
+            height: 40px !important;
+            margin: 0 auto 10px auto !important;
             display: flex !important;
             justify-content: space-between !important;
+            align-items: center !important;
+            background-color: #f0f0f0 !important;
+            padding: 0 10px !important;
             border-radius: 4px !important;
-            
-            color: #333 !important;
-            font-size: 14px !important;
-            font-weight: normal !important;
+            color: #000000 !important;
+            font-family: 'Inter', sans-serif !important;
+            font-size: 20px !important;
+            font-style: normal !important;
+            font-weight: 400 !important;
+            line-height: normal !important;
         }
 
         #newsletter-main .remove-topic {
-            color: #D4040C !important;
+            color: #000000 !important; 
             cursor: pointer;
             font-weight: bold;
+            font-size: 20px !important; 
+            line-height: 1 !important;
+            display: flex !important; 
+            align-items: center !important;
         }
 
         /* Formulário */
         #newsletter-main form {
             padding: 0 16px !important;
+            width: 408px !important;
+            margin: 20px auto 0 auto !important; 
         }
 
         #newsletter-main .form-group {
@@ -225,21 +236,24 @@
             margin: 0 !important;
         }
 
+        /* BOTÃO FINAL */
         #newsletter-main .subscribe-button-final {
             display: block !important;
             width: 100% !important;
             margin-top: 30px !important;
             padding: 15px !important;
-            
-            background-color: #000000 !important;
+            background-color: #D4040C !important; 
             color: #FFFFFF !important;
-            
             border: none !important;
             border-radius: 4px !important;
             font-size: 18px !important;
             font-weight: bold !important;
             cursor: pointer !important;
             text-transform: none !important;
+        }
+
+        #newsletter-main .subscribe-button-final:hover {
+            background-color: #b0030a !important;
         }
     </style>
 </head>
@@ -256,41 +270,8 @@
             <label for="hamburger-toggle" class="mobile-menu-close" aria-label="Fechar menu">&times;</label>
         </div>
         <div class="mobile-menu-body">
-            <div class="menu-group-accordion">
-                <input type="checkbox" id="nav-toggle-institucional" class="submenu-toggle">
-                <label for="nav-toggle-institucional" class="menu-label-accordion">
-                    <span class="chevron">&#8964;</span> Institucional
-                </label>
-                <ul class="menu-indented">
-                    <li><a href="#">Quem somos</a></li>
-                    <li><a href="#">História</a></li>
-                </ul>
-            </div>
-            <a class="menu-link-main" href="#">Em Alta</a>
             <a class="menu-link-main" href="#">Últimas Notícias</a>
-            <div class="menu-group-accordion">
-                <input type="checkbox" id="nav-toggle-noticias" class="submenu-toggle">
-                <label for="nav-toggle-noticias" class="menu-label-accordion">
-                    <span class="chevron">&#8964;</span> Todas as Notícias
-                </label>
-                <ul class="menu-indented">
-                    <li><a href="#">Ver todas</a></li> 
-                    <li><a href="#">Esportes</a></li>
-                    <li><a href="#">Política</a></li>
-                    <li><a href="#">Educação</a></li>
-                </ul>
             </div>
-            <a class="menu-link-main" href="{% url 'jornal:newsletter_subscribe' %}">Newsletter</a>
-            <a href="/adicionar/" class="btn-adicionar-noticia-mobile">+ Adicionar Notícia</a>
-            <div class="social-icons-grid">
-                <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
-                <a href="#" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
-                <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
-                <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
-                <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
-                <a href="#" aria-label="X"><i class="bi bi-twitter-x"></i></a>
-            </div>
-        </div>
     </nav>
     <label for="hamburger-toggle" class="mobile-menu-overlay"></label>
 
@@ -302,11 +283,10 @@
             </div>
         </div>
         <div class="col right">
-            <a href="{% url 'jornal:todas_as_noticias' %}" class="header-icon-btn search-btn"><i class="bi bi-search"></i></a>
-            <label for="hamburger-toggle" class="hamburger-label" id="frame1"><i class="bi bi-list" style="font-size: 24px;"></i></label>
+            <a href="#" class="header-icon-btn search-btn"><i class="bi bi-search"></i></a>
+            <label for="hamburger-toggle" class="hamburger-label"><i class="bi bi-list" style="font-size: 24px;"></i></label>
         </div>
     </header>
-
 
     <div id="newsletter-main"> 
         
@@ -319,7 +299,7 @@
                     <h3>Essencial JC</h3>
                     <p>Receba todas as newsletters do combo Essencial com as notícias mais importantes de 5 em 5 minutos.</p>
                 </div>
-                <button class="add-button">Adicionar</button>
+                <button class="add-button">+ Adicionar</button>
             </div>
 
             <div class="newsletter-option" data-topic="saude-bem-estar">
@@ -328,7 +308,7 @@
                     <h3>Saúde e Bem-Estar</h3>
                     <p>Às segundas, notícias aprofundadas e relevantes sobre saúde, bem-estar, medicamentos, tratamentos e...</p>
                 </div>
-                <button class="add-button">Adicionar</button>
+                <button class="add-button">+ Adicionar</button>
             </div>
             
             <div class="newsletter-option" data-topic="nas-telas">
@@ -337,7 +317,7 @@
                     <h3>Nas Telas</h3>
                     <p>Novidades do cinema e TV.</p>
                 </div>
-                <button class="add-button">Adicionar</button>
+                <button class="add-button">+ Adicionar</button>
             </div>
 
             <hr class="separator">
@@ -348,8 +328,12 @@
 
             <div id="selected-topics-list">
                 <div class="selected-item" data-topic-name="Saúde e Bem-Estar">
-                    Conteúdo da sua Newsletter: Saúde e Bem-Estar 
-                    <span class="remove-topic">&times;</span>
+                    Saúde e Bem-Estar
+                    <span class="remove-topic"><i class="bi bi-x-lg"></i></span>
+                </div>
+                <div class="selected-item" data-topic-name="Blog do Torcedor">
+                    Blog do Torcedor
+                    <span class="remove-topic"><i class="bi bi-x-lg"></i></span>
                 </div>
             </div>
 
@@ -375,6 +359,7 @@
         </section>
 
     </div> 
+    
     <footer class="footer-jcpe">
         <div class="footer-container">
             <div class="footer-logo">
