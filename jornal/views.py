@@ -128,6 +128,17 @@ class ArtigoDetailView(DetailView):
             context['recomendacoes'] = []
 
         return context
+    
+# =================================================================
+# === NOVA VIEW: PÁGINA DA NEWSLETTER ===
+# =================================================================
+
+def newsletter_view(request):
+    """
+    Renderiza o template newsletter.html. 
+    (Posteriormente, pode ser usada para processar o formulário POST.)
+    """
+    return render(request, 'newsletter.html')
 
 
 # -----------------------------------------------------------------
@@ -267,11 +278,11 @@ def home(request):
                     esportes_api.append(n)
 
                 elif any(word in categoria for word in ["politic", "government", "world"]) or \
-                     any(word in titulo for word in ["lula", "boulos", "presidente", "governo", "eleição"]):
+                      any(word in titulo for word in ["lula", "boulos", "presidente", "governo", "eleição"]):
                     politica_api.append(n)
 
                 elif any(word in categoria for word in ["science", "environment"]) or \
-                     any(word in titulo for word in ["clima", "chuva", "tempo", "calor", "sensor"]):
+                      any(word in titulo for word in ["clima", "chuva", "tempo", "calor", "sensor"]):
                     clima_api.append(n)
 
             request.session['ultimas_noticias'] = noticias_api

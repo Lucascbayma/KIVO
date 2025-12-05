@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escolha suas Preferências | Newsletter</title>
+    <link rel="stylesheet" href="styles.css"> 
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"> </head>
+<body>
+
+    <div class="newsletter-page-container">
+
+        <section class="section-preferences">
+            <h2>1. Escolha suas preferências</h2>
+
+            <div class="newsletter-option" data-topic="essencial-jc">
+                <div class="option-icon icon-essencial"></div>
+                <div class="option-details">
+                    <h3>Essencial JC</h3>
+                    <p>Receba todas as newsletters do combo Essencial com as notícias mais importantes de 5 em 5 minutos.</p>
+                </div>
+                <button class="add-button">Adicionar</button>
+            </div>
+
+            <div class="newsletter-option" data-topic="saude-bem-estar">
+                <div class="option-icon icon-saude"></div>
+                <div class="option-details">
+                    <h3>Saúde e Bem-Estar</h3>
+                    <p>Às segundas, notícias aprofundadas e relevantes sobre saúde, bem-estar, medicamentos, tratamentos e...</p>
+                </div>
+                <button class="add-button">Adicionar</button>
+            </div>
+            
+            <div class="newsletter-option" data-topic="nas-telas">
+                <button class="add-button">Adicionar</button>
+            </div>
+
+            <hr class="separator">
+
+        </section>
+
+
+        <section class="section-finalize">
+            <h2>2. Finalize sua inscrição</h2>
+
+            <div id="selected-topics-list">
+                <div class="selected-item" data-topic-name="Saúde e Bem-Estar">Conteúdo da sua Newsletter: Saúde e Bem-Estar <span class="remove-topic">&times;</span></div>
+                <div class="selected-item" data-topic-name="Blog do Torcedor">Blog do Torcedor <span class="remove-topic">&times;</span></div>
+            </div>
+
+            <form id="subscribe-form" action="https://www.rdstation.com/blog/marketing/newsletter/" method="POST">
+                
+                <div class="form-group">
+                    <label for="email">Informe seu e-mail:</label>
+                    <input type="email" id="email" name="email" placeholder="Digite seu e-mail aqui" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="name">Como você quer ser chamado?</label>
+                    <input type="text" id="name" name="name" placeholder="É assim que vamos te cumprimentar nas mensagens">
+                </div>
+
+                <div class="form-group terms-group">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label for="terms">Aceito os termos de <a href="#" target="_blank">Privacidade</a></label>
+                </div>
+
+                <button type="submit" class="subscribe-button-final">Concluir Inscrição</button>
+                
+                <input type="hidden" id="preferences-input" name="preferences">
+
+            </form>
+        </section>
+
+        <footer class="page-footer">
+            <p>LGPD | Política de Privacidade | Anuncie | Contato</p>
+        </footer>
+    </div>
+
+    <script src="scripts.js"></script>
+
+</body>
+</html>

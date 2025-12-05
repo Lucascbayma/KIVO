@@ -7,6 +7,7 @@ from django.conf.urls.static import static
 app_name = 'jornal'
 
 urlpatterns = [
+    path('newsletter.html', views.newsletter_view, name='newsletter_subscribe'),
     path('registro/', views.registro, name='registro'),
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
