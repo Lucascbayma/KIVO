@@ -1,16 +1,100 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Escolha suas Preferências | Newsletter</title>
-    <link rel="stylesheet" href="styles.css"> 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"> </head>
+    
+    <link rel="stylesheet" href="style.css"> 
+    
+    <link rel="stylesheet" href="{% static 'jornal/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'jornal/css/global.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"> 
+</head>
 <body>
 
-    <div class="newsletter-page-container">
+    <div class="uol-bar">
+        <img src="{% static 'jornal/imagens/uol.svg' %}" alt="UOL" class="uol-logo">
+    </div>
 
-        <section class="section-preferences">
+    <input type="checkbox" id="hamburger-toggle" class="hamburger-toggle">
+
+    <nav class="mobile-menu" id="mobile-menu-panel">
+        <div class="menu-header">
+            <label for="hamburger-toggle" class="mobile-menu-close" aria-label="Fechar menu">
+                &times; 
+            </label>
+        </div>
+
+        <div class="mobile-menu-body">
+            <div class="menu-group-accordion">
+                <input type="checkbox" id="nav-toggle-institucional" class="submenu-toggle">
+                <label for="nav-toggle-institucional" class="menu-label-accordion">
+                    <span class="chevron">&#8964;</span> Institucional
+                </label>
+                <ul class="menu-indented">
+                    <li><a href="#">Quem somos</a></li>
+                    <li><a href="#">História</a></li>
+                </ul>
+            </div>
+
+            <a class="menu-link-main" href="#">Em Alta</a>
+            <a class="menu-link-main" href="#">Últimas Notícias</a>
+
+            <div class="menu-group-accordion">
+                <input type="checkbox" id="nav-toggle-noticias" class="submenu-toggle">
+                <label for="nav-toggle-noticias" class="menu-label-accordion">
+                    <span class="chevron">&#8964;</span> Todas as Notícias
+                </label>
+                <ul class="menu-indented">
+                    <li><a href="#">Ver todas</a></li> 
+                    <li><a href="#">Esportes</a></li>
+                    <li><a href="#">Política</a></li>
+                    <li><a href="#">Educação</a></li>
+                </ul>
+            </div>
+            <a class="menu-link-main" href="{% url 'jornal:newsletter_subscribe' %}">Newsletter</a>
+            <a href="/adicionar/" class="btn-adicionar-noticia-mobile">
+                  + Adicionar Notícia
+            </a>
+
+            <div class="social-icons-grid">
+                <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                <a href="#" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
+                <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+                <a href="#" aria-label="X"><i class="bi bi-twitter-x"></i></a>
+            </div>
+        </div>
+    </nav>
+
+    <label for="hamburger-toggle" class="mobile-menu-overlay"></label>
+
+    <header class="header">
+        <div class="col left">
+        </div>
+
+        <div class="col center">
+            <div class="logo-container">
+                <img src="{% static 'jornal/imagens/logo.svg' %}" alt="JC" class="logo-img">
+            </div>
+        </div>
+
+        <div class="col right">
+            <a href="{% url 'jornal:todas_as_noticias' %}" class="header-icon-btn search-btn" aria-label="Buscar">
+              <i class="bi bi-search"></i>
+            </a>
+            
+            <label for="hamburger-toggle" class="hamburger-label" id="frame1">
+                <i class="bi bi-list" style="font-size: 24px;"></i>
+            </label>
+        </div>
+    </header>
+    <div class="newsletter-page-container" style="margin-top: 20px;"> <section class="section-preferences">
             <h2>1. Escolha suas preferências</h2>
 
             <div class="newsletter-option" data-topic="essencial-jc">
@@ -72,11 +156,21 @@
             </form>
         </section>
 
-        <footer class="page-footer">
-            <p>LGPD | Política de Privacidade | Anuncie | Contato</p>
-        </footer>
     </div>
 
+    <footer class="footer-jcpe">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <img src="{% static 'jornal/imagens/logo.svg' %}" alt="Logo JC PE">
+            </div>
+    
+            <div class="footer-links">
+                <span class="footer-text">LGPD</span>
+                <span class="footer-text">Política de Privacidade</span>
+                <span class="footer-text">Anuncie Conosco</span>
+            </div>
+        </div>
+    </footer>  
     <script src="scripts.js"></script>
 
 </body>

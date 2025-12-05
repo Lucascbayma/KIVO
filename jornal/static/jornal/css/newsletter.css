@@ -1,0 +1,145 @@
+/* Importando a fonte Inter do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+/* Reset básico para garantir que as medidas sejam exatas */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #f4f4f4; /* Cor de fundo da janela para destacar o container */
+}
+
+/* --- Fundo (Page Container) --- */
+.newsletter-page-container {
+    width: 440px;
+    height: 3766px; 
+    background-color: #FFF;
+    margin: 0 auto; /* Centraliza a página na tela */
+    padding-top: 20px;
+    position: relative;
+}
+
+/* Títulos das seções (Ajuste visual básico para não quebrar o layout) */
+.section-preferences h2, 
+.section-finalize h2 {
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    margin-left: 16px; /* Alinhamento visual com os cards */
+    margin-bottom: 20px;
+}
+
+/* --- Módulo Newsletter (O Retângulo/Card) --- */
+.newsletter-option {
+    width: 408px;
+    height: 209px;
+    background: #D9D9D9;
+    margin: 0 auto 20px auto; /* Centraliza o card no container (440-408)/2 = 16px margem */
+    position: relative; /* Importante para posicionar os filhos com 'absolute' */
+    border-radius: 4px; /* Opcional: leve arredondamento */
+}
+
+/* Placeholder para o ícone (baseado no espaço à esquerda do título) */
+.option-icon {
+    position: absolute;
+    left: 20px; /* Estimativa visual */
+    top: 20px;
+    width: 56px; /* Espaço até chegar no 92px */
+    height: 56px;
+    /* background-color: #ccc;  Descomente para ver a caixa do ícone */
+}
+
+/* --- Texto em Destaque (Título) --- */
+.newsletter-option h3 {
+    /* Posição */
+    position: absolute;
+    left: 92px;
+    top: 20px;
+    right: 16px; /* Redundante com width, mas garante limite */
+    
+    /* Dimensões */
+    width: 300px;
+    height: 48px;
+    
+    /* Layout Flex */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+    /* Tipografia */
+    color: #000;
+    font-family: 'Inter', sans-serif;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    
+    margin: 0; /* Remove margens padrão do navegador */
+}
+
+/* --- Texto Explicativo (Parágrafo) --- */
+.newsletter-option p {
+    /* Posição: 16px abaixo do texto destaque.
+       Cálculo: Topo Título (20) + Altura Título (48) + Gap (16) = 84px */
+    position: absolute;
+    top: 84px;
+    
+    /* Centralização horizontal do texto explicativo 
+       (Container 408 - Texto 383) / 2 = 12.5px na esquerda */
+    left: 12.5px; 
+    
+    /* Dimensões */
+    width: 383px;
+    
+    /* Tipografia */
+    color: #4B4B4B;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    
+    margin: 0;
+}
+
+/* --- Botão Vermelho --- */
+.add-button {
+    /* Posição */
+    position: absolute;
+    top: 157px;
+    left: 123px;
+    /* right: 123px; e bottom: 16px; são consequência do tamanho, mas o posicionamento top/left manda */
+    
+    /* Layout e Estilo */
+    display: inline-flex;
+    padding: 6px 24px;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    
+    background-color: #D4040C;
+    border: none;
+    border-radius: 4px; /* Padrão estético, remova se quiser quadrado */
+    cursor: pointer;
+    text-decoration: none;
+    
+    /* Tipografia do Botão */
+    color: #FFF;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    
+    /* Largura do texto interno forçada */
+    min-width: 84px; 
+}
+
+/* Efeito hover para feedback visual (opcional) */
+.add-button:hover {
+    background-color: #b0030a;
+}
