@@ -1,0 +1,211 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+/* --- CONTAINER PRINCIPAL --- */
+.main-content {
+    width: 440px !important;
+    min-height: 100vh;
+    background-color: #FFFFFF;
+    margin: 0 auto;
+    padding: 0 16px;
+    display: block;
+    padding-bottom: 50px;
+}
+
+/* Esconde título H1 antigo */
+.main-content h1 {
+    display: none; 
+}
+
+/* --- RETÂNGULO BUSCA (Correção do "Quadrado menor") --- */
+.filtros-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.campo-busca {
+    display: flex;
+    width: 408px;
+    height: 68px;
+    padding: 12px 11px;
+    align-items: center;
+    gap: 12px;
+    border: 1px solid #000;
+    border-radius: 4px;
+    background: #FFF;
+}
+
+.campo-busca i {
+    font-size: 22px;
+    color: #000;
+}
+
+/* AQUI ESTÁ A CORREÇÃO DO RETÂNGULO: */
+.campo-busca input {
+    width: 100%;
+    border: none !important;      /* Remove borda */
+    outline: none !important;     /* Remove linha azul de foco */
+    background: transparent !important; /* Remove fundo branco */
+    box-shadow: none !important;  /* Remove sombras */
+    
+    color: #999;
+    font-family: 'Inter', sans-serif;
+    font-size: 17.5px;
+    font-weight: 400;
+}
+
+/* --- FILTRAR --- */
+.item-filtro {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.item-filtro i {
+    font-size: 32px;
+    color: #000;
+}
+
+.item-filtro span {
+    color: #000;
+    font-family: 'Inter', sans-serif;
+    font-size: 20px;
+}
+
+/* --- ORDENAR (DROPDOWN ANIMADO) --- */
+.item-ordenar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    position: relative; 
+    z-index: 500; /* Garante que fique acima das notícias */
+}
+
+.item-ordenar i {
+    font-size: 36px;
+    color: #000;
+}
+
+.label-ordenar {
+    width: 109px;
+    color: #000;
+    font-family: 'Inter', sans-serif;
+    font-size: 20px;
+}
+
+/* Container do Dropdown */
+.custom-dropdown {
+    position: relative;
+    width: 160px;
+    font-family: 'Inter', sans-serif;
+}
+
+/* O Botão Visível */
+.dropdown-selected {
+    display: flex;
+    height: 32px;
+    padding: 0 10px;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #000;
+    background: #FFF;
+    color: #000;
+    font-size: 16px;
+    cursor: pointer;
+    user-select: none; /* Impede seleção de texto */
+}
+
+.dropdown-selected::after {
+    content: '▼';
+    font-size: 10px;
+    margin-left: 5px;
+    transition: transform 0.3s;
+}
+
+/* Gira a seta quando aberto */
+.custom-dropdown.active .dropdown-selected::after {
+    transform: rotate(180deg);
+}
+
+/* A Lista de Opções (Escondida por padrão) */
+.dropdown-options {
+    display: none; /* ESSENCIAL: Esconde a lista para não vazar texto */
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: #FFF;
+    border: 1px solid #000;
+    border-top: none;
+    z-index: 1000;
+}
+
+/* Animação de Entrada */
+.dropdown-options.show {
+    display: block;
+    animation: slideDown 0.3s ease forwards;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dropdown-item {
+    padding: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #000;
+    border-bottom: 1px solid #eee;
+}
+
+.dropdown-item:hover {
+    background-color: #f0f0f0;
+}
+
+.dropdown-item:last-child {
+    border-bottom: none;
+}
+
+/* --- CARDS NOTÍCIA --- */
+.grid-noticias {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    width: 100%;
+}
+
+.card {
+    width: 408px;
+    border: none;
+}
+
+.card .media img {
+    width: 408px;
+    height: 230px;
+    object-fit: cover;
+    aspect-ratio: 204/115;
+}
+
+.card .meta .title {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    color: #000;
+    font-family: 'Inter', sans-serif;
+    font-size: 26px;
+    margin-top: 12px;
+}

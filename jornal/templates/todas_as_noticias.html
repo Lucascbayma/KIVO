@@ -5,124 +5,380 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todas as Notícias - Portal JC</title>
+    
     <link rel="stylesheet" href="{% static 'jornal/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'jornal/css/global.css' %}">
+    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+
+    <style>
+        /* 1. RESET E ESTRUTURA */
+        * { box-sizing: border-box; }
+        
+        .main-content {
+            width: 440px !important;
+            min-height: 100vh;
+            background-color: #FFFFFF;
+            margin: 0 auto;
+            padding: 0 16px;
+            display: block;
+            padding-bottom: 50px;
+        }
+
+        /* 2. REMOVER TÍTULO H1 */
+        .main-content h1 {
+            display: none !important;
+        }
+
+        /* 3. RETÂNGULO DA BUSCA (Correção do quadrado) */
+        .filtros-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .campo-busca {
+            display: flex;
+            width: 408px;
+            height: 68px;
+            padding: 12px 11px;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid #000;
+            border-radius: 4px;
+            background: #FFF;
+        }
+
+        .campo-busca i {
+            font-size: 22px;
+            color: #000;
+            /* Garante que o ícone não tenha borda */
+            border: none !important;
+            background: transparent !important;
+        }
+
+        /* AQUI O SEGREDO PARA SUMIR O QUADRADO DO INPUT */
+        .campo-busca input {
+            width: 100%;
+            border: none !important;
+            outline: none !important;
+            background: transparent !important;
+            box-shadow: none !important;
+            appearance: none !important; /* Remove estilos nativos do navegador */
+            -webkit-appearance: none !important;
+            
+            color: #999;
+            font-family: 'Inter', sans-serif;
+            font-size: 17.5px;
+            font-weight: 400;
+        }
+
+        /* 4. FILTRAR */
+        .item-filtro {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+        .item-filtro i { font-size: 32px; color: #000; }
+        .item-filtro span { font-size: 20px; color: #000; font-family: 'Inter', sans-serif; }
+
+        /* 5. DROPDOWN ANIMADO (ORDENAR) */
+        .item-ordenar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            position: relative;
+            z-index: 500; /* Garante que o menu abra por cima das notícias */
+        }
+        .item-ordenar i { font-size: 36px; color: #000; }
+        
+        .label-ordenar {
+            width: 109px;
+            color: #000;
+            font-family: 'Inter', sans-serif;
+            font-size: 20px;
+        }
+
+        /* Container do Dropdown */
+        .custom-dropdown {
+            position: relative;
+            width: 160px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Botão visível do dropdown */
+        .dropdown-selected {
+            display: flex;
+            height: 32px;
+            padding: 0 10px;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #000;
+            background: #FFF;
+            color: #000;
+            font-size: 16px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .dropdown-selected::after {
+            content: '▼';
+            font-size: 10px;
+            margin-left: 5px;
+            transition: transform 0.3s;
+        }
+
+        /* Gira a setinha quando ativo */
+        .custom-dropdown.active .dropdown-selected::after {
+            transform: rotate(180deg);
+        }
+
+        /* Lista de Opções (Escondida) */
+        .dropdown-options {
+            display: none; /* Escondido por padrão */
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: #FFF;
+            border: 1px solid #000;
+            border-top: none;
+            z-index: 999;
+        }
+
+        /* Classe para mostrar (JS adiciona essa classe) */
+        .dropdown-options.show {
+            display: block;
+            animation: slideDown 0.3s ease forwards;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dropdown-item {
+            padding: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            color: #000;
+            border-bottom: 1px solid #eee;
+        }
+        .dropdown-item:hover { background-color: #f0f0f0; }
+        .dropdown-item:last-child { border-bottom: none; }
+
+        /* 6. LISTA DE NOTÍCIAS */
+        .grid-noticias {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            width: 100%;
+        }
+        .card { width: 408px; border: none; }
+        .card .media img {
+            width: 408px;
+            height: 230px;
+            object-fit: cover;
+            aspect-ratio: 204/115;
+        }
+        .card .meta .title {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            color: #000;
+            font-family: 'Inter', sans-serif;
+            font-size: 26px;
+            margin-top: 12px;
+        }
+    </style>
 </head>
 <body>
 
-<header class="header header-todas">
-  <!-- seta voltar: usa URL da home (namespace 'jornal') -->
-  <a href="{% url 'jornal:home' %}" class="btn-voltar" title="Voltar" aria-label="Voltar">
-    <i class="bi bi-arrow-left"></i>
-  </a>
-
-  <!-- logo centralizada -->
-  <div class="logo-container">
-    <a href="{% url 'jornal:home' %}">
-      <img src="{% static 'jornal/imagens/logo.svg' %}" alt="JC" class="logo-img">
-    </a>
-  </div>
-
-  <!-- menu hamburguer (botão) -->
-  <button type="button" class="menu-hamburguer" title="Menu" aria-label="Abrir menu" onclick="/* abrir menu */">
-    <i class="bi bi-list"></i>
-  </button>
-</header>
-
-
-<main class="main-content" style="max-width:1000px; margin:40px auto;">
-    <h1 style="text-align:center; margin-bottom:30px;">
-        {% if categoria_nome %}Notícias sobre {{ categoria_nome }}{% else %}Todas as Notícias{% endif %}
-    </h1>
-
-    <form method="get" class="filtros-container">
-
-    <!-- Campo de busca -->
-    <div class="campo-busca">
-        <i class="bi bi-search"></i>
-        <input id="campo-busca"
-               type="text"
-               name="q"
-               value="{{ busca|default:'' }}"
-               placeholder="Buscar">
+    <div class="uol-bar">
+        <img src="{% static 'jornal/imagens/uol.svg' %}" alt="UOL" class="uol-logo">
     </div>
 
-    <div id="caixa-sugestoes" class="sugestoes hidden"></div>
+    <input type="checkbox" id="hamburger-toggle" class="hamburger-toggle">
+    <nav class="mobile-menu" id="mobile-menu-panel">
+        <div class="menu-header">
+            <label for="hamburger-toggle" class="mobile-menu-close" aria-label="Fechar menu">&times;</label>
+        </div>
+        <div class="mobile-menu-body">
+            <div class="menu-group-accordion">
+                <input type="checkbox" id="nav-toggle-institucional" class="submenu-toggle">
+                <label for="nav-toggle-institucional" class="menu-label-accordion">
+                    <span class="chevron">&#8964;</span> Institucional
+                </label>
+                <ul class="menu-indented">
+                    <li><a href="#">Quem somos</a></li>
+                    <li><a href="#">História</a></li>
+                </ul>
+            </div>
+            <a class="menu-link-main" href="{% url 'jornal:home' %}">Home</a>
+            <a class="menu-link-main" href="{% url 'jornal:todas_as_noticias' %}">Últimas Notícias</a>
+            </div>
+    </nav>
+    <label for="hamburger-toggle" class="mobile-menu-overlay"></label>
 
-    <!-- Filtrar (ícone + texto) -->
-    <div class="item-filtro">
-        <i class="bi bi-funnel"></i>
-        <span>Filtrar</span>
-    </div>
-
-    <!-- Ordenação -->
-    <div class="item-ordenar">
-        <i class="bi bi-sort-down"></i>
-        <span>Ordenar por:</span>
-        <select name="ordenar" class="select-ordenar">
-            <option value="mais_recentes" {% if ordenacao == "mais_recentes" %}selected{% endif %}>Mais recentes</option>
-            <option value="mais_antigas" {% if ordenacao == "mais_antigas" %}selected{% endif %}>Mais antigas</option>
-            <option value="titulo_az" {% if ordenacao == "titulo_az" %}selected{% endif %}>Título A–Z</option>
-            <option value="titulo_za" {% if ordenacao == "titulo_za" %}selected{% endif %}>Título Z–A</option>
-        </select>
-    </div>
-
-    {% if categoria_nome %}
-        <input type="hidden" name="categoria" value="{{ categoria_nome }}">
-    {% endif %}
-
-</form>
-
-
-    <div class="grid-noticias" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:20px;">
-        {% for n in page_obj %}
-        <div class="card">
-            <div class="media">
-                <a href="{% url 'artigo_detalhe' pk=n.pk %}">
-                    {% if n.imagem %}
-                        <img src="{{ n.imagem.url }}" alt="{{ n.titulo }}" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
-                    {% else %}
-                        <img src="{% static 'jornal/imagens/sem-imagem.png' %}" alt="Sem imagem" style="width:100%; height:200px; object-fit:cover; border-radius:4px 4px 0 0;">
-                    {% endif %}
+    <header class="header">
+        <div class="col left">
+            <a href="{% url 'jornal:home' %}" class="header-icon-btn" title="Voltar">
+                <i class="bi bi-arrow-left"></i>
+            </a>
+        </div>
+        <div class="col center">
+            <div class="logo-container">
+                <a href="{% url 'jornal:home' %}">
+                    <img src="{% static 'jornal/imagens/logo.svg' %}" alt="JC" class="logo-img">
                 </a>
             </div>
-            <div class="meta" style="padding:10px;">
-                <p class="title">{{ n.titulo|truncatechars:80 }}</p>
-                <p class="time">{{ n.autor.username }} — {{ n.publicado_em|date:"d-m-Y" }}</p>
+        </div>
+        <div class="col right">
+            <a href="#" class="header-icon-btn search-btn" title="Buscar"><i class="bi bi-search"></i></a>
+            <label for="hamburger-toggle" class="hamburger-label" title="Menu"><i class="bi bi-list" style="font-size: 24px;"></i></label>
+        </div>
+    </header>
+
+    <main class="main-content" style="margin-top: 40px;">
+        
+        <form method="get" class="filtros-container" id="form-filtros">
+            
+            <div class="campo-busca">
+                <i class="bi bi-search"></i>
+                <input id="campo-busca-input" type="text" name="q" value="{{ busca|default:'' }}" placeholder="Buscar">
+            </div>
+
+            <div id="caixa-sugestoes" class="sugestoes hidden"></div>
+
+            <div class="item-filtro">
+                <i class="bi bi-funnel"></i>
+                <span>Filtrar</span>
+            </div>
+
+            <div class="item-ordenar">
+                <i class="bi bi-sort-down"></i>
+                <span class="label-ordenar">Ordenar por:</span>
+                
+                <div class="custom-dropdown" id="dropdown-ordenar">
+                    <div class="dropdown-selected" id="dropdown-text">
+                        {% if ordenacao == "mais_antigas" %}Mais antigas
+                        {% elif ordenacao == "titulo_az" %}Título A–Z
+                        {% elif ordenacao == "titulo_za" %}Título Z–A
+                        {% else %}Mais recentes{% endif %}
+                    </div>
+                    
+                    <div class="dropdown-options">
+                        <div class="dropdown-item" data-value="mais_recentes">Mais recentes</div>
+                        <div class="dropdown-item" data-value="mais_antigas">Mais antigas</div>
+                        <div class="dropdown-item" data-value="titulo_az">Título A–Z</div>
+                        <div class="dropdown-item" data-value="titulo_za">Título Z–A</div>
+                    </div>
+                    
+                    <input type="hidden" name="ordenar" id="input-ordenar" value="{{ ordenacao|default:'mais_recentes' }}">
+                </div>
+            </div>
+
+            {% if categoria_nome %}
+                <input type="hidden" name="categoria" value="{{ categoria_nome }}">
+            {% endif %}
+        </form>
+
+        <div class="grid-noticias">
+            {% for n in page_obj %}
+            <div class="card">
+                <div class="media">
+                    <a href="{% url 'artigo_detalhe' pk=n.pk %}">
+                        {% if n.imagem %}
+                            <img src="{{ n.imagem.url }}" alt="{{ n.titulo }}">
+                        {% else %}
+                            <img src="{% static 'jornal/imagens/sem-imagem.png' %}" alt="Sem imagem">
+                        {% endif %}
+                    </a>
+                </div>
+                <div class="meta">
+                    <p class="title">{{ n.titulo }}</p>
+                </div>
+            </div>
+            {% empty %}
+                <p style="text-align:center; font-family:'Inter'; margin-top:20px;">Não há notícias relacionadas a esse tema.</p>
+            {% endfor %}
+        </div>
+
+        {% if page_obj.has_other_pages %}
+        <div class="pagination" style="text-align:center; margin-top:30px; font-family:'Inter';">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}{% if categoria_nome %}&categoria={{ categoria_nome }}{% endif %}{% if busca %}&q={{ busca }}{% endif %}">&laquo; Anterior</a>
+            {% endif %}
+            <span style="margin: 0 10px;">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}{% if categoria_nome %}&categoria={{ categoria_nome }}{% endif %}{% if busca %}&q={{ busca }}{% endif %}">Próxima &raquo;</a>
+            {% endif %}
+        </div>
+        {% endif %}
+        
+    </main>
+
+    <footer class="footer-jcpe">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <img src="{% static 'jornal/imagens/logo.svg' %}" alt="Logo JC PE">
+            </div>
+            <div class="footer-links">
+                <span class="footer-text">LGPD</span>
+                <span class="footer-text">Política de Privacidade</span>
+                <span class="footer-text">Anuncie Conosco</span>
             </div>
         </div>
-        {% empty %}
-            <p>Não há notícias relacionadas a esse tema.</p>
-        {% endfor %}
-    </div>
+    </footer>  
 
-    {% if page_obj.has_other_pages %}
-    <div class="pagination" style="text-align:center; margin-top:30px;">
-        {% if page_obj.has_previous %}
-            <a href="?page={{ page_obj.previous_page_number }}{% if categoria_nome %}&categoria={{ categoria_nome }}{% endif %}{% if busca %}&q={{ busca }}{% endif %}">&laquo; Anterior</a>
-        {% endif %}
-        <span>Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
-        {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}{% if categoria_nome %}&categoria={{ categoria_nome }}{% endif %}{% if busca %}&q={{ busca }}{% endif %}">Próxima &raquo;</a>
-        {% endif %}
-    </div>
-    {% endif %}
-    <script src="{% static 'jornal/js/todas_noticias.js' %}"></script>
-</main>
-<footer class="footer-jcpe">
-    <div class="footer-container">
-        <div class="footer-logo">
-            <img src="{% static 'jornal/imagens/logo.svg' %}" alt="Logo JC PE">
-        </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdownContainer = document.getElementById('dropdown-ordenar');
+            const selected = dropdownContainer.querySelector('.dropdown-selected');
+            const optionsList = dropdownContainer.querySelector('.dropdown-options');
+            const hiddenInput = document.getElementById('input-ordenar');
+            const form = document.getElementById('form-filtros');
 
-        <div class="footer-links">
-            <span class="footer-text">LGPD</span>
-            <span class="footer-text">Política de Privacidade</span>
-            <span class="footer-text">Anuncie Conosco</span>
-        </div>
-    </div>
-</footer>  
+
+            selected.addEventListener('click', function(e) {
+                e.stopPropagation(); 
+                optionsList.classList.toggle('show'); 
+                dropdownContainer.classList.toggle('active'); 
+            });
+
+
+            dropdownContainer.querySelectorAll('.dropdown-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    
+                    const value = this.getAttribute('data-value');
+                    const text = this.innerText;
+
+  
+                    selected.innerText = text;
+                    hiddenInput.value = value;
+                    
+
+                    optionsList.classList.remove('show');
+                    dropdownContainer.classList.remove('active');
+
+                    form.submit();
+                });
+            });
+
+            document.addEventListener('click', function() {
+                if (optionsList.classList.contains('show')) {
+                    optionsList.classList.remove('show');
+                    dropdownContainer.classList.remove('active');
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>
