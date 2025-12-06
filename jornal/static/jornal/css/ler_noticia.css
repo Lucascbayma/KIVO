@@ -1,11 +1,11 @@
 /* Seu_App/static/jornal/css/ler_noticia.css */
 
-/* Importando fonte Roboto */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap');
+/* Importando fonte Inter (e mantendo Roboto por garantia) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Roboto:wght@400;700&display=swap');
 
 :root {
-    --cor-principal-texto: #1a1a1a;
-    --cor-secundaria-texto: #666;
+    --cor-principal-texto: #000000;
+    --cor-secundaria-texto: #4B4B4B;
     --cor-link: #004d99; 
     --largura-maxima: 440px; 
 }
@@ -17,11 +17,8 @@
     box-sizing: border-box;
 }
 
-/* O Body já é controlado pelo style.css global, mas garantimos a fonte aqui */
 body#body-noticia {
-    font-family: 'Roboto', Arial, sans-serif;
-    line-height: 1.6;
-    color: var(--cor-principal-texto);
+    font-family: 'Inter', sans-serif; /* Alterado para Inter */
     background-color: #FFF; 
 }
 
@@ -32,24 +29,47 @@ body#body-noticia {
 .container-noticia {
     max-width: var(--largura-maxima);
     margin: 0 auto;
-    padding: 20px 20px 40px 20px; /* Espaçamento interno */
+    /* Padding lateral de 16px. 
+       440px (total) - 32px (paddings) = 408px de área útil para o texto */
+    padding: 20px 16px 40px 16px; 
 }
 
-/* Título Principal (H1) */
+/* 1. TÍTULO 
+   width: 408px (garantido pelo container)
+   color: #000
+   font-family: Inter
+   font-size: 28px
+   font-weight: 600
+*/
 .titulo-noticia {
-    font-size: 2.2rem; 
-    font-weight: 900; 
-    line-height: 1.15;
+    font-family: 'Inter', sans-serif;
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    color: #000000;
+    
     margin-bottom: 15px;
-    color: #000;
+    width: 100%; /* Ocupa os 408px do container */
 }
 
-/* Subtítulo / Lead */
+/* 2. SUBTÍTULO 
+   width: 408px
+   color: #4B4B4B
+   font-family: Inter
+   font-size: 20px
+   font-weight: 400
+*/
 .lead-noticia {
-    font-size: 1.15rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 20px;
+    font-style: normal;
     font-weight: 400;
-    color: var(--cor-secundaria-texto);
+    line-height: normal;
+    color: #4B4B4B;
+    
     margin-bottom: 25px;
+    width: 100%;
 }
 
 /* Área de Autor e Data */
@@ -63,12 +83,12 @@ body#body-noticia {
 
 .info-data-autor {
     flex-grow: 1;
-    padding-left: 0; 
 }
 
 .autor {
-    font-size: 0.95rem;
-    color: var(--cor-principal-texto);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px; /* Ajuste proporcional menor que o texto */
+    color: #000;
     margin-bottom: 5px;
 }
 
@@ -77,8 +97,28 @@ body#body-noticia {
 }
 
 .datas {
-    font-size: 0.8rem;
-    color: var(--cor-secundaria-texto);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: #666;
+}
+
+/* ÍCONE SHARE (Acima da Imagem) */
+.share-topo {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.share-topo i {
+    font-size: 24px;
+    color: #000;
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Imagem Principal */
@@ -97,19 +137,48 @@ body#body-noticia {
     border-radius: 4px;
 }
 
-/* Texto da Notícia */
+/* 3. TEXTO DA NOTÍCIA 
+   width: 408px
+   color: #000
+   font-family: Inter
+   font-size: 18px
+   font-weight: 400
+*/
 .conteudo-noticia p {
-    font-size: 1.15rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    color: #000000;
+    
     margin-bottom: 25px;
-    line-height: 1.7;
-    text-align: justify;
-    font-weight: 400; 
-    color: #333;
+    text-align: left; /* Geralmente melhor para leitura mobile que justify */
+    width: 100%;
 }
 
 .destaque-link {
     font-weight: 700;
     color: var(--cor-link);
+    font-family: 'Inter', sans-serif;
+}
+
+/* ANÚNCIO */
+.anuncio-interno-noticia {
+    width: 320px;
+    height: 100px;
+    margin: 30px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 4px;
+}
+
+.anuncio-interno-noticia img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 /* ========================================= */
@@ -121,29 +190,61 @@ body#body-noticia {
     border-top: 2px solid #ccc;
     padding-top: 15px;
     width: 100%;
-    overflow: hidden; /* Evita vazamento lateral na página */
+    overflow: hidden; 
+}
+
+/* Header Relacionadas */
+.header-relacionadas {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-right: 5px;
 }
 
 .titulo-relacionadas {
+    font-family: 'Inter', sans-serif;
     font-size: 1.1rem;
     font-weight: 700;
     color: #cc0000;
-    margin-bottom: 20px;
     text-transform: uppercase;
+    margin-bottom: 0;
 }
 
-/* Container flexível com rolagem (Carrossel) */
+/* Botão Ver Mais */
+.btn-ver-mais {
+    display: flex;
+    width: 103px;
+    height: 32px;
+    flex-direction: column;
+    justify-content: center;
+    color: #000;
+    font-family: 'Inter', sans-serif;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 29.044px;
+    letter-spacing: -1.037px;
+    text-decoration: none;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.btn-ver-mais:hover {
+    color: #cc0000;
+}
+
+/* Container Carrossel */
 .grid-relacionadas {
     display: flex;
     flex-direction: row;
-    gap: 16px; /* Espaço entre os cartões */
-    overflow-x: auto; /* Permite rolar horizontalmente */
+    gap: 16px;
+    overflow-x: auto;
     padding-bottom: 10px;
-    scroll-snap-type: x mandatory; /* Efeito de snap ao rolar */
+    scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
 }
 
-/* Customização da barra de rolagem (opcional) */
 .grid-relacionadas::-webkit-scrollbar {
     height: 4px;
 }
@@ -152,10 +253,10 @@ body#body-noticia {
     border-radius: 4px;
 }
 
-/* O Cartão Individual */
+/* Item Individual */
 .relacionada-item {
-    flex: 0 0 auto; /* Impede encolhimento */
-    width: 252px; /* Largura calculada aprox. pela proporção da imagem */
+    flex: 0 0 auto;
+    width: 252px;
     scroll-snap-align: start;
 }
 
@@ -166,32 +267,29 @@ body#body-noticia {
     height: 100%;
 }
 
-/* Container da Imagem do Carrossel */
+/* Imagem Carrossel */
 .thumb-relacionada {
     width: 100%;
-    /* Altura fixa solicitada */
-    height: 142px; 
+    height: 142px; /* Altura fixa pedida */
     margin-bottom: 10px;
     border-radius: 4px;
     overflow: hidden;
 }
 
-/* A Imagem do Carrossel */
 .thumb-relacionada img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    
-    /* Medidas e proporção solicitadas */
     align-self: stretch;
-    aspect-ratio: 126/71; 
+    aspect-ratio: 126/71; /* Proporção pedida */
 }
 
-/* Título do item no carrossel */
+/* Título Item Relacionado */
 .titulo-item-relacionado {
+    font-family: 'Inter', sans-serif;
     font-size: 1rem;
     font-weight: 700;
-    color: var(--cor-link);
+    color: #000;
     line-height: 1.3;
     white-space: normal;
     transition: color 0.2s;
@@ -201,73 +299,13 @@ body#body-noticia {
     color: #000;
 }
 
-.anuncio-interno-noticia {
-    width: 320px;
-    height: 100px;
-    margin: 30px auto; /* Centralizado e com espaçamento */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    border-radius: 4px; /* Opcional, para ficar bonito */
-}
-
-.anuncio-interno-noticia img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* ========================================= */
-/* 3. CABEÇALHO "LEIA TAMBÉM" + "VER MAIS"   */
-/* ========================================= */
-
-/* Container para alinhar Título e Botão na mesma linha */
-.header-relacionadas {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding-right: 5px; /* Ajuste fino */
-}
-
-/* Ajuste no título para não ter margem inferior duplicada */
-.titulo-relacionadas {
-    margin-bottom: 0; 
-    /* Mantém as cores e fontes que já definimos antes */
-}
-
-/* O BOTÃO "VER MAIS" (Especificações Exatas) */
-.btn-ver-mais {
-    display: flex;
-    width: 103px;
-    height: 32px;
-    flex-direction: column;
-    justify-content: center;
-    
-    color: #000;
-    font-family: 'Inter', sans-serif; /* Certifique-se de importar Inter no HTML */
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 29.044px; /* 145.219% */
-    letter-spacing: -1.037px;
-    
-    text-decoration: none; /* Remove sublinhado padrão de links */
-    text-align: right; /* Alinha o texto à direita da caixa */
-    white-space: nowrap;
-}
-
-.btn-ver-mais:hover {
-    color: #cc0000; /* Feedback visual ao passar o mouse */
-}
-
+/* Ajuste final: Remover linha dos botões do header */
 .header-icon-btn, 
 .header-icon-btn:hover, 
 .header-icon-btn:focus,
 .search-btn {
-    text-decoration: none !important; /* Remove sublinhado de link */
-    border-bottom: none !important;   /* Remove bordas inferiores se houver */
-    outline: none !important;         /* Remove contorno de foco */
-    box-shadow: none !important;      /* Remove sombras indesejadas */
+    text-decoration: none !important;
+    border-bottom: none !important;
+    outline: none !important;
+    box-shadow: none !important;
 }
