@@ -261,7 +261,11 @@
     <label for="hamburger-toggle" class="mobile-menu-overlay"></label>
 
     <header class="header">
-        <div class="col left"></div>
+        <div class="col left">
+            <a href="{% url 'jornal:home' %}" class="btn-voltar" title="Voltar" aria-label="Voltar">
+    <i class="bi bi-arrow-left"></i>
+  </a>
+        </div>
         <div class="col center">
             <div class="logo-container">
                 <img src="{% static 'jornal/imagens/logo.svg' %}" alt="JC" class="logo-img">
