@@ -9,30 +9,21 @@
     <link rel="stylesheet" href="{% static 'jornal/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'jornal/css/global.css' %}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"> 
 
     <style>
-
         #newsletter-main {
             display: block !important;
             position: relative !important;
             width: 440px !important;
-            
-
             height: auto !important; 
-            
-
             margin: 20px auto 16px auto !important; 
-            
             background-color: #FFFFFF !important;
             color: #000000 !important;
             font-family: 'Inter', sans-serif !important;
             text-align: left !important;
             border: none !important;
-            
             padding: 20px 0 0 0 !important; 
-            
             box-shadow: none !important;
             z-index: 1 !important;
         }
@@ -41,7 +32,6 @@
             box-sizing: border-box !important;
             font-family: 'Inter', sans-serif !important;
         }
-
 
         #newsletter-main h2 {
             width: 408px !important;
@@ -54,11 +44,10 @@
             line-height: normal !important;
             padding: 0 !important;
             text-align: left !important;
-            border: none !important;
             background: transparent !important;
             text-transform: none !important;
+            border: none !important;
         }
-
 
         #newsletter-main .newsletter-option {
             width: 408px !important;
@@ -69,9 +58,7 @@
             position: relative !important;
             border-radius: 4px !important;
             border: none !important;
-            box-shadow: none !important;
         }
-
 
         #newsletter-main .option-icon {
             position: absolute !important;
@@ -86,7 +73,6 @@
             align-items: center !important;
             background: #000000 !important; 
         }
-
 
         #newsletter-main .newsletter-option h3 {
             position: absolute !important;
@@ -106,7 +92,6 @@
             background: transparent !important;
         }
 
-
         #newsletter-main .newsletter-option p {
             position: absolute !important;
             top: 84px !important;
@@ -119,7 +104,6 @@
             text-align: left !important;
             margin: 0 !important;
         }
-
 
         #newsletter-main .add-button {
             position: absolute !important;
@@ -146,6 +130,10 @@
             background-color: #b0030a !important;
         }
 
+        #newsletter-main .add-button.added {
+            background-color: #2ECC71 !important;
+            cursor: default !important;
+        }
 
         #newsletter-main hr.separator {
             width: 100% !important;
@@ -154,7 +142,6 @@
             margin: 30px 0 !important;
             opacity: 1 !important;
         }
-
 
         #newsletter-main .selected-item {
             width: 408px !important;
@@ -175,20 +162,19 @@
         }
 
         #newsletter-main .remove-topic {
-            color: #000000 !important; 
+            color: #000000 !important;
             cursor: pointer;
             font-weight: bold;
             font-size: 20px !important; 
             line-height: 1 !important;
-            display: flex !important; 
+            display: flex !important;
             align-items: center !important;
         }
 
-        /* Formulário */
         #newsletter-main form {
             padding: 0 16px !important;
             width: 408px !important;
-            margin: 20px auto 0 auto !important; 
+            margin: 20px auto 0 auto !important;
         }
 
         #newsletter-main .form-group {
@@ -236,7 +222,6 @@
             margin: 0 !important;
         }
 
-        /* BOTÃO FINAL */
         #newsletter-main .subscribe-button-final {
             display: block !important;
             width: 100% !important;
@@ -271,7 +256,7 @@
         </div>
         <div class="mobile-menu-body">
             <a class="menu-link-main" href="#">Últimas Notícias</a>
-            </div>
+        </div>
     </nav>
     <label for="hamburger-toggle" class="mobile-menu-overlay"></label>
 
@@ -326,18 +311,11 @@
         <section class="section-finalize">
             <h2>2. Finalize sua inscrição</h2>
 
-            <div id="selected-topics-list">
-                <div class="selected-item" data-topic-name="Saúde e Bem-Estar">
-                    Saúde e Bem-Estar
-                    <span class="remove-topic"><i class="bi bi-x-lg"></i></span>
-                </div>
-                <div class="selected-item" data-topic-name="Blog do Torcedor">
-                    Blog do Torcedor
-                    <span class="remove-topic"><i class="bi bi-x-lg"></i></span>
-                </div>
-            </div>
+            <div id="selected-topics-list"></div>
 
-            <form id="subscribe-form" action="#" method="POST">
+            <form id="subscribe-form" action="{% url 'jornal:cadastrar_newsletter' %}" method="POST">
+                {% csrf_token %}
+                
                 <div class="form-group">
                     <label for="email">Informe seu e-mail:</label>
                     <input type="email" id="email" name="email" placeholder="Digite seu e-mail aqui" required>
@@ -373,7 +351,84 @@
         </div>
     </footer>  
 
-    <script src="scripts.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            const addButtons = document.querySelectorAll('.add-button');
+            const selectedList = document.getElementById('selected-topics-list');
+            const preferencesInput = document.getElementById('preferences-input');
+            
+            let selectedTopics = [];
+
+
+            function updateHiddenInput() {
+                preferencesInput.value = selectedTopics.join(',');
+            }
+
+
+            function addTopic(card) {
+                const topicName = card.querySelector('h3').innerText.trim();
+                const btn = card.querySelector('.add-button');
+
+                if (selectedTopics.includes(topicName)) return;
+
+                selectedTopics.push(topicName);
+                updateHiddenInput();
+
+                const itemDiv = document.createElement('div');
+                itemDiv.classList.add('selected-item');
+                itemDiv.setAttribute('data-topic-name', topicName);
+                
+                itemDiv.innerHTML = `
+                    ${topicName}
+                    <span class="remove-topic" role="button">
+                        <i class="bi bi-x-lg"></i>
+                    </span>
+                `;
+
+                selectedList.appendChild(itemDiv);
+                btn.innerHTML = '<i class="bi bi-check-lg"></i> Adicionado';
+                btn.classList.add('added'); 
+                btn.disabled = true;
+            }
+
+            function removeTopic(element) {
+                const itemDiv = element.closest('.selected-item');
+                const topicName = itemDiv.getAttribute('data-topic-name');
+
+                selectedTopics = selectedTopics.filter(t => t !== topicName);
+                updateHiddenInput();
+
+                itemDiv.remove();
+
+                // Reabilita o botão
+                const cards = document.querySelectorAll('.newsletter-option');
+                cards.forEach(card => {
+                    if (card.querySelector('h3').innerText.trim() === topicName) {
+                        const btn = card.querySelector('.add-button');
+                        btn.innerHTML = '+ Adicionar';
+                        btn.classList.remove('added'); 
+                        btn.disabled = false;
+                    }
+                });
+            }
+
+            addButtons.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const card = this.closest('.newsletter-option');
+                    addTopic(card);
+                });
+            });
+
+            selectedList.addEventListener('click', function(e) {
+                const removeBtn = e.target.closest('.remove-topic');
+                if (removeBtn) {
+                    removeTopic(removeBtn);
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>

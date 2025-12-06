@@ -7,7 +7,13 @@ from django.conf.urls.static import static
 app_name = 'jornal'
 
 urlpatterns = [
-    path('newsletter.html', views.newsletter_view, name='newsletter_subscribe'),
+    # Rota para VER a página (GET)
+    # Sugestão: Mudei de 'newsletter.html' para 'newsletter/' para ficar mais limpo, mas funciona dos dois jeitos.
+    path('newsletter/', views.newsletter_view, name='newsletter_subscribe'),
+    
+    # --- NOVA ROTA: Onde o formulário envia os dados (POST) ---
+    path('newsletter/cadastrar/', views.cadastrar_newsletter, name='cadastrar_newsletter'),
+
     path('registro/', views.registro, name='registro'),
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),

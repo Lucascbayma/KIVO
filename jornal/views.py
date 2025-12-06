@@ -8,15 +8,15 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt 
 from django.core.management import call_command 
-from .models import Artigo, Categoria
 from .forms import ArtigoForm
 from django.core.paginator import Paginator
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib import messages
 from django.template.loader import render_to_string
-from django.http import JsonResponse
-from .models import Artigo
+
+# --- IMPORTAÇÃO ATUALIZADA (Inclui AssinanteNewsletter) ---
+from .models import Artigo, Categoria, AssinanteNewsletter
 
 # Chaves de API e URLs
 NEWSDATA_API_KEY = settings.NEWSDATA_API_KEY 
@@ -130,13 +130,12 @@ class ArtigoDetailView(DetailView):
         return context
     
 # =================================================================
-# === NOVA VIEW: PÁGINA DA NEWSLETTER ===
+# === VIEW: PÁGINA DA NEWSLETTER (Visual) ===
 # =================================================================
 
 def newsletter_view(request):
     """
     Renderiza o template newsletter.html. 
-    (Posteriormente, pode ser usada para processar o formulário POST.)
     """
     return render(request, 'newsletter.html')
 
@@ -481,3 +480,45 @@ def sugestoes_busca(request):
     )
 
     return JsonResponse(list(sugestoes), safe=False)
+
+def cadastrar_newsletter(request):
+    if request.method == 'POST':
+        nome = request.POST.get('name')
+        email = request.POST.get('email')
+        preferencias_str = request.POST.get('preferences') # Ex: "Politica,Esportes"
+        
+        # 1. Validação Básica
+        if not email or not nome:
+            messages.error(request, "Por favor, preencha seu nome e e-mail.")
+            return redirect('jornal:newsletter_subscribe')
+
+        categorias_objs = []
+        if preferencias_str:
+
+            nomes_categorias = [c.strip() for c in preferencias_str.split(',') if c.strip()]
+            
+            categorias_objs = Categoria.objects.filter(nome__in=nomes_categorias)
+
+        try:
+
+            assinante, created = AssinanteNewsletter.objects.update_or_create(
+                email=email,
+                defaults={'nome': nome}
+            )
+
+            if request.user.is_authenticated:
+                assinante.usuario = request.user
+                assinante.save()
+
+            if categorias_objs:
+                assinante.categorias.set(categorias_objs)
+            
+            messages.success(request, "Inscrição realizada com sucesso!")
+            return redirect('jornal:home')
+
+        except Exception as e:
+            messages.error(request, "Erro ao salvar. Tente novamente.")
+            print(f"Erro Newsletter: {e}")
+            return redirect('jornal:newsletter_subscribe')
+
+    return redirect('jornal:newsletter_subscribe')
