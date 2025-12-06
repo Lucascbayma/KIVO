@@ -255,7 +255,49 @@
             <label for="hamburger-toggle" class="mobile-menu-close" aria-label="Fechar menu">&times;</label>
         </div>
         <div class="mobile-menu-body">
-            <a class="menu-link-main" href="#">Últimas Notícias</a>
+            <div class="menu-group-accordion">
+            <input type="checkbox" id="nav-toggle-institucional" class="submenu-toggle">
+            
+            <label for="nav-toggle-institucional" class="menu-label-accordion">
+                <span class="chevron">&#8964;</span> Institucional
+            </label>
+            
+            <ul class="menu-indented">
+                <li><a href="#">Quem somos</a></li>
+                <li><a href="#">História</a></li>
+            </ul>
+        </div>
+
+        <a class="menu-link-main" href="#">Em Alta</a>
+        <a class="menu-link-main" href="#">Últimas Notícias</a>
+
+        <div class="menu-group-accordion">
+            <input type="checkbox" id="nav-toggle-noticias" class="submenu-toggle">
+            
+            <label for="nav-toggle-noticias" class="menu-label-accordion">
+                <span class="chevron">&#8964;</span> Todas as Notícias
+            </label>
+            
+            <ul class="menu-indented">
+                <li><a href="#">Ver todas</a></li> <li><a href="#">Esportes</a></li>
+                <li><a href="#">Política</a></li>
+                <li><a href="#">Educação</a></li>
+            </ul>
+        </div>
+        <a class="menu-link-main" href="{% url 'jornal:newsletter_subscribe' %}">Newsletter</a>
+        <a href="/adicionar/" class="btn-adicionar-noticia-mobile">
+              + Adicionar Notícia
+        </a>
+
+        <div class="social-icons-grid">
+            <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+            <a href="#" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
+            <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+            <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+            <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+            <a href="#" aria-label="X"><i class="bi bi-twitter-x"></i></a>
+        </div>
+    </div>
         </div>
     </nav>
     <label for="hamburger-toggle" class="mobile-menu-overlay"></label>
