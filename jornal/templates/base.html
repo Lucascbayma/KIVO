@@ -9,37 +9,231 @@
     <link rel="stylesheet" href="{% static 'jornal/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'jornal/css/global.css' %}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <script src="https://unpkg.com/htmx.org@1.9.6"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    
+    <style>
+        .radio-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 440px;
+            height: 72px;
+            background-color: #262626; /* Cinza Escuro */
+            color: white;
+            z-index: 9999;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.5);
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            
+            /* Centraliza o container interno */
+            display: flex;
+            justify-content: center; 
+        }
+
+        /* O Container que limita a largura (Igual ao seu Header) */
+        .radio-container {
+            width: 100%;
+            max-width: 480px; /* <--- AJUSTE AQUI SE PRECISAR (ex: 1100px) */
+            height: 100%;
+            margin: 0 auto; /* Centraliza na tela */
+            padding: 0 20px; /* Margem de segurança para celulares */
+            
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Espalha esquerda/direita */
+            position: relative; /* Para o texto centralizado funcionar */
+        }
+
+        /* --- LOGO (Esquerda) --- */
+        .radio-left {
+            display: flex;
+            align-items: center;
+            z-index: 2;
+        }
+        .radio-logo-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #eee;
+            overflow: hidden;
+            border: 2px solid #444;
+        }
+        .radio-logo-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* --- TEXTO (Centralizado no Container) --- */
+        .radio-center-info {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            color: #FFF;
+            text-align: center;
+            font-family: Inter;
+            font-size: 19.589px;
+            font-style: normal;
+            font-weight: 600;
+        }
+        .program-name {
+            display: block;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+        .station-name {
+            display: block;
+            font-size: 0.85rem;
+            color: #b0b0b0;
+            font-weight: 300;
+            text-transform: uppercase;
+        }
+
+        /* --- BOTÃO (Direita) --- */
+        .radio-right {
+            z-index: 2;
+        }
+        .btn-player {
+            width: 45px;
+            height: 45px;
+            background-color: #D50000;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+            box-shadow: 0 4px 10px rgba(213, 0, 0, 0.4);
+        }
+        .btn-player:hover { transform: scale(1.05); background-color: #ff1744; }
+        .btn-player:active { transform: scale(0.95); }
+        
+        .btn-player i {
+            font-size: 26px;
+            color: #262626;
+            margin-left: 4px;
+        }
+        .btn-player i.bi-pause-fill { margin-left: 0; }
+
+        /* Responsividade */
+        @media (max-width: 600px) {
+            .program-name { font-size: 1rem; }
+            .station-name { display: none; }
+            .radio-bar { height: 75px; }
+        }
+    </style>
 </head>
-<body>
 
-<header class="header">
-    <div class="col left">
-        <div class="logo-container">
-            <img src="{% static 'jornal/imagens/logo.svg' %}" alt="JC" class="logo-img">
+<body hx-boost="true">
+
+    <header class="header">
+        <div class="col left">
+            <div class="logo-container">
+                <img src="{% static 'jornal/imagens/logo.svg' %}" alt="JC" class="logo-img">
+            </div>
         </div>
-    </div>
-    <div class="col center">
-        <nav class="menu">
-            <a href="#">Editoria</a>
-            <a href="#">Esportes</a>
-            <a href="#">Pernambuco</a>
-            <a href="#">Mais</a>
-        </nav>
-    </div>
-    <div class="col right">
-        <a href="{% url 'adicionar_artigo' %}" class="btn-adicionar-noticia">+ Adicionar Notícia</a>
-    </div>
-</header>
+        <div class="col center">
+            <nav class="menu">
+                <a href="#">Editoria</a>
+                <a href="#">Esportes</a>
+                <a href="#">Pernambuco</a>
+                <a href="#">Mais</a>
+            </nav>
+        </div>
+        <div class="col right">
+            <a href="{% url 'adicionar_artigo' %}" class="btn-adicionar-noticia">+ Adicionar Notícia</a>
+        </div>
+    </header>
 
-<main class="main-content">
-    {% block content %}
-    <!-- O conteúdo específico de cada página vai aqui -->
-    {% endblock %}
-</main>
+    <main class="main-content" id="main-content">
+        {% block content %}
+        {% endblock %}
+    </main>
 
-<footer class="footer">
-    <p>&copy; 2025 Portal JC - Todos os direitos reservados.</p>
-</footer>
+    <footer class="footer">
+        <p>&copy; 2025 Portal JC - Todos os direitos reservados.</p>
+    </footer>
 
+    <div id="radio-bar" hx-preserve class="radio-bar">
+    
+        <div class="radio-container">
+
+            <div class="radio-left">
+                <div class="radio-logo-circle">
+                    <img src="https://yt3.googleusercontent.com/ytc/AIdro_k3A2D_4q_t1y8K5J4L3hW9u8xZ-3xZ9xZ9=s900-c-k-c0x00ffffff-no-rj" alt="JC Logo">
+                </div>
+            </div>
+
+            <div class="radio-center-info">
+                <span class="program-name">Rádio Jornal</span>
+                <span class="station-name">Jornal do Commercio</span>
+            </div>
+
+            <div class="radio-right">
+                <audio id="player-jc" preload="none">
+                    <source src="https://playerservices.streamtheworld.com/api/livestream-redirect/RADIO_JORNAL_FM.mp3" type="audio/mpeg">
+                </audio>
+
+                <button id="btn-play-pause" class="btn-player" onclick="toggleRadio()">
+                    <i class="bi bi-play-fill" id="icon-play"></i>
+                    <i class="bi bi-pause-fill" id="icon-pause" style="display:none;"></i>
+                </button>
+            </div>
+
+        </div> </div>
+
+    <script>
+        // Função chamada quando clica no botão
+        function toggleRadio() {
+            // Busca os elementos na hora do clique para garantir que não se percam
+            var audio = document.getElementById('player-jc');
+            var iconPlay = document.getElementById('icon-play');
+            var iconPause = document.getElementById('icon-pause');
+
+            // Verificação de segurança
+            if (!audio) {
+                alert("Erro: Player de áudio não encontrado no código.");
+                return;
+            }
+
+            if (audio.paused) {
+                // --- TENTAR DAR PLAY ---
+                var promessa = audio.play();
+                
+                if (promessa !== undefined) {
+                    promessa.then(_ => {
+                        // DEU CERTO: Troca ícone para Pause
+                        console.log("Rádio tocando!");
+                        iconPlay.style.display = "none";
+                        iconPause.style.display = "block";
+                    })
+                    .catch(erro => {
+                        // DEU ERRO
+                        console.error("Bloqueio ou Erro:", erro);
+                        alert("Não foi possível iniciar a rádio. Verifique sua conexão.");
+                    });
+                }
+            } else {
+                // --- PAUSAR ---
+                audio.pause();
+                // Troca ícone para Play
+                iconPlay.style.display = "block";
+                iconPause.style.display = "none";
+            }
+        }
+
+        // Função de Volume
+        function alterarVolume(valor) {
+            var audio = document.getElementById('player-jc');
+            if (audio) audio.volume = valor;
+        }
+    </script>
 </body>
 </html>
