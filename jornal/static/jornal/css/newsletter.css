@@ -1,225 +1,182 @@
-/* ==========================================================================
-   NEWSLETTER.CSS - VERSÃO BLINDADA (FINAL)
-   Sobrescreve as regras conflitantes do style.css mantendo o layout fixo
-   ========================================================================== */
+/* ======================================================================
+   NEWSLETTER – VERSÃO FINAL RESPONSIVA
+   Compatível com #newsletter-main (sem alterar HTML)
+   ====================================================================== */
 
-   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+#newsletter-main {
+    background-color: #FFF;
+    padding: 30px 20px;
+    max-width: 600px;
+    margin: 0 auto;
+    font-family: 'Inter', sans-serif !important;
+}
 
-   /* --- 1. O CONTAINER PRINCIPAL --- */
-   /* Usamos "html body" antes da classe para ganhar prioridade sobre o style.css */
-   html body .newsletter-page-container {
-       /* Dimensões Fixas Solicitadas */
-       width: 440px;
-       height: 3766px;
-       
-       /* Força o fundo branco e mata o fundo cinza global */
-       background-color: #FFF !important; 
-       
-       /* Reseta o comportamento flex do body global */
-       display: block !important; 
-       margin: 0 auto; /* Centraliza na tela */
-       padding-top: 20px;
-       position: relative;
-       
-       /* Reseta textos herdados */
-       color: #000000 !important;
-       font-family: 'Inter', sans-serif !important;
-       text-align: left !important;
-       
-       /* Remove bordas ou paddings indesejados do style.css */
-       border: none !important;
-       box-shadow: none !important;
-       max-width: none !important; /* Remove o limite de largura do style.css */
-   }
-   
-   /* Garante fonte Inter em tudo lá dentro */
-   html body .newsletter-page-container * {
-       font-family: 'Inter', sans-serif !important;
-       box-sizing: border-box;
-   }
-   
-   /* --- 2. TÍTULOS (H2) --- */
-   html body .newsletter-page-container h2 {
-       font-size: 18px !important;
-       font-weight: 700 !important;
-       color: #000000 !important;
-       margin: 0 0 20px 16px !important;
-       padding: 0 !important;
-       text-align: left;
-       background: transparent !important;
-       border: none !important;
-   }
-   
-   /* --- 3. CARTÕES (NEWSLETTER OPTION) --- */
-   html body .newsletter-page-container .newsletter-option {
-       /* Medidas e Cores Fixas */
-       width: 408px;
-       height: 209px;
-       background-color: #D9D9D9 !important;
-       margin: 0 auto 20px auto; /* Centraliza */
-       
-       /* Layout Absoluto (Ignora o flex do style.css) */
-       display: block !important; 
-       position: relative;
-       border-radius: 4px;
-       
-       /* Remove bordas/gap do style.css */
-       border: none !important;
-       gap: 0 !important;
-       padding: 0 !important;
-   }
-   
-   /* Ícone */
-   html body .newsletter-page-container .option-icon {
-       position: absolute;
-       left: 20px;
-       top: 20px;
-       width: 56px;
-       height: 56px;
-       border-radius: 0 !important; /* Remove arredondamento se não quiser */
-       background-color: transparent !important; /* Ou defina cor se tiver imagem */
-   }
-   
-   /* Título (H3) */
-   html body .newsletter-page-container .newsletter-option h3 {
-       position: absolute;
-       left: 92px;
-       top: 20px;
-       width: 300px;
-       height: 48px;
-       
-       display: flex;
-       flex-direction: column;
-       justify-content: center;
-       align-items: flex-start;
-       
-       color: #000000 !important;
-       font-size: 22px !important;
-       font-weight: 600 !important;
-       line-height: normal !important;
-       
-       margin: 0 !important;
-       background: transparent !important;
-   }
-   
-   /* Texto (P) */
-   html body .newsletter-page-container .newsletter-option p {
-       position: absolute;
-       top: 84px;
-       left: 12.5px;
-       width: 383px;
-       
-       color: #4B4B4B !important;
-       font-size: 16px !important;
-       font-weight: 400 !important;
-       line-height: normal !important;
-       text-align: left !important;
-       
-       margin: 0 !important;
-   }
-   
-   /* --- 4. BOTÃO VERMELHO "ADICIONAR" --- */
-   html body .newsletter-page-container .add-button {
-       position: absolute;
-       top: 157px;
-       left: 123px;
-       
-       display: inline-flex;
-       justify-content: center;
-       align-items: center;
-       padding: 6px 24px;
-       
-       background-color: #D4040C !important;
-       color: #FFFFFF !important;
-       
-       border: none !important;
-       border-radius: 4px;
-       cursor: pointer;
-       
-       font-size: 18px !important;
-       font-weight: 600 !important;
-       text-transform: none !important; /* Remove uppercase do style.css */
-       min-width: 84px;
-       margin: 0 !important;
-   }
-   
-   html body .newsletter-page-container .add-button:hover {
-       background-color: #b0030a !important;
-   }
-   
-   /* --- 5. FORMULÁRIO E RODAPÉ INTERNO --- */
-   html body .newsletter-page-container hr.separator {
-       width: 100%;
-       border: 0;
-       border-top: 1px solid #ccc;
-       margin: 30px 0;
-   }
-   
-   html body .newsletter-page-container .selected-item {
-       background-color: #f0f0f0 !important;
-       padding: 10px;
-       margin: 0 16px 10px 16px;
-       display: flex;
-       justify-content: space-between;
-       font-size: 14px !important;
-       color: #333 !important;
-       border-radius: 4px;
-   }
-   
-   html body .newsletter-page-container .remove-topic {
-       color: #D4040C;
-       cursor: pointer;
-       font-weight: bold;
-   }
-   
-   /* Form inputs */
-   html body .newsletter-page-container form {
-       padding: 0 16px;
-   }
-   
-   html body .newsletter-page-container label {
-       display: block;
-       margin-bottom: 8px;
-       font-weight: 600 !important;
-       color: #000000 !important;
-       font-size: 16px !important;
-   }
-   
-   html body .newsletter-page-container input[type="email"],
-   html body .newsletter-page-container input[type="text"] {
-       width: 100%;
-       padding: 12px;
-       border: 1px solid #ccc !important;
-       background-color: #FFF !important;
-       color: #000 !important;
-       font-size: 16px !important;
-       border-radius: 4px;
-       height: auto !important;
-   }
-   
-   html body .newsletter-page-container .terms-group {
-       display: flex;
-       align-items: center;
-       gap: 10px;
-       margin-top: 20px;
-   }
-   
-   html body .newsletter-page-container .terms-group input[type="checkbox"] {
-       width: auto !important;
-       height: auto !important;
-       margin: 0;
-   }
-   
-   html body .newsletter-page-container .subscribe-button-final {
-       display: block;
-       width: 100%;
-       margin-top: 30px;
-       padding: 15px;
-       background-color: #000000 !important;
-       color: #FFFFFF !important;
-       border: none !important;
-       font-size: 18px !important;
-       font-weight: bold !important;
-       cursor: pointer;
-       text-transform: none !important;
-   }
+/* Título da Página */
+#newsletter-main h2 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #000;
+    text-align: left;
+}
+
+/* ---- CARD ---- */
+#newsletter-main .newsletter-option {
+    background-color: #E4E4E4;
+    border-radius: 6px;
+    padding: 20px;
+    margin-bottom: 25px;
+
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+}
+
+/* Ícone */
+#newsletter-main .option-icon {
+    width: 56px;
+    height: 56px;
+    flex-shrink: 0;
+}
+
+/* Conteúdo textual do card */
+#newsletter-main .newsletter-option-content {
+    flex: 1;
+}
+
+/* Título */
+#newsletter-main .newsletter-option h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+    color: #000;
+}
+
+/* Texto */
+#newsletter-main .newsletter-option p {
+    font-size: 15px;
+    color: #4B4B4B;
+    margin: 0 0 15px 0;
+}
+
+/* Botão vermelho */
+#newsletter-main .add-button {
+    background-color: #D4040C;
+    color: #FFF !important;
+    border: none;
+    padding: 8px 22px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-block;
+    transition: 0.2s;
+}
+
+#newsletter-main .add-button:hover {
+    background-color: #B0030A !important;
+}
+
+/* ---- SEPARADOR ---- */
+#newsletter-main hr.separator {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 30px 0;
+}
+
+/* Itens selecionados */
+#newsletter-main .selected-item {
+    background-color: #F2F2F2;
+    padding: 12px 14px;
+    border-radius: 4px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+
+#newsletter-main .remove-topic {
+    color: #D4040C;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* ---- FORMULÁRIO ---- */
+#newsletter-main form {
+    margin-top: 20px;
+}
+
+#newsletter-main label {
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 6px;
+    display: block;
+}
+
+#newsletter-main input[type="email"],
+#newsletter-main input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-bottom: 18px;
+}
+
+/* Checkbox */
+#newsletter-main .terms-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+/* Botão final */
+#newsletter-main .subscribe-button-final {
+    width: 100%;
+    margin-top: 25px;
+    padding: 16px;
+    background-color: #000 !important;
+    color: #FFF !important;
+    border: none;
+    border-radius: 4px;
+    font-size: 18px !important;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#newsletter-main .subscribe-button-final:hover {
+    background-color: #333 !important;
+}
+
+/* ------------------- MOBILE ---------------------- */
+@media (max-width: 600px) {
+
+    #newsletter-main {
+        padding: 20px 15px;
+    }
+
+    #newsletter-main .newsletter-option {
+        flex-direction: column;
+        text-align: left;
+        gap: 14px;
+    }
+
+    #newsletter-main .option-icon {
+        margin: 0 auto;
+    }
+
+    #newsletter-main .add-button {
+        width: 100%;
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    #newsletter-main h2 {
+        text-align: center;
+    }
+}
