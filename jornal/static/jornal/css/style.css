@@ -1255,3 +1255,53 @@ PÁGINA DE NEWSLETTER
 .page-footer p {
     line-height: 1.5;
 }
+/* --- NEWSLETTER HOME --- */
+
+.newsletter-section {
+    width: 100%;
+    padding: 40px 20px;
+    background: #f7f7f7;
+    display: flex;
+    justify-content: center;
+}
+
+.newsletter-content {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    max-width: 900px;
+}
+
+.newsletter-icon {
+    width: 120px;
+    height: auto;
+}
+
+.newsletter-text h2 {
+    font-size: 28px;
+    margin: 0 0 8px 0;
+    font-weight: 700;
+}
+
+.newsletter-text p {
+    font-size: 18px;
+    margin: 0 0 15px 0;
+}
+
+/* --- BOTÃO REAL --- */
+.newsletter-btn {
+    background-color: #c40000 !important;
+    color: #fff !important;
+    padding: 12px 28px !important;
+    display: inline-block !important;
+    border-radius: 4px !important;
+    text-decoration: none !important;
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    transition: 0.2s ease !important;
+}
+
+.newsletter-btn:hover {
+    background-color: #9e0000 !important;
+}
+

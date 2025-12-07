@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal JC - Home</title>
     
-    <link rel="stylesheet" href="{% static 'jornal/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'jornal/css/global.css' %}">
+    <link rel="stylesheet" href="{% static 'jornal/css/style.css' %}">
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
@@ -279,15 +279,17 @@
       </section>
 
     </main>
-    <div class="newsletter-section">
+   <div class="newsletter-section">
     <div class="newsletter-content">
-        <img src="/static/jornal/images/newspaper.svg" alt="Newsletter" class="newsletter-icon">
+        <img src="{% static 'jornal/imagens/newspaper.svg' %}" alt="Newsletter" class="newsletter-icon">
 
         <div class="newsletter-text">
             <h2>Conheça nossa Newsletter!</h2>
             <p>Assine nossa newsletter diária ou semanal e não perca os destaques!</p>
 
-            <a href="{% url 'jornal:newsletter_subscribe' %}" class="newsletter-btn">Inscreva-se!</a>
+            <a href="{% url 'jornal:newsletter_subscribe' %}" class="newsletter-btn">
+                Inscreva-se!
+            </a>
         </div>
     </div>
 </div>
