@@ -1,127 +1,97 @@
+{% extends 'base.html' %}
 {% load static %}
-<!doctype html>
-<html lang="pt-BR">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal JC - Home</title>
-    
-    <link rel="stylesheet" href="{% static 'jornal/css/global.css' %}">
-    <link rel="stylesheet" href="{% static 'jornal/css/style.css' %}">
-    
+
+{% block title %}Portal JC - Home{% endblock %}
+
+{% block content %}
+
     <link rel="stylesheet" href="{% static 'jornal/css/home.css' %}">
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
-</head>
-<body>
-  
-  <div class="uol-bar">
-    <img src="{% static 'jornal/imagens/uol.svg' %}" alt="UOL" class="uol-logo">
-  </div>
 
-  <input type="checkbox" id="hamburger-toggle" class="hamburger-toggle">
-  <nav class="mobile-menu" id="mobile-menu-panel">
-    <div class="menu-header">
-        <label for="hamburger-toggle" class="mobile-menu-close">&times;</label>
-    </div>
-    <div class="mobile-menu-body">
-        <a class="menu-link-main" href="{% url 'jornal:home' %}">Em Alta</a>
-        <a class="menu-link-main" href="{% url 'jornal:todas_as_noticias' %}">Últimas Notícias</a>
-        
-        <div class="menu-group-accordion">
-            <input type="checkbox" id="nav-toggle-noticias" class="submenu-toggle">
-            <label for="nav-toggle-noticias" class="menu-label-accordion">
-                <span class="chevron">&#8964;</span> Todas as Notícias
-            </label>
-            <ul class="menu-indented">
-                <li><a href="{% url 'jornal:todas_as_noticias' %}">Ver todas</a></li>
-                <li><a href="{% url 'jornal:home' %}">Esportes</a></li>
-                <li><a href="{% url 'jornal:home' %}">Política</a></li>
-                <li><a href="{% url 'jornal:home' %}">Educação</a></li>
-            </ul>
-        </div>
-
-        <a class="menu-link-main" href="{% url 'jornal:newsletter_subscribe' %}">Newsletter</a>
-        <a href="/adicionar/" class="btn-adicionar-noticia-mobile">+ Adicionar Notícia</a>
-    </div>
-  </nav>
-  <label for="hamburger-toggle" class="mobile-menu-overlay"></label>
-
-  <header class="header">
-    <div class="col left"></div>
-    <div class="col center">
-        <div class="logo-container">
-            <img src="{% static 'jornal/imagens/logo.svg' %}" alt="JC" class="logo-img">
-        </div>
-    </div>
-    <div class="col right">
-        <a href="{% url 'jornal:todas_as_noticias' %}" class="header-icon-btn search-btn"><i class="bi bi-search"></i></a>
-        <label for="hamburger-toggle" class="hamburger-label"><i class="bi bi-list" style="font-size: 24px;"></i></label>
-    </div>
-  </header>
-
-  <main class="main-content">
-      
-      <section class="em-alta">
+    <section class="em-alta">
         <div class="section-head">
-          <h2>Em Alta</h2>
-          <a href="{% url 'categoria_view' 2 %}" class="btn-ver-mais-estilo">Ver Mais</a>
+            <h2>Em Alta</h2>
+            <a href="{% url 'categoria_view' 2 %}" class="btn-ver-mais-estilo">Ver Mais</a>
         </div>
         
         <div class="carousel">
-          {% for n in esportes %}
+            {% for n in esportes %}
             <div class="card">
-              <div class="media">
+                <div class="media">
                 {% if n.pk %}
-                <a href="{% url 'artigo_detalhe' pk=n.pk %}">{% if n.imagem %}<img src="{{ n.imagem.url }}">{% else %}<img src="{% static 'jornal/imagens/sem-imagem.png' %}">{% endif %}</a>
+                    <a href="{% url 'artigo_detalhe' pk=n.pk %}">
+                        {% if n.imagem %}
+                            <img src="{{ n.imagem.url }}" alt="{{ n.titulo }}">
+                        {% else %}
+                            <img src="{% static 'jornal/imagens/sem-imagem.png' %}" alt="Sem imagem">
+                        {% endif %}
+                    </a>
                 {% else %}
-                <a href="{% url 'detalhe_noticia_estatica' %}?link={{ n.link }}">{% if n.image_url %}<img src="{{ n.image_url }}">{% else %}<img src="{% static 'jornal/imagens/sem-imagem.png' %}">{% endif %}</a>
+                    <a href="{% url 'detalhe_noticia_estatica' %}?link={{ n.link }}">
+                        {% if n.image_url %}
+                            <img src="{{ n.image_url }}" alt="{{ n.title }}">
+                        {% else %}
+                            <img src="{% static 'jornal/imagens/sem-imagem.png' %}" alt="Sem imagem">
+                        {% endif %}
+                    </a>
                 {% endif %}
-              </div>
-              <div class="meta">
-                <p class="title">{% if n.pk %}{{ n.titulo|truncatechars:60 }}{% else %}{{ n.title|truncatechars:60 }}{% endif %}</p>
-              </div>
+                </div>
+                <div class="meta">
+                    <p class="title">
+                        {% if n.pk %}{{ n.titulo|truncatechars:60 }}{% else %}{{ n.title|truncatechars:60 }}{% endif %}
+                    </p>
+                </div>
             </div>
-          {% empty %}
+            {% empty %}
             <p>Nenhuma notícia em alta.</p>
-          {% endfor %}
+            {% endfor %}
         </div>
-      </section>
+    </section>
 
-      <div class="bloco-anuncio">
-          <img src="{% static 'jornal/imagens/anuncio.jpg' %}" alt="Publicidade">
-      </div>
+    <div class="bloco-anuncio">
+        <img src="{% static 'jornal/imagens/anuncio.jpg' %}" alt="Publicidade">
+    </div>
 
-      <section class="ultimas-noticias">
+    <section class="ultimas-noticias">
         <div class="section-head">
-          <h2>Últimas Notícias</h2>
-          </div>
+            <h2>Últimas Notícias</h2>
+        </div>
         
         <div class="vertical-list">
-          {% for n in ultimas|slice:":3" %}
+            {% for n in ultimas|slice:":3" %}
             <div class="vertical-card">
-              <div class="media">
-                {% if n.pk %}
-                <a href="{% url 'artigo_detalhe' pk=n.pk %}">{% if n.imagem %}<img src="{{ n.imagem.url }}">{% else %}<img src="{% static 'jornal/imagens/sem-imagem.png' %}">{% endif %}</a>
-                {% else %}
-                <a href="{% url 'detalhe_noticia_estatica' %}?link={{ n.link }}">{% if n.image_url %}<img src="{{ n.image_url }}">{% else %}<img src="{% static 'jornal/imagens/sem-imagem.png' %}">{% endif %}</a>
-                {% endif %}
-              </div>
-              
-              <div class="meta">
-                {% if n.pk %}
-                    <p class="title">{{ n.titulo|truncatechars:100 }}</p>
-                    <p class="time">{{ n.autor.username }} — {{ n.publicado_em|date:"d/m/Y" }}</p>
-                {% else %}
-                    <p class="title">{{ n.title|truncatechars:100 }}</p>
-                    <p class="time">{{ n.source_name }} — {{ n.pubDate|slice:":10" }}</p>
-                {% endif %}
-              </div>
+                <div class="media">
+                    {% if n.pk %}
+                    <a href="{% url 'artigo_detalhe' pk=n.pk %}">
+                        {% if n.imagem %}
+                            <img src="{{ n.imagem.url }}" alt="{{ n.titulo }}">
+                        {% else %}
+                            <img src="{% static 'jornal/imagens/sem-imagem.png' %}" alt="Sem imagem">
+                        {% endif %}
+                    </a>
+                    {% else %}
+                    <a href="{% url 'detalhe_noticia_estatica' %}?link={{ n.link }}">
+                        {% if n.image_url %}
+                            <img src="{{ n.image_url }}" alt="{{ n.title }}">
+                        {% else %}
+                            <img src="{% static 'jornal/imagens/sem-imagem.png' %}" alt="Sem imagem">
+                        {% endif %}
+                    </a>
+                    {% endif %}
+                </div>
+                
+                <div class="meta">
+                    {% if n.pk %}
+                        <p class="title">{{ n.titulo|truncatechars:100 }}</p>
+                        <p class="time">{{ n.autor.username }} — {{ n.publicado_em|date:"d/m/Y" }}</p>
+                    {% else %}
+                        <p class="title">{{ n.title|truncatechars:100 }}</p>
+                        <p class="time">{{ n.source_name }} — {{ n.pubDate|slice:":10" }}</p>
+                    {% endif %}
+                </div>
             </div>
-          {% empty %}
+            {% empty %}
             <p>Nenhuma notícia disponível.</p>
-          {% endfor %}
+            {% endfor %}
         </div>
 
         <div class="container-ver-mais-bottom">
@@ -129,107 +99,105 @@
                 Ver Mais
             </a>
         </div>
-      </section>
+    </section>
 
-      <div class="bloco-anuncio">
-          <img src="{% static 'jornal/imagens/anuncio.jpg' %}" alt="Publicidade">
-      </div>
+    <div class="bloco-anuncio">
+        <img src="{% static 'jornal/imagens/anuncio.jpg' %}" alt="Publicidade">
+    </div>
 
-      <section class="em-alta politica">
+    <section class="em-alta politica">
         <div class="section-head">
             <h2>Política</h2>
             <a href="{% url 'categoria_view' 3 %}" class="btn-ver-mais-estilo">Ver Mais</a>
         </div>
         <div class="carousel">
-          {% for n in politica %}
+            {% for n in politica %}
             <div class="card">
-              <div class="media">
-                {% if n.pk %}
-                    <a href="{% url 'artigo_detalhe' pk=n.pk %}">{% if n.imagem %}<img src="{{ n.imagem.url }}">{% else %}<img src="{% static 'jornal/imagens/sem-imagem.png' %}">{% endif %}</a>
-                {% else %}
-                    <a href="{% url 'detalhe_noticia_estatica' %}?link={{ n.link }}">{% if n.image_url %}<img src="{{ n.image_url }}">{% else %}<img src="{% static 'jornal/imagens/sem-imagem.png' %}">{% endif %}</a>
-                {% endif %}
-              </div>
-              <div class="meta">
-                <p class="title">{% if n.pk %}{{ n.titulo|truncatechars:60 }}{% else %}{{ n.title|truncatechars:60 }}{% endif %}</p>
-              </div>
+                <div class="media">
+                    {% if n.pk %}
+                        <a href="{% url 'artigo_detalhe' pk=n.pk %}">
+                            {% if n.imagem %}
+                                <img src="{{ n.imagem.url }}" alt="{{ n.titulo }}">
+                            {% else %}
+                                <img src="{% static 'jornal/imagens/sem-imagem.png' %}" alt="Sem imagem">
+                            {% endif %}
+                        </a>
+                    {% else %}
+                        <a href="{% url 'detalhe_noticia_estatica' %}?link={{ n.link }}">
+                            {% if n.image_url %}
+                                <img src="{{ n.image_url }}" alt="{{ n.title }}">
+                            {% else %}
+                                <img src="{% static 'jornal/imagens/sem-imagem.png' %}" alt="Sem imagem">
+                            {% endif %}
+                        </a>
+                    {% endif %}
+                </div>
+                <div class="meta">
+                    <p class="title">{% if n.pk %}{{ n.titulo|truncatechars:60 }}{% else %}{{ n.title|truncatechars:60 }}{% endif %}</p>
+                </div>
             </div>
-          {% empty %}
+            {% empty %}
             <p>Sem notícias.</p>
-          {% endfor %}
+            {% endfor %}
         </div>
-      </section>
+    </section>
 
-      <section class="em-alta clima" style="margin-top: 40px;">
+    <section class="em-alta clima" style="margin-top: 40px;">
         <div class="section-head">
             <h2>Clima</h2>
             <a href="{% url 'categoria_view' 4 %}" class="btn-ver-mais-estilo">Ver Mais</a>
         </div>
         <div class="carousel">
-          {% for n in clima %}
+            {% for n in clima %}
             <div class="card">
-              <div class="media">
-                {% if n.pk %}
-                    <a href="{% url 'artigo_detalhe' pk=n.pk %}">{% if n.imagem %}<img src="{{ n.imagem.url }}">{% else %}<img src="{% static 'jornal/imagens/sem-imagem.png' %}">{% endif %}</a>
-                {% else %}
-                    <a href="{% url 'detalhe_noticia_estatica' %}?link={{ n.link }}">{% if n.image_url %}<img src="{{ n.image_url }}">{% else %}<img src="{% static 'jornal/imagens/sem-imagem.png' %}">{% endif %}</a>
-                {% endif %}
-              </div>
-              <div class="meta">
-                <p class="title">{% if n.pk %}{{ n.titulo|truncatechars:60 }}{% else %}{{ n.title|truncatechars:60 }}{% endif %}</p>
-              </div>
+                <div class="media">
+                    {% if n.pk %}
+                        <a href="{% url 'artigo_detalhe' pk=n.pk %}">
+                            {% if n.imagem %}
+                                <img src="{{ n.imagem.url }}" alt="{{ n.titulo }}">
+                            {% else %}
+                                <img src="{% static 'jornal/imagens/sem-imagem.png' %}" alt="Sem imagem">
+                            {% endif %}
+                        </a>
+                    {% else %}
+                        <a href="{% url 'detalhe_noticia_estatica' %}?link={{ n.link }}">
+                            {% if n.image_url %}
+                                <img src="{{ n.image_url }}" alt="{{ n.title }}">
+                            {% else %}
+                                <img src="{% static 'jornal/imagens/sem-imagem.png' %}" alt="Sem imagem">
+                            {% endif %}
+                        </a>
+                    {% endif %}
+                </div>
+                <div class="meta">
+                    <p class="title">{% if n.pk %}{{ n.titulo|truncatechars:60 }}{% else %}{{ n.title|truncatechars:60 }}{% endif %}</p>
+                </div>
             </div>
-          {% empty %}
+            {% empty %}
             <p>Sem notícias.</p>
-          {% endfor %}
+            {% endfor %}
         </div>
-      </section>
+    </section>
 
-      <div class="bloco-anuncio">
-          <img src="{% static 'jornal/imagens/anuncio.jpg' %}" alt="Publicidade">
-      </div>
+    <div class="bloco-anuncio">
+        <img src="{% static 'jornal/imagens/anuncio.jpg' %}" alt="Publicidade">
+    </div>
 
-    </main>
+    <div class="newsletter-section">
+        <div class="newsletter-content">
+            <img src="{% static 'jornal/imagens/newspaper.svg' %}" alt="Newsletter" class="newsletter-icon">
 
-  <div class="newsletter-section">
-    <div class="newsletter-content">
-        <img src="{% static 'jornal/imagens/newspaper.svg' %}" alt="Newsletter" class="newsletter-icon">
+            <div class="newsletter-text">
+                <h2>Conheça nossa Newsletter!</h2>
+                <p>Assine nossa newsletter diária ou semanal e não perca os destaques!</p>
 
-        <div class="newsletter-text">
-            <h2>Conheça nossa Newsletter!</h2>
-            <p>Assine nossa newsletter diária ou semanal e não perca os destaques!</p>
-
-            <a href="{% url 'jornal:newsletter_subscribe' %}" class="newsletter-btn">
-                Inscreva-se!
-            </a>
+                <a href="{% url 'jornal:newsletter_subscribe' %}" class="newsletter-btn">
+                    Inscreva-se!
+                </a>
+            </div>
         </div>
     </div>
-  </div>
 
-  <footer class="footer-jcpe">
-    <div class="footer-container">
-        <div class="footer-logo">
-            <img src="{% static 'jornal/imagens/logo.svg' %}" alt="Logo JC PE">
-        </div>
-        <div class="footer-links">
-            <span class="footer-text">LGPD</span>
-            <span class="footer-text">Política de Privacidade</span>
-            <span class="footer-text">Anuncie Conosco</span>
-        </div>
-    </div>
-  </footer>  
+    <script src="{% static 'jornal/js/rastreamento_leitura.js' %}"></script>
 
-  <script src="{% static 'jornal/js/rastreamento_leitura.js' %}"></script>
-
-  <div class="radio-player-bar">
-    
-    <img src="{% static 'jornal/imagens/radio_logo.png' %}" alt="Rádio JC" class="radio-logo">
-
-    <div class="radio-text">Balanço de Notícias</div>
-
-    <i class="bi bi-play-circle-fill radio-play-btn"></i>
-
-</div>
-
-</body>
-</html>
+{% endblock %}

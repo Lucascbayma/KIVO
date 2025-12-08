@@ -14,115 +14,54 @@
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     
     <style>
-        .radio-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 440px;
-            height: 72px;
-            background-color: #262626; /* Cinza Escuro */
-            color: white;
-            z-index: 9999;
-            box-shadow: 0 -4px 15px rgba(0,0,0,0.5);
-            font-family: 'Helvetica', 'Arial', sans-serif;
-            
-            /* Centraliza o container interno */
-            display: flex;
-            justify-content: center; 
-        }
+        body { padding-bottom: 100px; }
 
-        /* O Container que limita a largura (Igual ao seu Header) */
         .radio-container {
             width: 100%;
-            max-width: 480px; /* <--- AJUSTE AQUI SE PRECISAR (ex: 1100px) */
+            max-width: 480px;
             height: 100%;
-            margin: 0 auto; /* Centraliza na tela */
-            padding: 0 20px; /* Margem de segurança para celulares */
-            
+            margin: 0 auto;
+            padding: 0 20px;
             display: flex;
             align-items: center;
-            justify-content: space-between; /* Espalha esquerda/direita */
-            position: relative; /* Para o texto centralizado funcionar */
+            justify-content: space-between;
+            position: relative;
         }
 
-        /* --- LOGO (Esquerda) --- */
-        .radio-left {
-            display: flex;
-            align-items: center;
-            z-index: 2;
-        }
+        .radio-left { display: flex; align-items: center; z-index: 2; }
         .radio-logo-circle {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background-color: #eee;
-            overflow: hidden;
-            border: 2px solid #444;
+            width: 50px; height: 50px; border-radius: 50%;
+            background-color: #eee; overflow: hidden; border: 2px solid #444;
         }
-        .radio-logo-circle img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        .radio-logo-circle img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* --- TEXTO (Centralizado no Container) --- */
         .radio-center-info {
-            position: absolute;
-            left: 50%;
-            top: 50%;
+            position: absolute; left: 50%; top: 50%;
             transform: translate(-50%, -50%);
-            pointer-events: none;
-            color: #FFF;
-            text-align: center;
-            font-family: Inter;
-            font-size: 19.589px;
-            font-style: normal;
-            font-weight: 600;
+            pointer-events: none; color: #FFF; text-align: center;
         }
-        .program-name {
-            display: block;
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #ffffff;
-            letter-spacing: 0.5px;
-            margin-bottom: 2px;
-        }
-        .station-name {
-            display: block;
-            font-size: 0.85rem;
-            color: #b0b0b0;
-            font-weight: 300;
-            text-transform: uppercase;
-        }
+        .program-name { display: block; font-size: 1.3rem; font-weight: 700; color: #ffffff; margin-bottom: 2px; }
+        .station-name { display: block; font-size: 0.85rem; color: #b0b0b0; font-weight: 300; text-transform: uppercase; }
 
-        /* --- BOTÃO (Direita) --- */
-        .radio-right {
-            z-index: 2;
-        }
+        .radio-right { z-index: 2; }
         .btn-player {
-            width: 45px;
-            height: 45px;
+            width: 50px;
+            height: 50px; 
             background-color: #D50000;
-            border: none;
-            border-radius: 50%;
+            border: none; 
+            border-radius: 50%; 
             display: flex;
-            align-items: center;
-            justify-content: center;
+            align-items: center; 
+            justify-content: center; 
             cursor: pointer;
             transition: transform 0.2s, background-color 0.2s;
             box-shadow: 0 4px 10px rgba(213, 0, 0, 0.4);
         }
         .btn-player:hover { transform: scale(1.05); background-color: #ff1744; }
         .btn-player:active { transform: scale(0.95); }
-        
-        .btn-player i {
-            font-size: 26px;
-            color: #262626;
-            margin-left: 4px;
-        }
+        .btn-player i { font-size: 32px; color: #262626; margin-left: 4px; }
         .btn-player i.bi-pause-fill { margin-left: 0; }
 
-        /* Responsividade */
         @media (max-width: 600px) {
             .program-name { font-size: 1rem; }
             .station-name { display: none; }
@@ -131,43 +70,96 @@
     </style>
 </head>
 
-<body hx-boost="true">
+<body>
+
+    <div id="site-wrapper" hx-boost="true" hx-target="#main-content" hx-select="#main-content" hx-swap="outerHTML"hx-history-elt>
+        <div class="uol-bar">
+    <img src="{% static 'jornal/imagens/uol.svg' %}" alt="UOL" class="uol-logo">
+  </div>
+
+  <input type="checkbox" id="hamburger-toggle" class="hamburger-toggle">
+  <nav class="mobile-menu" id="mobile-menu-panel">
+        <div class="menu-header">
+            <label for="hamburger-toggle" class="mobile-menu-close">&times;</label>
+        </div>
+        <div class="mobile-menu-body">
+            <div class="menu-group-accordion">
+                <input type="checkbox" id="nav-toggle-institucional" class="submenu-toggle">
+                <label for="nav-toggle-institucional" class="menu-label-accordion">
+                    <span class="chevron">&#8964;</span> Institucional
+                </label>
+                <ul class="menu-indented">
+                    <li><a href="#">Quem somos</a></li>
+                    <li><a href="#">História</a></li>
+                </ul>
+            </div>
+
+            <a class="menu-link-main" href="{% url 'jornal:home' %}">Em Alta</a>
+            <a class="menu-link-main" href="{% url 'jornal:todas_as_noticias' %}">Últimas Notícias</a>
+            
+            <div class="menu-group-accordion">
+                <input type="checkbox" id="nav-toggle-noticias" class="submenu-toggle">
+                <label for="nav-toggle-noticias" class="menu-label-accordion">
+                    <span class="chevron">&#8964;</span> Todas as Notícias
+                </label>
+                <ul class="menu-indented">
+                    <li><a href="{% url 'jornal:todas_as_noticias' %}">Ver todas</a></li>
+                    <li><a href="{% url 'jornal:home' %}">Esportes</a></li>
+                    <li><a href="{% url 'jornal:home' %}">Política</a></li>
+                    <li><a href="{% url 'jornal:home' %}">Educação</a></li>
+                </ul>
+            </div>
+
+            <a class="menu-link-main" href="{% url 'jornal:newsletter_subscribe' %}">Newsletter</a>
+            <a href="/adicionar/" class="btn-adicionar-noticia-mobile">+ Adicionar Notícia</a>
+            <div class="social-icons-grid">
+                <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                <a href="#" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
+                <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+                <a href="#" aria-label="X"><i class="bi bi-twitter-x"></i></a>
+            </div>
+        </div>
+    </nav>
+    <label for="hamburger-toggle" class="mobile-menu-overlay"></label>
 
     <header class="header">
-        <div class="col left">
+        <div class="col left"></div>
+        <div class="col center">
             <div class="logo-container">
                 <img src="{% static 'jornal/imagens/logo.svg' %}" alt="JC" class="logo-img">
             </div>
         </div>
-        <div class="col center">
-            <nav class="menu">
-                <a href="#">Editoria</a>
-                <a href="#">Esportes</a>
-                <a href="#">Pernambuco</a>
-                <a href="#">Mais</a>
-            </nav>
-        </div>
         <div class="col right">
-            <a href="{% url 'adicionar_artigo' %}" class="btn-adicionar-noticia">+ Adicionar Notícia</a>
+            <a href="{% url 'jornal:todas_as_noticias' %}" class="header-icon-btn search-btn"><i class="bi bi-search"></i></a>
+            <label for="hamburger-toggle" class="hamburger-label"><i class="bi bi-list" style="font-size: 24px;"></i></label>
         </div>
     </header>
+        <main class="main-content" id="main-content">
+            {% block content %}
+            {% endblock %}
+        </main>
 
-    <main class="main-content" id="main-content">
-        {% block content %}
-        {% endblock %}
-    </main>
+        <footer class="footer-jcpe">
+            <div class="footer-container">
+                <div class="footer-logo">
+                    <img src="{% static 'jornal/imagens/logo.svg' %}" alt="Logo JC PE">
+                </div>
+                <div class="footer-links">
+                    <span class="footer-text">LGPD</span>
+                    <span class="footer-text">Política de Privacidade</span>
+                    <span class="footer-text">Anuncie Conosco</span>
+                </div>
+            </div>
+        </footer>
 
-    <footer class="footer">
-        <p>&copy; 2025 Portal JC - Todos os direitos reservados.</p>
-    </footer>
-
-    <div id="radio-bar" hx-preserve class="radio-bar">
-    
+    </div> 
+    <div id="radio-bar" hx-preserve class="radio-player-bar">
         <div class="radio-container">
-
             <div class="radio-left">
                 <div class="radio-logo-circle">
-                    <img src="https://yt3.googleusercontent.com/ytc/AIdro_k3A2D_4q_t1y8K5J4L3hW9u8xZ-3xZ9xZ9=s900-c-k-c0x00ffffff-no-rj" alt="JC Logo">
+                    <img src="{% static 'jornal/imagens/radio_logo.svg' %}" alt="JC Logo">
                 </div>
             </div>
 
@@ -178,7 +170,7 @@
 
             <div class="radio-right">
                 <audio id="player-jc" preload="none">
-                    <source src="https://playerservices.streamtheworld.com/api/livestream-redirect/RADIO_JORNAL_FM.mp3" type="audio/mpeg">
+                     <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
                 </audio>
 
                 <button id="btn-play-pause" class="btn-player" onclick="toggleRadio()">
@@ -186,53 +178,29 @@
                     <i class="bi bi-pause-fill" id="icon-pause" style="display:none;"></i>
                 </button>
             </div>
-
-        </div> </div>
-
+        </div> 
+    </div>
     <script>
-        // Função chamada quando clica no botão
         function toggleRadio() {
-            // Busca os elementos na hora do clique para garantir que não se percam
             var audio = document.getElementById('player-jc');
             var iconPlay = document.getElementById('icon-play');
             var iconPause = document.getElementById('icon-pause');
 
-            // Verificação de segurança
-            if (!audio) {
-                alert("Erro: Player de áudio não encontrado no código.");
-                return;
-            }
+            if (!audio) return;
 
             if (audio.paused) {
-                // --- TENTAR DAR PLAY ---
-                var promessa = audio.play();
-                
-                if (promessa !== undefined) {
-                    promessa.then(_ => {
-                        // DEU CERTO: Troca ícone para Pause
-                        console.log("Rádio tocando!");
-                        iconPlay.style.display = "none";
-                        iconPause.style.display = "block";
-                    })
-                    .catch(erro => {
-                        // DEU ERRO
-                        console.error("Bloqueio ou Erro:", erro);
-                        alert("Não foi possível iniciar a rádio. Verifique sua conexão.");
-                    });
-                }
+                audio.play().then(_ => {
+                    iconPlay.style.display = "none";
+                    iconPause.style.display = "block";
+                }).catch(e => {
+                    console.error(e);
+                    alert("Erro ao conectar na rádio.");
+                });
             } else {
-                // --- PAUSAR ---
                 audio.pause();
-                // Troca ícone para Play
                 iconPlay.style.display = "block";
                 iconPause.style.display = "none";
             }
-        }
-
-        // Função de Volume
-        function alterarVolume(valor) {
-            var audio = document.getElementById('player-jc');
-            if (audio) audio.volume = valor;
         }
     </script>
 </body>
