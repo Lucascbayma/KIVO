@@ -4,23 +4,25 @@
     box-sizing: border-box;
 }
 
-/* --- CONTAINER PRINCIPAL --- */
+
 .main-content {
-    width: 440px !important;
+    
+    width: 100%; 
+    max-width: 440px; 
     min-height: 100vh;
     background-color: #FFFFFF;
-    margin: 0 auto;
-    padding: 0 16px;
+    margin: 0 auto; 
+    padding: 0 16px; 
     display: block;
     padding-bottom: 50px;
 }
 
-/* Esconde título H1 antigo */
+
 .main-content h1 {
     display: none; 
 }
 
-/* --- RETÂNGULO BUSCA (Correção do "Quadrado menor") --- */
+
 .filtros-container {
     display: flex;
     flex-direction: column;
@@ -30,7 +32,7 @@
 
 .campo-busca {
     display: flex;
-    width: 408px;
+    width: 100%; 
     height: 68px;
     padding: 12px 11px;
     align-items: center;
@@ -45,13 +47,12 @@
     color: #000;
 }
 
-/* AQUI ESTÁ A CORREÇÃO DO RETÂNGULO: */
 .campo-busca input {
     width: 100%;
-    border: none !important;      /* Remove borda */
-    outline: none !important;     /* Remove linha azul de foco */
-    background: transparent !important; /* Remove fundo branco */
-    box-shadow: none !important;  /* Remove sombras */
+    border: none !important; 
+    outline: none !important; 
+    background: transparent !important; 
+    box-shadow: none !important; 
     
     color: #999;
     font-family: 'Inter', sans-serif;
@@ -80,107 +81,39 @@
 
 /* --- ORDENAR (DROPDOWN ANIMADO) --- */
 .item-ordenar {
+    
     display: flex;
     align-items: center;
     gap: 10px;
     margin-top: 10px;
     position: relative; 
-    z-index: 500; /* Garante que fique acima das notícias */
+    z-index: 500;
+    flex-wrap: nowrap; 
 }
 
 .item-ordenar i {
     font-size: 36px;
     color: #000;
+    flex-shrink: 0; 
 }
 
 .label-ordenar {
-    width: 109px;
+    
     color: #000;
     font-family: 'Inter', sans-serif;
     font-size: 20px;
+    white-space: nowrap; 
+    flex-shrink: 0;
 }
 
 /* Container do Dropdown */
 .custom-dropdown {
     position: relative;
-    width: 160px;
+    width: 100%;
     font-family: 'Inter', sans-serif;
 }
 
-/* O Botão Visível */
-.dropdown-selected {
-    display: flex;
-    height: 32px;
-    padding: 0 10px;
-    justify-content: space-between;
-    align-items: center;
-    border: 1px solid #000;
-    background: #FFF;
-    color: #000;
-    font-size: 16px;
-    cursor: pointer;
-    user-select: none; /* Impede seleção de texto */
-}
-
-.dropdown-selected::after {
-    content: '▼';
-    font-size: 10px;
-    margin-left: 5px;
-    transition: transform 0.3s;
-}
-
-/* Gira a seta quando aberto */
-.custom-dropdown.active .dropdown-selected::after {
-    transform: rotate(180deg);
-}
-
-/* A Lista de Opções (Escondida por padrão) */
-.dropdown-options {
-    display: none; /* ESSENCIAL: Esconde a lista para não vazar texto */
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background: #FFF;
-    border: 1px solid #000;
-    border-top: none;
-    z-index: 1000;
-}
-
-/* Animação de Entrada */
-.dropdown-options.show {
-    display: block;
-    animation: slideDown 0.3s ease forwards;
-}
-
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.dropdown-item {
-    padding: 10px;
-    cursor: pointer;
-    font-size: 16px;
-    color: #000;
-    border-bottom: 1px solid #eee;
-}
-
-.dropdown-item:hover {
-    background-color: #f0f0f0;
-}
-
-.dropdown-item:last-child {
-    border-bottom: none;
-}
-
-/* --- CARDS NOTÍCIA --- */
+/* --- CARDS NOTÍCIA (CORRIGIDO) --- */
 .grid-noticias {
     display: flex;
     flex-direction: column;
@@ -189,13 +122,13 @@
 }
 
 .card {
-    width: 408px;
+    width: 100%; 
     border: none;
 }
 
 .card .media img {
-    width: 408px;
-    height: 230px;
+    width: 100%; 
+    height: auto; 
     object-fit: cover;
     aspect-ratio: 204/115;
 }
@@ -208,4 +141,16 @@
     font-family: 'Inter', sans-serif;
     font-size: 26px;
     margin-top: 12px;
+    word-break: break-word; 
+}
+
+
+@media (max-width: 380px) {
+    
+    .main-content {
+        padding: 0 10px;
+    }
+    .card .meta .title {
+        font-size: 22px; 
+    }
 }
