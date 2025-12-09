@@ -8,7 +8,7 @@ Somos um grupo constituído por estudantes dos cursos de **Design** e **Ciência
 
 ## 🎯 Objetivo do Projeto
 
-Nosso objetivo é desenvolver e entregar ao cliente uma **solução tecnológica** baseada em uma análise aprofundada dos desafios apresentados.
+Nosso objetivo é desenvolver e entregar ao cliente uma **solução tecnológica** baseada no mobile first e em uma análise aprofundada dos desafios apresentados.
 
 A proposta busca:
 
@@ -55,6 +55,13 @@ Site do Jornal do Commercio que estamos produzindo:
 
 - [Screencast 1 – Screencast de testes](https://youtu.be/0eayAF3NDRA)
 - [Screencast 2 – screencast processo de buid e deployment ](https://youtu.be/UIbzFPQYTnQ)
+
+---
+
+## 🔐 Login dos avaliadores
+
+- **Login**: avaliadores
+- **Senha**: avaliaçãokivo
 
 ---
 
