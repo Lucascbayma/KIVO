@@ -1,6 +1,6 @@
 /* ======================================================================
    NEWSLETTER – VERSÃO FINAL RESPONSIVA
-   Compatível com #newsletter-main
+   Compatível com #newsletter-main (sem alterar HTML)
    ====================================================================== */
 
 #newsletter-main {
@@ -37,7 +37,11 @@
     width: 56px;
     height: 56px;
     flex-shrink: 0;
+
+    
     background: transparent !important;
+
+    
     overflow: hidden;
 }
 
@@ -68,9 +72,9 @@
     margin: 0 0 15px 0;
 }
 
-/* Botão vermelho (ADD) */
+/* Botão vermelho */
 #newsletter-main .add-button {
-    background-color: #D4040C !important;
+    background-color: #D4040C;
     color: #FFF !important;
     border: none;
     padding: 8px 22px;
@@ -143,28 +147,23 @@
     margin-top: 10px;
 }
 
-/* ---- BOTÃO FINAL ---- */
-#newsletter-main .subscribe-button-final,
-#newsletter-main button.subscribe-button-final,
-#newsletter-main .subscribe-button-final.btn,
-#newsletter-main .subscribe-button-final.btn-dark,
-#newsletter-main .subscribe-button-final.btn-primary {
+/* Botão final */
+#newsletter-main .subscribe-button-final {
     width: 100%;
     margin-top: 25px;
     padding: 16px;
-    background-color: #D4040C !important;
+    background-color: #000 !important;
     color: #FFF !important;
-    border: none !important;
-    border-radius: 4px !important;
+    border: none;
+    border-radius: 4px;
     font-size: 18px !important;
     font-weight: 700;
     cursor: pointer;
     transition: 0.2s;
 }
 
-/* Hover do botão final */
 #newsletter-main .subscribe-button-final:hover {
-    background-color: #B0030A !important;
+    background-color: #333 !important;
 }
 
 /* ------------------- MOBILE ---------------------- */
