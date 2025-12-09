@@ -61,7 +61,7 @@ Site do Jornal do Commercio que estamos produzindo:
 ## 🔐 Login dos avaliadores
 
 - **Login**: avaliadores
-- **Senha**: avaliaçãokivo
+- **Senha**: jornalkivo123
 
 ---
 
