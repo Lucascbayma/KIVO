@@ -1,11 +1,8 @@
-// Função que inicializa toda a lógica da newsletter
 function initNewsletterPage() {
 
-    // Evita rodar duas vezes
     if (window.__newsletter_initialized__) return;
     window.__newsletter_initialized__ = true;
 
-    // Elementos do DOM
     const addButtons = document.querySelectorAll('.add-button');
     const selectedList = document.getElementById('selected-topics-list');
     const preferencesInput = document.getElementById('preferences-input');
@@ -14,15 +11,12 @@ function initNewsletterPage() {
         return; // A página atual não é a newsletter
     }
 
-    // Array para armazenar os IDs das newsletters selecionadas
     let selectedTopics = [];
 
-    // Atualiza o input hidden que será enviado para o Django
     function updateHiddenInput() {
         preferencesInput.value = selectedTopics.join(',');
     }
 
-    // Cria o HTML do retângulo visual
     function createSelectedItemElement(topicId, labelText) {
         const itemDiv = document.createElement('div');
         itemDiv.classList.add('selected-item');
@@ -37,7 +31,6 @@ function initNewsletterPage() {
         return itemDiv;
     }
 
-    // Função de adicionar
     function addTopic(card) {
         const topicId = card.dataset.topic;
         const labelText = card.querySelector('h3').innerText.trim();
@@ -57,7 +50,6 @@ function initNewsletterPage() {
         btn.disabled = true;
     }
 
-    // Função de remover
     function removeTopic(closeIcon) {
         const itemDiv = closeIcon.closest('.selected-item');
         const topicId = itemDiv.dataset.topicId;
@@ -80,7 +72,6 @@ function initNewsletterPage() {
         });
     }
 
-    // EVENTOS
     addButtons.forEach(btn => {
         btn.addEventListener('click', function(e) {
             e.preventDefault();
@@ -97,10 +88,8 @@ function initNewsletterPage() {
     });
 }
 
-// Rodar quando a página carregar normalmente
 document.addEventListener("DOMContentLoaded", initNewsletterPage);
 
-// Rodar quando o HTMX carregar uma nova página (via hx-boost)
 document.body.addEventListener("htmx:afterSwap", function(evt) {
     if (evt.detail.target.id === "main-content") {
         window.__newsletter_initialized__ = false; // permite reinicializar
