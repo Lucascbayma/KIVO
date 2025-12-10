@@ -1305,3 +1305,104 @@ PÁGINA DE NEWSLETTER
     background-color: #9e0000 !important;
 }
 
+/* ===== SETAS ESTILO MOBILE (APENAS ÍCONE DE ABRIR/FECHAR) ===== */
+
+/* Remove a seta antiga (˄ ou caracteres feios) */
+.menu-label-accordion .chevron {
+    font-size: 0; /* esconde o símbolo atual */
+}
+
+/* Cria nova seta moderna */
+.menu-label-accordion::before {
+    content: ">";              /* seta de celular */
+    display: inline-block;
+    margin-right: 10px;
+    font-size: 22px;
+    font-weight: 600;
+    transition: transform 0.25s ease;
+    transform: rotate(0deg);
+}
+
+/* Quando ABRIR — gira a seta */
+.submenu-toggle:checked + .menu-label-accordion::before {
+    transform: rotate(90deg);  /* estilo Android / iOS */
+}
+
+/* ===== AJUSTE DE ESPAÇAMENTOS DO MENU MOBILE ===== */
+
+/* Aproxima um pouco a seta do texto e deixa menor */
+.menu-label-accordion::before {
+    margin-right: 6px;     /* antes era maior */
+    font-size: 18px;       /* levemente menor que 22px */
+}
+
+/* Espaçamento vertical do título do grupo (Institucional / Todas as Notícias) */
+.menu-label-accordion {
+    margin: 10px 0 6px 0;  /* topo / laterais / baixo */
+}
+
+/* Itens dentro do acordeão (Quem somos, História, Ver todas, etc.) */
+.menu-indented {
+    margin: 0 0 14px 26px; /* afasta um pouco do título e alinha com texto */
+    padding-top: 4px;
+    gap: 6px;              /* distância entre linhas internas */
+}
+
+/* Links principais: Em Alta, Últimas Notícias, Newsletter */
+.mobile-menu-body a.menu-link-main {
+    margin: 14px 0 4px 26px;  /* mais espaçamento entre blocos */
+}
+
+/* Contêiner geral do menu – sobe um pouquinho o conteúdo */
+.mobile-menu-body {
+    padding: 70px 25px 30px 25px;  /* antes era 80px no topo */
+}
+
+/* ===== MENU MOBILE - ESPAÇAMENTO IGUAL AO DA IMAGEM ===== */
+
+/* Títulos principais */
+.menu-label-accordion {
+    margin: 6px 0 4px 0;      /* mais compacto */
+    padding: 0;
+    font-size: 18px;
+}
+
+/* Setas */
+.menu-label-accordion::before {
+    margin-right: 6px;
+}
+
+/* Menus internos (Quem somos, Ver todas, etc.) */
+.menu-indented {
+    margin: 0 0 6px 26px;     /* colado no título como no print */
+    padding: 0;
+    gap: 4px;
+}
+
+/* Cada item interno */
+.menu-indented li {
+    margin: 0;
+    padding: 0;
+}
+
+/* Links principais (Em Alta, Últimas Notícias, Newsletter) */
+.mobile-menu-body a.menu-link-main {
+    margin: 6px 0 6px 26px;
+    padding: 0;
+}
+
+/* Corpo do menu inteiro */
+.mobile-menu-body {
+    padding-top: 65px;  /* sobe tudo */
+}
+
+/* Remove espaçamento fantasma entre blocos */
+.menu-group-accordion {
+    margin: 0;
+    padding: 0;
+}
+
+/* Fecha gaps inesperados */
+.mobile-menu-body > * {
+    margin-bottom: 4px;
+}
