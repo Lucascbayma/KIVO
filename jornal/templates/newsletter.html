@@ -5,12 +5,13 @@
 
 {% block content %}
     <link rel="stylesheet" href="{% static 'jornal/css/newsletter.css' %}">
+
     <div id="newsletter-main"> 
         
         <section class="section-preferences">
             <h2>1. Escolha suas preferências</h2>
 
-            <div class="newsletter-option" data-topic="essencial-jc">
+            <div class="newsletter-option">
                 <div class="option-icon">
                     <img src="{% static 'jornal/imagens/essencial.png' %}" alt="Ícone Essencial">
                 </div>
@@ -22,7 +23,7 @@
                 </div>
             </div>
 
-            <div class="newsletter-option" data-topic="saude-bem-estar">
+            <div class="newsletter-option">
                 <div class="option-icon">
                     <img src="{% static 'jornal/imagens/saude.png' %}" alt="Ícone Saúde">
                 </div>
@@ -33,7 +34,7 @@
                 </div>
             </div>
             
-            <div class="newsletter-option" data-topic="nas-telas">
+            <div class="newsletter-option">
                 <div class="option-icon">
                     <img src="{% static 'jornal/imagens/telas.png' %}" alt="Ícone Telas">
                 </div>
@@ -50,6 +51,7 @@
         <section class="section-finalize">
             <h2>2. Finalize sua inscrição</h2>
 
+            <!-- Lista começa vazia, será preenchida via JS -->
             <div id="selected-topics-list"></div>
 
             <form id="subscribe-form" action="{% url 'jornal:cadastrar_newsletter' %}" method="POST">
@@ -72,98 +74,111 @@
 
                 <button type="submit" class="subscribe-button-final">Concluir Inscrição</button>
                 
+                <!-- Campo hidden que recebe as preferências via JS -->
                 <input type="hidden" id="preferences-input" name="preferences">
             </form>
         </section>
 
     </div> 
-
 {% endblock %}
 
 {% block scripts %}
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            
-            const addButtons = document.querySelectorAll('.add-button');
-            const selectedList = document.getElementById('selected-topics-list');
-            const preferencesInput = document.getElementById('preferences-input');
-            
-            let selectedTopics = [];
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // Elementos do DOM
+    const addButtons = document.querySelectorAll('.add-button');
+    const selectedList = document.getElementById('selected-topics-list');
+    const preferencesInput = document.getElementById('preferences-input');
+    
+    // Array para armazenar os nomes das newsletters selecionadas
+    let selectedTopics = [];
 
-            function updateHiddenInput() {
-                preferencesInput.value = selectedTopics.join(',');
-            }
+    // Atualiza o input hidden que será enviado para o Django (views.py)
+    function updateHiddenInput() {
+        preferencesInput.value = selectedTopics.join(',');
+    }
 
-            function addTopic(card) {
-                // Busca o H3 dentro do .newsletter-option-content
-                const topicName = card.querySelector('h3').innerText.trim();
+    // Cria o HTML do retângulo (baseado no seu CSS)
+    function createSelectedItemElement(topicName) {
+        const itemDiv = document.createElement('div');
+        itemDiv.classList.add('selected-item');
+        itemDiv.setAttribute('data-topic-name', topicName);
+        
+        itemDiv.innerHTML = `
+            ${topicName}
+            <span class="remove-topic" role="button" aria-label="Remover">
+                <i class="bi bi-x-lg"></i>
+            </span>
+        `;
+        return itemDiv;
+    }
+
+    // 1. Função de Adicionar
+    function addTopic(card) {
+        const topicName = card.querySelector('h3').innerText.trim();
+        const btn = card.querySelector('.add-button');
+
+        // Verifica se já foi adicionado
+        if (selectedTopics.includes(topicName)) return;
+
+        // Adiciona ao array e atualiza input
+        selectedTopics.push(topicName);
+        updateHiddenInput();
+
+        // Cria e adiciona o elemento visual na lista
+        const newItem = createSelectedItemElement(topicName);
+        selectedList.appendChild(newItem);
+
+        // Feedback Visual no Botão (Muda para Verde e Desabilita)
+        btn.innerHTML = '<i class="bi bi-check-lg"></i> Adicionado';
+        btn.style.backgroundColor = '#2ECC71'; // Verde sucesso
+        btn.style.cursor = 'default';
+        btn.disabled = true;
+    }
+
+    // 2. Função de Remover
+    function removeTopic(closeIcon) {
+        const itemDiv = closeIcon.closest('.selected-item');
+        const topicName = itemDiv.getAttribute('data-topic-name');
+
+        // Remove do array e atualiza input
+        selectedTopics = selectedTopics.filter(t => t !== topicName);
+        updateHiddenInput();
+
+        // Remove do HTML
+        itemDiv.remove();
+
+        // Reabilita o botão "Adicionar" original
+        const cards = document.querySelectorAll('.newsletter-option');
+        cards.forEach(card => {
+            if (card.querySelector('h3').innerText.trim() === topicName) {
                 const btn = card.querySelector('.add-button');
-
-                if (selectedTopics.includes(topicName)) return;
-
-                selectedTopics.push(topicName);
-                updateHiddenInput();
-
-                // Cria o elemento visual de item selecionado
-                const itemDiv = document.createElement('div');
-                itemDiv.classList.add('selected-item');
-                itemDiv.setAttribute('data-topic-name', topicName);
-                
-                itemDiv.innerHTML = `
-                    <span>${topicName}</span>
-                    <span class="remove-topic" role="button" title="Remover">
-                        <i class="bi bi-trash"></i> Remover
-                    </span>
-                `;
-
-                selectedList.appendChild(itemDiv);
-
-                // Muda estado do botão
-                btn.innerHTML = 'Adicionado';
-                btn.style.backgroundColor = '#2ECC71'; // Verde visual rápido
-                btn.style.cursor = 'default';
-                btn.disabled = true;
+                btn.innerHTML = '+ Adicionar';
+                btn.style.backgroundColor = '';
+                btn.style.cursor = 'pointer';
+                btn.disabled = false;
             }
-
-            function removeTopic(element) {
-                const itemDiv = element.closest('.selected-item');
-                const topicName = itemDiv.getAttribute('data-topic-name');
-
-                selectedTopics = selectedTopics.filter(t => t !== topicName);
-                updateHiddenInput();
-
-                itemDiv.remove();
-
-                // Reabilita o botão correspondente
-                const cards = document.querySelectorAll('.newsletter-option');
-                cards.forEach(card => {
-                    if (card.querySelector('h3').innerText.trim() === topicName) {
-                        const btn = card.querySelector('.add-button');
-                        btn.innerHTML = '+ Adicionar';
-                        btn.style.backgroundColor = ''; // Volta ao CSS original (vermelho)
-                        btn.style.cursor = 'pointer';
-                        btn.disabled = false;
-                    }
-                });
-            }
-
-            // Evento de Adicionar
-            addButtons.forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    // O card pai é o .newsletter-option (avô do botão agora)
-                    const card = this.closest('.newsletter-option');
-                    addTopic(card);
-                });
-            });
-
-            // Evento de Remover (Delegação de evento)
-            selectedList.addEventListener('click', function(e) {
-                const removeBtn = e.target.closest('.remove-topic');
-                if (removeBtn) {
-                    removeTopic(removeBtn);
-                }
-            });
         });
-    </script>
+    }
+
+    // Clique nos botões de adicionar
+    addButtons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const card = this.closest('.newsletter-option');
+            addTopic(card);
+        });
+    });
+
+    // Clique no X para remover (Delegação de evento)
+    selectedList.addEventListener('click', function(e) {
+        const removeBtn = e.target.closest('.remove-topic');
+        if (removeBtn) {
+            removeTopic(removeBtn);
+        }
+    });
+
+});
+</script>
 {% endblock %}

@@ -155,7 +155,7 @@
                 </ul>
             </div>
 
-            <a class="menu-link-main" href="{% url 'jornal:newsletter_subscribe' %}">Newsletter</a>
+           <a class="menu-link-main" href="{% url 'jornal:newsletter_subscribe' %}" hx-boost="false">Newsletter</a>
             <a href="/adicionar/" class="btn-adicionar-noticia-mobile">+ Adicionar Notícia</a>
 
             <div class="social-icons-grid">
@@ -272,6 +272,8 @@ function toggleRadio() {
     }
 }
 </script>
+
+{% block scripts %}{% endblock %}
 
 </body>
 </html>
