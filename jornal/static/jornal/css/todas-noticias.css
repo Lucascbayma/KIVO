@@ -71,7 +71,7 @@
     gap: 10px;
     margin-top: 10px;
     position: relative;
-    z-index: 500;
+    z-index: 5;
 }
 .item-ordenar i { font-size: 36px; color: #000; }
         
@@ -122,7 +122,7 @@
     background: #FFF;
     border: 1px solid #000;
     border-top: none;
-    z-index: 999;
+    z-index: 10;
 }
 
 .dropdown-options.show {
