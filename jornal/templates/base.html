@@ -12,6 +12,7 @@
 
     <!-- Ícones -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- Scripts -->
     <script src="https://unpkg.com/htmx.org@1.9.6"></script>
@@ -173,10 +174,20 @@
 
     <!-- Header -->
     <header class="header">
-        <div class="col left"></div>
+        <div class="col left">
+            {% if request.resolver_match.url_name != 'home' %}
+
+                <a onclick="history.back()" class="header-icon-btn" style="cursor: pointer;" title="Voltar">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+
+            {% endif %}
+        </div>
         <div class="col center">
             <div class="logo-container">
-                <img src="{% static 'jornal/imagens/logo.svg' %}" alt="JC" class="logo-img">
+                <a href="{% url 'jornal:home' %}">
+                    <img src="{% static 'jornal/imagens/logo.svg' %}" alt="JC" class="logo-img">
+                </a>
             </div>
         </div>
         <div class="col right">
