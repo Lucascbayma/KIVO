@@ -208,7 +208,25 @@
             .option-icon { margin: 0 auto; }
             .add-button { width: 100%; text-align: center; margin-top: 10px; }
         }
+
+        .bloco-anuncio {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
+            width: 100%;
+        }
+
+        .bloco-anuncio img {
+            width: 320px !important;
+            height: 100px !important;
+            object-fit: cover;
+            border-radius: 4px;
+        }
     </style>
+
+        <div class="bloco-anuncio">
+            <img src="{% static 'jornal/imagens/anuncio.gif' %}" alt="Publicidade">
+        </div>
 
     <div id="newsletter-main"> 
         
@@ -280,6 +298,10 @@
             </form>
         </section>
     </div> 
+
+        <div class="bloco-anuncio">
+         <img src="{% static 'jornal/imagens/anuncio.gif' %}" alt="Publicidade">
+        </div>
 
     <div id="success-overlay">
         <img src="{% static 'jornal/imagens/logo.svg' %}" alt="Logo JC" class="overlay-logo">
