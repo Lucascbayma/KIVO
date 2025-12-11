@@ -4,44 +4,247 @@
 {% block title %}Escolha suas Preferências | Newsletter{% endblock %}
 
 {% block content %}
-    <link rel="stylesheet" href="{% static 'jornal/css/newsletter.css' %}">
+
+    <style>
+        /* Container Principal */
+        #newsletter-main {
+            background-color: #FFF;
+            padding: 30px 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            font-family: 'Inter', sans-serif !important;
+        }
+
+        #newsletter-main h2 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: #000;
+            text-align: left;
+        }
+
+        /* Card da Opção */
+        .newsletter-option {
+            background-color: #E4E4E4;
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: flex-start;
+            gap: 18px;
+        }
+
+        .option-icon {
+            width: 56px;
+            height: 56px;
+            flex-shrink: 0;
+            background: transparent !important;
+        }
+
+        .option-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .newsletter-option-content {
+            flex: 1;
+        }
+
+        .newsletter-option h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 0 0 8px 0;
+            color: #000;
+        }
+
+        .newsletter-option p {
+            font-size: 15px;
+            color: #4B4B4B;
+            margin: 0 0 15px 0;
+        }
+
+        /* --- BOTÃO VERMELHO (+ Adicionar) --- */
+        .add-button {
+            background-color: #D4040C;
+            color: #FFF !important;
+            border: none;
+            padding: 8px 22px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            display: inline-block;
+            transition: 0.2s;
+            min-width: 130px;
+            text-align: center;
+        }
+
+        .add-button:hover {
+            background-color: #B0030A !important;
+        }
+
+        /* --- BOTÃO PRETO (- Remover) --- */
+        /* O Javascript adiciona essa classe .added */
+        .add-button.added {
+            background-color: #000000 !important;
+            color: #FFF !important;
+        }
+
+        .add-button.added:hover {
+            background-color: #333333 !important;
+        }
+
+        /* Separador */
+        hr.separator {
+            border: none;
+            border-top: 1px solid #ccc;
+            margin: 30px 0;
+        }
+
+        /* Lista de Selecionados */
+        .selected-item {
+            background-color: #F2F2F2;
+            padding: 12px 14px;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 15px;
+            margin-bottom: 10px;
+        }
+
+        .remove-topic {
+            color: #D4040C;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Formulário */
+        #subscribe-form { margin-top: 20px; }
+        
+        #subscribe-form label {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        #subscribe-form input[type="email"],
+        #subscribe-form input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            margin-bottom: 18px;
+        }
+
+        .terms-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .subscribe-button-final {
+            width: 100%;
+            margin-top: 25px;
+            padding: 16px;
+            background-color: #D4040C !important;
+            color: #FFF !important;
+            border: none;
+            border-radius: 4px;
+            font-size: 18px !important;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .subscribe-button-final:hover {
+            background-color: #333 !important;
+        }
+
+        /* --- TELA DE CONFIRMAÇÃO (OVERLAY) --- */
+        #success-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95); /* Preto suave */
+            z-index: 10000;
+            display: none; /* JS muda para flex */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        #success-overlay.visible {
+            display: flex;
+            opacity: 1;
+        }
+
+        .overlay-logo {
+            width: 150px;
+            height: auto;
+            margin-bottom: 30px;
+        }
+
+        .overlay-message {
+            color: #FFF;
+            font-family: 'Inter', sans-serif;
+            font-size: 24px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        /* Mobile */
+        @media (max-width: 600px) {
+            #newsletter-main { padding: 20px 15px; }
+            .newsletter-option { flex-direction: column; text-align: left; gap: 14px; }
+            .option-icon { margin: 0 auto; }
+            .add-button { width: 100%; text-align: center; margin-top: 10px; }
+        }
+    </style>
 
     <div id="newsletter-main"> 
         
         <section class="section-preferences">
             <h2>1. Escolha suas preferências</h2>
 
-            <div class="newsletter-option">
+            <div class="newsletter-option" data-topic="Essencial JC">
                 <div class="option-icon">
                     <img src="{% static 'jornal/imagens/essencial.png' %}" alt="Ícone Essencial">
                 </div>
-
                 <div class="newsletter-option-content">
                     <h3>Essencial JC</h3>
                     <p>Receba todas as newsletters do combo Essencial com as notícias mais importantes de 5 em 5 minutos.</p>
-                    <button class="add-button">+ Adicionar</button>
+                    <button class="add-button" type="button">+ Adicionar</button>
                 </div>
             </div>
 
-            <div class="newsletter-option">
+            <div class="newsletter-option" data-topic="Saúde e Bem-Estar">
                 <div class="option-icon">
                     <img src="{% static 'jornal/imagens/saude.png' %}" alt="Ícone Saúde">
                 </div>
                 <div class="newsletter-option-content">
                     <h3>Saúde e Bem-Estar</h3>
                     <p>Às segundas, notícias aprofundadas e relevantes sobre saúde, bem-estar, medicamentos e tratamentos.</p>
-                    <button class="add-button">+ Adicionar</button>
+                    <button class="add-button" type="button">+ Adicionar</button>
                 </div>
             </div>
             
-            <div class="newsletter-option">
+            <div class="newsletter-option" data-topic="Nas Telas">
                 <div class="option-icon">
                     <img src="{% static 'jornal/imagens/telas.png' %}" alt="Ícone Telas">
                 </div>
                 <div class="newsletter-option-content">
                     <h3>Nas Telas</h3>
                     <p>Às quintas, muita informação sobre séries, estreias de cinema, vida dos atores e análises.</p>
-                    <button class="add-button">+ Adicionar</button>
+                    <button class="add-button" type="button">+ Adicionar</button>
                 </div>
             </div>
 
@@ -51,7 +254,6 @@
         <section class="section-finalize">
             <h2>2. Finalize sua inscrição</h2>
 
-            <!-- Lista começa vazia, será preenchida via JS -->
             <div id="selected-topics-list"></div>
 
             <form id="subscribe-form" action="{% url 'jornal:cadastrar_newsletter' %}" method="POST">
@@ -64,7 +266,7 @@
 
                 <div class="form-group">
                     <label for="name">Como você quer ser chamado?</label>
-                    <input type="text" id="name" name="name" placeholder="É assim que vamos te cumprimentar">
+                    <input type="text" id="name" name="name" placeholder="É assim que vamos te cumprimentar" required>
                 </div>
 
                 <div class="form-group terms-group">
@@ -74,39 +276,65 @@
 
                 <button type="submit" class="subscribe-button-final">Concluir Inscrição</button>
                 
-                <!-- Campo hidden que recebe as preferências via JS -->
                 <input type="hidden" id="preferences-input" name="preferences">
             </form>
         </section>
-
     </div> 
+
+    <div id="success-overlay">
+        <img src="{% static 'jornal/imagens/logo.svg' %}" alt="Logo JC" class="overlay-logo">
+        <div class="overlay-message">Cadastro realizado com sucesso!</div>
+    </div>
+
 {% endblock %}
 
 {% block scripts %}
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    
-    // Elementos do DOM
+// Função principal
+function initNewsletterPage() {
+
+    // Evita rodar duas vezes
+    if (window.__newsletter_initialized__) return;
+    window.__newsletter_initialized__ = true;
+
+    // Seleciona elementos
     const addButtons = document.querySelectorAll('.add-button');
     const selectedList = document.getElementById('selected-topics-list');
     const preferencesInput = document.getElementById('preferences-input');
-    
-    // Array para armazenar os nomes das newsletters selecionadas
+    const form = document.getElementById('subscribe-form');
+    const overlay = document.getElementById('success-overlay');
+
+    // Verifica se os elementos existem na tela
+    if (!addButtons.length || !selectedList || !preferencesInput) return;
+
     let selectedTopics = [];
 
-    // Atualiza o input hidden que será enviado para o Django (views.py)
+    // --- FUNÇÕES ---
+
+    // Atualiza o input escondido
     function updateHiddenInput() {
         preferencesInput.value = selectedTopics.join(',');
     }
 
-    // Cria o HTML do retângulo (baseado no seu CSS)
-    function createSelectedItemElement(topicName) {
+    // Muda a cor e texto do botão
+    function updateButtonVisual(btn, isAdded) {
+        if (isAdded) {
+            btn.innerHTML = '- Remover';
+            btn.classList.add('added'); // Fica PRETO
+        } else {
+            btn.innerHTML = '+ Adicionar';
+            btn.classList.remove('added'); // Volta para VERMELHO
+        }
+    }
+
+    // Cria o item visual na lista de baixo
+    function createSelectedItemElement(topicId, labelText) {
         const itemDiv = document.createElement('div');
         itemDiv.classList.add('selected-item');
-        itemDiv.setAttribute('data-topic-name', topicName);
+        itemDiv.setAttribute('data-topic-id', topicId);
         
         itemDiv.innerHTML = `
-            ${topicName}
+            ${labelText}
             <span class="remove-topic" role="button" aria-label="Remover">
                 <i class="bi bi-x-lg"></i>
             </span>
@@ -114,71 +342,101 @@ document.addEventListener('DOMContentLoaded', function() {
         return itemDiv;
     }
 
-    // 1. Função de Adicionar
+    // ADICIONAR
     function addTopic(card) {
-        const topicName = card.querySelector('h3').innerText.trim();
+        const topicId = card.getAttribute('data-topic'); // Pega do HTML
+        const labelText = card.querySelector('h3').innerText.trim();
         const btn = card.querySelector('.add-button');
 
-        // Verifica se já foi adicionado
-        if (selectedTopics.includes(topicName)) return;
+        if (selectedTopics.includes(topicId)) return;
 
-        // Adiciona ao array e atualiza input
-        selectedTopics.push(topicName);
+        selectedTopics.push(topicId);
         updateHiddenInput();
 
-        // Cria e adiciona o elemento visual na lista
-        const newItem = createSelectedItemElement(topicName);
+        const newItem = createSelectedItemElement(topicId, labelText);
         selectedList.appendChild(newItem);
 
-        // Feedback Visual no Botão (Muda para Verde e Desabilita)
-        btn.innerHTML = '<i class="bi bi-check-lg"></i> Adicionado';
-        btn.style.backgroundColor = '#2ECC71'; // Verde sucesso
-        btn.style.cursor = 'default';
-        btn.disabled = true;
+        // Atualiza botão para Preto
+        updateButtonVisual(btn, true);
     }
 
-    // 2. Função de Remover
-    function removeTopic(closeIcon) {
-        const itemDiv = closeIcon.closest('.selected-item');
-        const topicName = itemDiv.getAttribute('data-topic-name');
-
-        // Remove do array e atualiza input
-        selectedTopics = selectedTopics.filter(t => t !== topicName);
+    // REMOVER
+    function removeTopic(topicId) {
+        selectedTopics = selectedTopics.filter(t => t !== topicId);
         updateHiddenInput();
 
-        // Remove do HTML
-        itemDiv.remove();
+        // Remove da lista visual de baixo
+        const itemDiv = selectedList.querySelector(`.selected-item[data-topic-id="${topicId}"]`);
+        if (itemDiv) itemDiv.remove();
 
-        // Reabilita o botão "Adicionar" original
+        // Encontra o botão original e volta para Vermelho
         const cards = document.querySelectorAll('.newsletter-option');
         cards.forEach(card => {
-            if (card.querySelector('h3').innerText.trim() === topicName) {
+            if (card.getAttribute('data-topic') === topicId) {
                 const btn = card.querySelector('.add-button');
-                btn.innerHTML = '+ Adicionar';
-                btn.style.backgroundColor = '';
-                btn.style.cursor = 'pointer';
-                btn.disabled = false;
+                updateButtonVisual(btn, false);
             }
         });
     }
 
-    // Clique nos botões de adicionar
+    // --- EVENTOS ---
+
+    // Clique nos botões de cima (+ Adicionar / - Remover)
     addButtons.forEach(btn => {
         btn.addEventListener('click', function(e) {
             e.preventDefault();
             const card = this.closest('.newsletter-option');
-            addTopic(card);
+            const topicId = card.getAttribute('data-topic');
+
+            // Toggle: se tem, remove. Se não tem, adiciona.
+            if (selectedTopics.includes(topicId)) {
+                removeTopic(topicId);
+            } else {
+                addTopic(card);
+            }
         });
     });
 
-    // Clique no X para remover (Delegação de evento)
+    // Clique no 'X' da lista de baixo
     selectedList.addEventListener('click', function(e) {
         const removeBtn = e.target.closest('.remove-topic');
         if (removeBtn) {
-            removeTopic(removeBtn);
+            const itemDiv = removeBtn.closest('.selected-item');
+            const topicId = itemDiv.getAttribute('data-topic-id');
+            removeTopic(topicId);
         }
     });
 
+    // Envio do Formulário (Overlay)
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            if (selectedTopics.length === 0) {
+                alert("Por favor, selecione pelo menos uma newsletter.");
+                return;
+            }
+
+            // Exibe a tela preta (overlay)
+            if (overlay) overlay.classList.add('visible');
+
+            // Aguarda 2 segundos e envia de verdade
+            setTimeout(function() {
+                form.submit();
+            }, 2000);
+        });
+    }
+}
+
+// Inicializa
+document.addEventListener("DOMContentLoaded", initNewsletterPage);
+
+// Inicializa se usar HTMX
+document.body.addEventListener("htmx:afterSwap", function(evt) {
+    if (evt.detail.target.id === "main-content") {
+        window.__newsletter_initialized__ = false; 
+        initNewsletterPage();
+    }
 });
 </script>
 {% endblock %}
