@@ -58,13 +58,6 @@ Site do Jornal do Commercio que estamos produzindo:
 
 ---
 
-## 🔐 Login dos avaliadores
-
-- **Login**: avaliadores
-- **Senha**: jornalkivo123
-
----
-
 ## 👥 Equipe de Desenvolvimento
 
 <details><summary><b>Equipe</b></summary>
